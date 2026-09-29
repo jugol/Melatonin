@@ -84,3 +84,7 @@
 "Open Wi-Fi Settings" = "Открыть настройки Wi-Fi";
 "Switched network" = "Сеть изменена";
 "Offline" = "Офлайн";
+
+/* Language */
+"Language" = "Язык";
+"Same as macOS" = "Как в macOS";

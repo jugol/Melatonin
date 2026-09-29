@@ -84,3 +84,7 @@
 "Open Wi-Fi Settings" = "Wi-Fi 설정 열기";
 "Switched network" = "네트워크 전환";
 "Offline" = "오프라인";
+
+/* Language */
+"Language" = "언어";
+"Same as macOS" = "macOS 설정 따르기";

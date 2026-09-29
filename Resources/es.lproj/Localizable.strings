@@ -84,3 +84,7 @@
 "Open Wi-Fi Settings" = "Abrir ajustes de Wi-Fi";
 "Switched network" = "Cambió de red";
 "Offline" = "Sin conexión";
+
+/* Language */
+"Language" = "Idioma";
+"Same as macOS" = "Igual que macOS";

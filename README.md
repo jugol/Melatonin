@@ -12,8 +12,22 @@
 
 <p align="center">
   <a href="https://github.com/jugol/Melatonin/releases/latest/download/Melatonin.dmg"><b>Download</b></a> ·
-  <a href="https://jugol.github.io/Melatonin/">Website</a> ·
-  <a href="README.ko.md">한국어</a>
+  <a href="https://jugol.github.io/Melatonin/">Website</a>
+</p>
+
+<p align="center">
+  <a href="README.md">English</a> ·
+  <a href="README.ko.md">한국어</a> ·
+  <a href="README.zh-Hans.md">简体中文</a> ·
+  <a href="README.ja.md">日本語</a> ·
+  <a href="README.es.md">Español</a> ·
+  <a href="README.fr.md">Français</a> ·
+  <a href="README.de.md">Deutsch</a> ·
+  <a href="README.pt-BR.md">Português</a> ·
+  <a href="README.ru.md">Русский</a> ·
+  <a href="README.ar.md">العربية</a> ·
+  <a href="README.hi.md">हिन्दी</a> ·
+  <a href="README.id.md">Bahasa Indonesia</a>
 </p>
 
 <p align="center">
@@ -38,7 +52,7 @@ Keep-awake apps like `caffeinate`, KeepingYouAwake and most of their cousins use
   - Turns off if your Mac gets hot. A running laptop in a closed bag is how you cook a battery.
   - If Melatonin quits, crashes or is force-killed, the helper restores normal sleep immediately. After a reboot it cleans up too.
 - **Native and light.** SwiftUI and AppKit, no Electron, about 0% CPU when idle. Universal binary for Apple silicon and Intel.
-- **Speaks your language.** English, 한국어, 简体中文, 日本語, Español, Français, Deutsch, Português (Brasil), Русский, العربية, हिन्दी and Bahasa Indonesia.
+- **Speaks your language.** English, 한국어, 简体中文, 日本語, Español, Français, Deutsch, Português (Brasil), Русский, العربية, हिन्दी and Bahasa Indonesia. Follows your macOS language by default; pick another under **⋯ › Language**.
 
 <p align="center">
   <img src="docs/images/menu-on-light.png" width="300" alt="Menu, awake">
@@ -113,6 +127,8 @@ make icon       # regenerate the app icon from Scripts/make-icon.swift
 swift build && .build/debug/Melatonin --snapshot /tmp/shots   # render every UI state to PNGs
 swift build && .build/debug/Melatonin --agents                 # watch agent detection live
 ```
+
+After adding or editing a translation, run `python3 Scripts/check-localizations.py` to catch missing strings and mismatched placeholders.
 
 To sign with a Developer ID, set `SIGN_IDENTITY` and pin your team ID in `HelperConstants.clientRequirement`:
 

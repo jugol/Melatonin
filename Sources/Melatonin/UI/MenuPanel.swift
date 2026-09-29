@@ -45,6 +45,12 @@ struct MenuPanel: View {
                 .font(.system(size: 13, weight: .semibold, design: Theme.rounded))
             Spacer()
             Menu {
+                Picker("Language", selection: Binding(get: { model.language }, set: { model.language = $0 })) {
+                    Text("Same as macOS").tag("")
+                    ForEach(AppLanguage.supported, id: \.code) { language in
+                        Text(verbatim: language.name).tag(language.code)
+                    }
+                }
                 Button("About Melatonin") {
                     NSWorkspace.shared.open(URL(string: "https://github.com/jugol/Melatonin")!)
                 }

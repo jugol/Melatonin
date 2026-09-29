@@ -84,3 +84,7 @@
 "Open Wi-Fi Settings" = "Wi-Fi सेटिंग खोलें";
 "Switched network" = "नेटवर्क बदला";
 "Offline" = "ऑफ़लाइन";
+
+/* Language */
+"Language" = "भाषा";
+"Same as macOS" = "macOS जैसा";

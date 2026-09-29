@@ -84,3 +84,7 @@
 "Open Wi-Fi Settings" = "WLAN-Einstellungen öffnen";
 "Switched network" = "Netz gewechselt";
 "Offline" = "Offline";
+
+/* Language */
+"Language" = "Sprache";
+"Same as macOS" = "Wie macOS";

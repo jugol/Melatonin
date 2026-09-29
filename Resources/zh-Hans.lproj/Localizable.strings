@@ -84,3 +84,7 @@
 "Open Wi-Fi Settings" = "打开 Wi-Fi 设置";
 "Switched network" = "已切换网络";
 "Offline" = "已离线";
+
+/* Language */
+"Language" = "语言";
+"Same as macOS" = "跟随 macOS";

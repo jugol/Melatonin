@@ -84,3 +84,7 @@
 "Open Wi-Fi Settings" = "فتح إعدادات Wi-Fi";
 "Switched network" = "تغيرت الشبكة";
 "Offline" = "غير متصل";
+
+/* Language */
+"Language" = "اللغة";
+"Same as macOS" = "مثل macOS";

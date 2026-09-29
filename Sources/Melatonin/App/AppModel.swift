@@ -74,6 +74,14 @@ final class AppModel {
             NotchController.shared.setVisible(showInNotch)
         }
     }
+    /// A language code from `AppLanguage.supported`, or "" to follow macOS.
+    var language: String {
+        didSet {
+            guard language != oldValue else { return }
+            AppLanguage.set(language.isEmpty ? nil : language)
+            relaunch()
+        }
+    }
     var opensAtLogin: Bool {
         didSet {
             guard opensAtLogin != (SMAppService.mainApp.status == .enabled) else { return }
@@ -81,6 +89,7 @@ final class AppModel {
                 if opensAtLogin { try SMAppService.mainApp.register() } else { try SMAppService.mainApp.unregister() }
             } catch {
                 opensAtLogin = SMAppService.mainApp.status == .enabled
+        language = AppLanguage.override ?? ""
             }
         }
     }
@@ -120,6 +129,8 @@ final class AppModel {
         static let batteryFloor = "batteryFloor"
         static let stopWhenHot = "stopWhenHot"
         static let showInNotch = "showInNotch"
+        /// Set just before a relaunch so keep-awake picks up where it left off.
+        static let resumeUntil = "resumeUntil"
     }
 
     private init() {
@@ -136,6 +147,7 @@ final class AppModel {
         stopWhenHot = defaults.bool(forKey: Keys.stopWhenHot)
         showInNotch = defaults.bool(forKey: Keys.showInNotch)
         opensAtLogin = SMAppService.mainApp.status == .enabled
+        language = AppLanguage.override ?? ""
 
         connection.join = { [weak self] ssid in
             guard let self, self.helperStatus == .ready else { throw HelperError(message: "The helper isn’t set up.") }
@@ -182,7 +194,10 @@ final class AppModel {
 
     func start() {
         poll()
-        Task { await refreshHelperStatus() }
+        Task {
+            await refreshHelperStatus()
+            resumeAfterRelaunch()
+        }
 
         let timer = Timer(timeInterval: 10, repeats: true) { [weak self] _ in
             MainActor.assumeIsolated { self?.poll() }
@@ -203,6 +218,29 @@ final class AppModel {
 
     func shutdown() {
         helper.releaseNow()
+    }
+
+    /// Restarts the app, e.g. to apply a new language. Keep-awake resumes on
+    /// the other side.
+    func relaunch() {
+        if manualOn {
+            defaults.set(manualUntil?.timeIntervalSince1970 ?? 0, forKey: Keys.resumeUntil)
+        }
+        let reopen = Process()
+        reopen.executableURL = URL(fileURLWithPath: "/bin/sh")
+        reopen.arguments = ["-c", "sleep 1; /usr/bin/open \"$0\"", Bundle.main.bundlePath]
+        try? reopen.run()
+        NSApp.terminate(nil)
+    }
+
+    private func resumeAfterRelaunch() {
+        guard let stamp = defaults.object(forKey: Keys.resumeUntil) as? Double else { return }
+        defaults.removeObject(forKey: Keys.resumeUntil)
+        let until = stamp == 0 ? nil : Date(timeIntervalSince1970: stamp)
+        guard helperStatus == .ready, until.map({ $0 > .now }) ?? true else { return }
+        manualOn = true
+        setExpiry(until)
+        reconcile()
     }
 
     // MARK: Actions
@@ -300,9 +338,13 @@ final class AppModel {
     }
 
     private func scheduleExpiry() {
+        setExpiry(duration.interval.map { Date().addingTimeInterval($0) })
+    }
+
+    private func setExpiry(_ until: Date?) {
         expiryTimer?.invalidate()
-        manualUntil = duration.interval.map { Date().addingTimeInterval($0) }
-        guard let until = manualUntil else { return }
+        manualUntil = until
+        guard let until else { return }
         let timer = Timer(fire: until, interval: 0, repeats: false) { [weak self] _ in
             MainActor.assumeIsolated {
                 guard let self, self.manualOn else { return }

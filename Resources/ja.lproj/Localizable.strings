@@ -84,3 +84,7 @@
 "Open Wi-Fi Settings" = "Wi-Fi設定を開く";
 "Switched network" = "切り替えました";
 "Offline" = "オフライン";
+
+/* Language */
+"Language" = "言語";
+"Same as macOS" = "macOSに合わせる";

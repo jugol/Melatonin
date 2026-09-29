@@ -12,8 +12,22 @@
 
 <p align="center">
   <a href="https://github.com/jugol/Melatonin/releases/latest/download/Melatonin.dmg"><b>다운로드</b></a> ·
-  <a href="https://jugol.github.io/Melatonin/">웹사이트</a> ·
-  <a href="README.md">English</a>
+  <a href="https://jugol.github.io/Melatonin/">웹사이트</a>
+</p>
+
+<p align="center">
+  <a href="README.md">English</a> ·
+  <a href="README.ko.md">한국어</a> ·
+  <a href="README.zh-Hans.md">简体中文</a> ·
+  <a href="README.ja.md">日本語</a> ·
+  <a href="README.es.md">Español</a> ·
+  <a href="README.fr.md">Français</a> ·
+  <a href="README.de.md">Deutsch</a> ·
+  <a href="README.pt-BR.md">Português</a> ·
+  <a href="README.ru.md">Русский</a> ·
+  <a href="README.ar.md">العربية</a> ·
+  <a href="README.hi.md">हिन्दी</a> ·
+  <a href="README.id.md">Bahasa Indonesia</a>
 </p>
 
 <p align="center">
@@ -38,11 +52,19 @@ Claude Code에 긴 작업을 맡기고 뚜껑을 닫고 자리를 비우면, 맥
   - 맥이 뜨거워지면 꺼져요. 켜진 노트북을 닫힌 가방에 넣으면 배터리가 익어요.
   - 앱이 종료되거나, 크래시 나거나, 강제 종료돼도 헬퍼가 즉시 원래대로 잠자기를 되돌려요. 재부팅한 뒤에도 정리해요.
 - **가볍고 네이티브.** SwiftUI + AppKit, Electron 없음, 대기 중 CPU 약 0%. Apple 실리콘·Intel 유니버설 빌드.
-- **12개 언어.** English, 한국어, 简体中文, 日本語, Español, Français, Deutsch, Português (Brasil), Русский, العربية, हिन्दी, Bahasa Indonesia.
+- **12개 언어.** English, 한국어, 简体中文, 日本語, Español, Français, Deutsch, Português (Brasil), Русский, العربية, हिन्दी, Bahasa Indonesia. 기본은 macOS 언어를 따르고, **⋯ › 언어**에서 바꿀 수 있어요.
 
 <p align="center">
   <img src="docs/images/menu-on-light.png" width="300" alt="메뉴 - 깨어 있음">
   <img src="docs/images/menu-off-dark.png" width="300" alt="메뉴 - 잠들 수 있음">
+</p>
+
+<p align="center">
+  <img src="docs/images/notch-compact.png" width="640" alt="남은 시간이 보이는 노치 알약">
+</p>
+
+<p align="center">
+  <img src="docs/images/connection-light.png" width="420" alt="연결 유지 설정">
 </p>
 
 ## 설치
@@ -94,6 +116,25 @@ Melatonin.app  ──XPC──▶  io.github.jugol.melatonin.helper (root, launc
 ```bash
 sudo bash Support/uninstall-helper.sh
 ```
+
+## 개발
+
+```bash
+make app        # build build/Melatonin.app (ad-hoc signed)
+make run        # build and launch
+make package    # universal build, DMG and zip in dist/
+make icon       # regenerate the app icon from Scripts/make-icon.swift
+swift build && .build/debug/Melatonin --snapshot /tmp/shots   # render every UI state to PNGs
+swift build && .build/debug/Melatonin --agents                 # watch agent detection live
+```
+
+Developer ID로 서명하려면 `SIGN_IDENTITY`를 지정하고 `HelperConstants.clientRequirement`에 팀 ID를 고정하세요.
+
+```bash
+SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
+```
+
+번역을 추가하거나 고쳤다면 `python3 Scripts/check-localizations.py`로 빠진 문구와 자리표시자를 확인하세요.
 
 ## 로드맵
 
