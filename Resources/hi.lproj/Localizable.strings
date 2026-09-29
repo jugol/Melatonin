@@ -1,0 +1,86 @@
+/* Status */
+"Awake" = "जाग रहा है";
+"Sleeps when closed" = "ढक्कन बंद करने पर सो जाएगा";
+"Until %@ · lid can close" = "%@ तक · ढक्कन बंद कर सकते हैं";
+"Until you turn it off · lid can close" = "जब तक आप बंद न करें · ढक्कन बंद कर सकते हैं";
+"While %@ works · lid can close" = "%@ के काम करते समय · ढक्कन बंद कर सकते हैं";
+"Setting up…" = "सेटअप हो रहा है…";
+"Stopped at %@ battery" = "बैटरी %@ पर रुक गया";
+"Stopped because your Mac got hot" = "आपका Mac गर्म हो गया, इसलिए रुक गया";
+"Timer ended" = "टाइमर ख़त्म हो गया";
+"Auto paused until agents finish" = "एजेंट का काम पूरा होने तक ऑटो रुका है";
+"Tap the moon to stay awake" = "जागते रहने के लिए चाँद पर क्लिक करें";
+"%lldh" = "%lld घं.";
+"Stay awake for" = "जागते रहने का समय";
+"On" = "चालू";
+"Off" = "बंद";
+
+/* Helper setup */
+"One-time setup" = "एक बार का सेटअप";
+"Staying awake with the lid closed needs a tiny helper. You’ll enter your password once." = "ढक्कन बंद होने पर भी जागते रहने के लिए एक छोटे हेल्पर की ज़रूरत है। पासवर्ड सिर्फ़ एक बार दर्ज करना होगा।";
+"Set up" = "सेटअप करें";
+"Update" = "अपडेट करें";
+"Reinstall" = "फिर से इंस्टॉल करें";
+"Helper isn’t responding" = "हेल्पर जवाब नहीं दे रहा";
+"Helper update needed" = "हेल्पर को अपडेट करना होगा";
+"Setup didn’t finish" = "सेटअप पूरा नहीं हुआ";
+"Couldn’t switch" = "बदल नहीं पाया";
+"Check System Settings › General › Login Items, or reinstall the helper." = "सिस्टम सेटिंग › सामान्य › लॉगइन आइटम देखें या हेल्पर को फिर से इंस्टॉल करें।";
+"Setup was cancelled." = "सेटअप रद्द किया गया।";
+"Melatonin needs your password once to install its helper." = "हेल्पर इंस्टॉल करने के लिए Melatonin को एक बार आपका पासवर्ड चाहिए।";
+"Melatonin needs your password to remove its helper." = "हेल्पर हटाने के लिए Melatonin को आपका पासवर्ड चाहिए।";
+
+/* Settings */
+"Auto for AI agents" = "AI एजेंट के लिए ऑटो";
+"Stays awake while Claude Code or Codex works" = "Claude Code या Codex के काम करते समय जागता रहता है";
+"%@ working" = "%@ काम कर रहा है";
+"%@ idle" = "%@ निष्क्रिय";
+"Stop at low battery" = "कम बैटरी पर रोकें";
+"Stop if it gets hot" = "गर्म होने पर रोकें";
+"Show in notch" = "नॉच में दिखाएँ";
+"Open at login" = "लॉगइन पर खोलें";
+
+/* Menu */
+"About Melatonin" = "Melatonin परिचय";
+"Uninstall helper…" = "हेल्पर अनइंस्टॉल करें…";
+"Quit Melatonin" = "Melatonin बंद करें";
+"Quit" = "बंद करें";
+"On power" = "पावर से जुड़ा";
+"Running hot" = "गर्म हो रहा है";
+
+/* Notch banners */
+"Sleep" = "स्लीप";
+"Too hot" = "बहुत गर्म";
+"Time’s up" = "समय पूरा हुआ";
+"Lid can close" = "ढक्कन बंद करें";
+"Back to normal" = "सामान्य हो गया";
+"Sleep resumed" = "स्लीप फिर शुरू";
+"Staying awake" = "जागता रहेगा";
+"Open the menu" = "मेन्यू खोलें";
+
+/* Stay online */
+"Stay online" = "ऑनलाइन रहें";
+"Choose networks" = "नेटवर्क चुनें";
+"Switch networks when the internet drops" = "इंटरनेट कटने पर नेटवर्क बदलें";
+"Add networks to fall back to" = "बैकअप के लिए नेटवर्क जोड़ें";
+"Ready · watches while awake" = "तैयार · जागते समय नज़र रखता है";
+"Online" = "ऑनलाइन";
+"Online via %@" = "%@ के ज़रिए ऑनलाइन";
+"Internet is down" = "इंटरनेट बंद है";
+"Joining %@…" = "%@ से जुड़ रहा है…";
+"Couldn’t reconnect" = "जुड़ नहीं पाया";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "अगर Melatonin के Mac को जगाए रखने के दौरान इंटरनेट कट जाए, तो यह इस सूची के अगले नेटवर्क से जुड़ जाता है।";
+"Priority" = "प्राथमिकता";
+"Add network" = "नेटवर्क जोड़ें";
+"No other saved networks" = "सेव किया गया कोई और नेटवर्क नहीं है";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "जिन नेटवर्क को बैकअप के रूप में रखना चाहते हैं, उन्हें जोड़ें: घर, ऑफ़िस, आपके फ़ोन का हॉटस्पॉट।";
+"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "क्रम बदलने के लिए ड्रैग करें। सिर्फ़ वही नेटवर्क जोड़े जा सकते हैं जिनसे यह Mac पहले जुड़ चुका है; उनके सेव किए गए पासवर्ड इस्तेमाल होते हैं।";
+"Needs the helper. Set it up from the menu bar." = "हेल्पर ज़रूरी है। इसे मेन्यू बार से सेटअप करें।";
+"Hotspot" = "हॉटस्पॉट";
+"Joined" = "जुड़ा हुआ";
+"Mark as hotspot" = "हॉटस्पॉट के रूप में चिह्नित करें";
+"Remove" = "हटाएँ";
+"Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "iPhone इस्तेमाल करते हैं? macOS उसके निजी हॉटस्पॉट से ऑटोमैटिकली जुड़ सकता है: Wi-Fi सेटिंग › हॉटस्पॉट से जुड़ने के लिए पूछें › ऑटोमैटिक।";
+"Open Wi-Fi Settings" = "Wi-Fi सेटिंग खोलें";
+"Switched network" = "नेटवर्क बदला";
+"Offline" = "ऑफ़लाइन";

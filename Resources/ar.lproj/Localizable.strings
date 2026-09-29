@@ -1,0 +1,86 @@
+/* Status */
+"Awake" = "مستيقظ";
+"Sleeps when closed" = "يدخل الإسبات عند إغلاقه";
+"Until %@ · lid can close" = "حتى %@ · يمكن إغلاق الغطاء";
+"Until you turn it off · lid can close" = "حتى تُوقفه · يمكن إغلاق الغطاء";
+"While %@ works · lid can close" = "أثناء عمل %@ · يمكن إغلاق الغطاء";
+"Setting up…" = "جارٍ الإعداد…";
+"Stopped at %@ battery" = "توقف عند بلوغ البطارية %@";
+"Stopped because your Mac got hot" = "توقف لأن جهاز Mac أصبح ساخنًا";
+"Timer ended" = "انتهى المؤقت";
+"Auto paused until agents finish" = "الوضع التلقائي متوقف مؤقتًا حتى ينتهي الوكلاء";
+"Tap the moon to stay awake" = "انقر على القمر لإبقاء Mac مستيقظًا";
+"%lldh" = "%lld س";
+"Stay awake for" = "البقاء مستيقظًا لمدة";
+"On" = "تشغيل";
+"Off" = "إيقاف";
+
+/* Helper setup */
+"One-time setup" = "إعداد لمرة واحدة";
+"Staying awake with the lid closed needs a tiny helper. You’ll enter your password once." = "لإبقاء Mac مستيقظًا والغطاء مغلق، يلزم تثبيت أداة مساعدة صغيرة. ستُدخل كلمة السر مرة واحدة فقط.";
+"Set up" = "إعداد";
+"Update" = "تحديث";
+"Reinstall" = "إعادة التثبيت";
+"Helper isn’t responding" = "الأداة المساعدة لا تستجيب";
+"Helper update needed" = "يلزم تحديث الأداة المساعدة";
+"Setup didn’t finish" = "لم يكتمل الإعداد";
+"Couldn’t switch" = "تعذر التبديل";
+"Check System Settings › General › Login Items, or reinstall the helper." = "تحقق من إعدادات النظام › عام › عناصر تسجيل الدخول، أو أعد تثبيت الأداة المساعدة.";
+"Setup was cancelled." = "تم إلغاء الإعداد.";
+"Melatonin needs your password once to install its helper." = "يحتاج Melatonin إلى كلمة السر مرة واحدة لتثبيت أداته المساعدة.";
+"Melatonin needs your password to remove its helper." = "يحتاج Melatonin إلى كلمة السر لإزالة أداته المساعدة.";
+
+/* Settings */
+"Auto for AI agents" = "تلقائي لوكلاء الذكاء الاصطناعي";
+"Stays awake while Claude Code or Codex works" = "يبقى مستيقظًا أثناء عمل Claude Code أو Codex";
+"%@ working" = "%@ يعمل";
+"%@ idle" = "%@ خامل";
+"Stop at low battery" = "الإيقاف عند انخفاض البطارية";
+"Stop if it gets hot" = "الإيقاف عند ارتفاع الحرارة";
+"Show in notch" = "العرض في النتوء";
+"Open at login" = "فتح عند الدخول";
+
+/* Menu */
+"About Melatonin" = "حول Melatonin";
+"Uninstall helper…" = "إلغاء تثبيت الأداة المساعدة…";
+"Quit Melatonin" = "إنهاء Melatonin";
+"Quit" = "إنهاء";
+"On power" = "متصل بالطاقة";
+"Running hot" = "حرارة مرتفعة";
+
+/* Notch banners */
+"Sleep" = "إسبات";
+"Too hot" = "ساخن جدًا";
+"Time’s up" = "انتهى الوقت";
+"Lid can close" = "يمكن الإغلاق";
+"Back to normal" = "الوضع العادي";
+"Sleep resumed" = "عاد الإسبات";
+"Staying awake" = "يبقى مستيقظًا";
+"Open the menu" = "افتح القائمة";
+
+/* Stay online */
+"Stay online" = "البقاء متصلًا";
+"Choose networks" = "اختيار الشبكات";
+"Switch networks when the internet drops" = "التبديل إلى شبكة أخرى عند انقطاع الإنترنت";
+"Add networks to fall back to" = "أضف شبكات احتياطية";
+"Ready · watches while awake" = "جاهز · يراقب ما دام مستيقظًا";
+"Online" = "متصل";
+"Online via %@" = "متصل عبر %@";
+"Internet is down" = "الإنترنت منقطع";
+"Joining %@…" = "جارٍ الانضمام إلى %@…";
+"Couldn’t reconnect" = "تعذر الاتصال";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "إذا انقطع الإنترنت بينما يُبقي Melatonin جهاز Mac مستيقظًا، فسينضم إلى الشبكة التالية في هذه القائمة.";
+"Priority" = "الأولوية";
+"Add network" = "إضافة شبكة";
+"No other saved networks" = "لا توجد شبكات محفوظة أخرى";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "أضف الشبكات التي تريدها كشبكات احتياطية: المنزل، المكتب، نقطة اتصال هاتفك.";
+"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "اسحب لإعادة الترتيب. يمكن فقط إضافة الشبكات التي انضم إليها جهاز Mac هذا من قبل، وتُستخدم كلمات السر المحفوظة لها.";
+"Needs the helper. Set it up from the menu bar." = "يتطلب الأداة المساعدة. قم بإعدادها من شريط القوائم.";
+"Hotspot" = "نقطة اتصال";
+"Joined" = "تم الانضمام";
+"Mark as hotspot" = "تعيين كنقطة اتصال";
+"Remove" = "إزالة";
+"Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "هل تستخدم iPhone؟ يمكن أن ينضم macOS تلقائيًا إلى نقطة الاتصال الشخصية الخاصة به: إعدادات Wi-Fi › طلب الانضمام إلى نقاط الاتصال › تلقائي.";
+"Open Wi-Fi Settings" = "فتح إعدادات Wi-Fi";
+"Switched network" = "تغيرت الشبكة";
+"Offline" = "غير متصل";

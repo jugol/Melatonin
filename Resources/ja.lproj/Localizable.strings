@@ -1,0 +1,86 @@
+/* Status */
+"Awake" = "起きています";
+"Sleeps when closed" = "閉じるとスリープします";
+"Until %@ · lid can close" = "%@まで · 閉じても動作します";
+"Until you turn it off · lid can close" = "オフにするまで · 閉じても動作します";
+"While %@ works · lid can close" = "%@の作業中 · 閉じても動作します";
+"Setting up…" = "設定中…";
+"Stopped at %@ battery" = "バッテリー残量%@で停止しました";
+"Stopped because your Mac got hot" = "Macが熱くなったため停止しました";
+"Timer ended" = "タイマーが終了しました";
+"Auto paused until agents finish" = "エージェントの作業が終わるまで自動モードを一時停止中";
+"Tap the moon to stay awake" = "月をクリックすると起きたままになります";
+"%lldh" = "%lld時間";
+"Stay awake for" = "起きている時間";
+"On" = "オン";
+"Off" = "オフ";
+
+/* Helper setup */
+"One-time setup" = "最初に一度だけ設定";
+"Staying awake with the lid closed needs a tiny helper. You’ll enter your password once." = "閉じたまま起きているには、小さなヘルパーが必要です。パスワードの入力は一度だけです。";
+"Set up" = "設定する";
+"Update" = "アップデート";
+"Reinstall" = "再インストール";
+"Helper isn’t responding" = "ヘルパーが応答していません";
+"Helper update needed" = "ヘルパーのアップデートが必要です";
+"Setup didn’t finish" = "設定を完了できませんでした";
+"Couldn’t switch" = "切り替え失敗";
+"Check System Settings › General › Login Items, or reinstall the helper." = "「システム設定 › 一般 › ログイン項目」を確認するか、ヘルパーを再インストールしてください。";
+"Setup was cancelled." = "設定はキャンセルされました。";
+"Melatonin needs your password once to install its helper." = "Melatoninのヘルパーをインストールするには、パスワードが一度必要です。";
+"Melatonin needs your password to remove its helper." = "Melatoninのヘルパーを削除するには、パスワードが必要です。";
+
+/* Settings */
+"Auto for AI agents" = "AIエージェント自動モード";
+"Stays awake while Claude Code or Codex works" = "Claude CodeやCodexの作業中は起きています";
+"%@ working" = "%@が作業中";
+"%@ idle" = "%@は待機中";
+"Stop at low battery" = "バッテリー残量が少ないと停止";
+"Stop if it gets hot" = "熱くなったら停止";
+"Show in notch" = "ノッチに表示";
+"Open at login" = "ログイン時に開く";
+
+/* Menu */
+"About Melatonin" = "Melatoninについて";
+"Uninstall helper…" = "ヘルパーをアンインストール…";
+"Quit Melatonin" = "Melatoninを終了";
+"Quit" = "終了";
+"On power" = "電源接続中";
+"Running hot" = "温度が高め";
+
+/* Notch banners */
+"Sleep" = "スリープ";
+"Too hot" = "熱すぎます";
+"Time’s up" = "時間切れ";
+"Lid can close" = "閉じてもOK";
+"Back to normal" = "いつもどおり";
+"Sleep resumed" = "スリープ再開";
+"Staying awake" = "起きています";
+"Open the menu" = "メニューを確認";
+
+/* Stay online */
+"Stay online" = "オンラインを維持";
+"Choose networks" = "ネットワークを選択";
+"Switch networks when the internet drops" = "インターネットが切れたら別のネットワークに切り替え";
+"Add networks to fall back to" = "切り替え先のネットワークを追加";
+"Ready · watches while awake" = "準備完了 · 起きている間は監視";
+"Online" = "オンライン";
+"Online via %@" = "%@で接続中";
+"Internet is down" = "インターネット切断";
+"Joining %@…" = "%@に接続中…";
+"Couldn’t reconnect" = "再接続に失敗";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "MelatoninがMacを起こしている間にインターネットが切れると、このリストの次のネットワークに接続します。";
+"Priority" = "優先順位";
+"Add network" = "ネットワークを追加";
+"No other saved networks" = "ほかに保存済みのネットワークはありません";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "予備のネットワークを追加しましょう：自宅、オフィス、スマートフォンのテザリングなど。";
+"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "ドラッグで並べ替えられます。追加できるのはこのMacが接続したことのあるネットワークだけで、保存済みのパスワードが使われます。";
+"Needs the helper. Set it up from the menu bar." = "ヘルパーが必要です。メニューバーから設定してください。";
+"Hotspot" = "テザリング";
+"Joined" = "接続済み";
+"Mark as hotspot" = "テザリングとしてマーク";
+"Remove" = "削除";
+"Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "iPhoneをお使いですか？「Wi-Fi設定 › インターネット共有への接続を確認 › 自動」にすると、macOSがインターネット共有に自動で接続します。";
+"Open Wi-Fi Settings" = "Wi-Fi設定を開く";
+"Switched network" = "切り替えました";
+"Offline" = "オフライン";

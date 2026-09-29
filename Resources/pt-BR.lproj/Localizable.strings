@@ -1,0 +1,86 @@
+/* Status */
+"Awake" = "Acordado";
+"Sleeps when closed" = "Dorme ao fechar";
+"Until %@ · lid can close" = "Até %@ · pode fechar a tampa";
+"Until you turn it off · lid can close" = "Até você desativar · pode fechar a tampa";
+"While %@ works · lid can close" = "Enquanto %@ trabalha · pode fechar a tampa";
+"Setting up…" = "Configurando…";
+"Stopped at %@ battery" = "Parou com a bateria em %@";
+"Stopped because your Mac got hot" = "Parou porque seu Mac esquentou";
+"Timer ended" = "O timer terminou";
+"Auto paused until agents finish" = "Automático pausado até os agentes terminarem";
+"Tap the moon to stay awake" = "Toque na lua para mantê-lo acordado";
+"%lldh" = "%lld h";
+"Stay awake for" = "Manter acordado por";
+"On" = "Ativado";
+"Off" = "Desativado";
+
+/* Helper setup */
+"One-time setup" = "Configuração única";
+"Staying awake with the lid closed needs a tiny helper. You’ll enter your password once." = "Para o Mac ficar acordado com a tampa fechada, é preciso uma pequena ferramenta auxiliar. Você só vai digitar sua senha uma vez.";
+"Set up" = "Configurar";
+"Update" = "Atualizar";
+"Reinstall" = "Reinstalar";
+"Helper isn’t responding" = "A ferramenta auxiliar não responde";
+"Helper update needed" = "A ferramenta auxiliar precisa ser atualizada";
+"Setup didn’t finish" = "A configuração não foi concluída";
+"Couldn’t switch" = "Falha ao mudar";
+"Check System Settings › General › Login Items, or reinstall the helper." = "Verifique Ajustes do Sistema › Geral › Itens de Início ou reinstale a ferramenta auxiliar.";
+"Setup was cancelled." = "A configuração foi cancelada.";
+"Melatonin needs your password once to install its helper." = "O Melatonin precisa da sua senha uma vez para instalar a ferramenta auxiliar.";
+"Melatonin needs your password to remove its helper." = "O Melatonin precisa da sua senha para remover a ferramenta auxiliar.";
+
+/* Settings */
+"Auto for AI agents" = "Automático com agentes de IA";
+"Stays awake while Claude Code or Codex works" = "Acordado enquanto Claude Code ou Codex trabalha";
+"%@ working" = "%@ trabalhando";
+"%@ idle" = "%@ em espera";
+"Stop at low battery" = "Parar com bateria baixa";
+"Stop if it gets hot" = "Parar se esquentar";
+"Show in notch" = "Mostrar no notch";
+"Open at login" = "Abrir no início da sessão";
+
+/* Menu */
+"About Melatonin" = "Sobre o Melatonin";
+"Uninstall helper…" = "Desinstalar ferramenta auxiliar…";
+"Quit Melatonin" = "Encerrar Melatonin";
+"Quit" = "Encerrar";
+"On power" = "Na tomada";
+"Running hot" = "Temperatura alta";
+
+/* Notch banners */
+"Sleep" = "Repouso";
+"Too hot" = "Muito quente";
+"Time’s up" = "Acabou o tempo";
+"Lid can close" = "Pode fechar";
+"Back to normal" = "Como sempre";
+"Sleep resumed" = "Volta o repouso";
+"Staying awake" = "Segue acordado";
+"Open the menu" = "Abra o menu";
+
+/* Stay online */
+"Stay online" = "Manter conexão";
+"Choose networks" = "Escolher redes";
+"Switch networks when the internet drops" = "Troca de rede se a internet cair";
+"Add networks to fall back to" = "Adicione redes de reserva";
+"Ready · watches while awake" = "Pronto · monitora com o Mac acordado";
+"Online" = "Conectado";
+"Online via %@" = "Conectado a %@";
+"Internet is down" = "Sem internet";
+"Joining %@…" = "Conectando a %@…";
+"Couldn’t reconnect" = "Não reconectou";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Se a internet cair enquanto o Melatonin mantém seu Mac acordado, ele se conecta à próxima rede desta lista.";
+"Priority" = "Prioridade";
+"Add network" = "Adicionar rede";
+"No other saved networks" = "Nenhuma outra rede salva";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "Adicione as redes que você quer usar como reserva: casa, trabalho, o ponto de acesso do seu celular.";
+"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "Arraste para mudar a ordem. Só é possível adicionar redes a que este Mac já se conectou; as senhas salvas serão usadas.";
+"Needs the helper. Set it up from the menu bar." = "Requer a ferramenta auxiliar. Configure-a na barra de menus.";
+"Hotspot" = "Ponto de acesso";
+"Joined" = "Conectada";
+"Mark as hotspot" = "Marcar como ponto de acesso";
+"Remove" = "Remover";
+"Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "Usa um iPhone? O macOS pode se conectar ao Acesso Pessoal dele automaticamente: ajustes de Wi-Fi › Solicitar conexão a pontos de acesso › Automático.";
+"Open Wi-Fi Settings" = "Abrir ajustes de Wi-Fi";
+"Switched network" = "Trocou de rede";
+"Offline" = "Sem conexão";

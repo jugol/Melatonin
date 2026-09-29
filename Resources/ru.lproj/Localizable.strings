@@ -1,0 +1,86 @@
+/* Status */
+"Awake" = "Не спит";
+"Sleeps when closed" = "Засыпает при закрытии";
+"Until %@ · lid can close" = "До %@ · крышку можно закрыть";
+"Until you turn it off · lid can close" = "Пока не выключите · крышку можно закрыть";
+"While %@ works · lid can close" = "Пока %@ работает · крышку можно закрыть";
+"Setting up…" = "Настройка…";
+"Stopped at %@ battery" = "Остановлено при заряде %@";
+"Stopped because your Mac got hot" = "Остановлено: Mac перегрелся";
+"Timer ended" = "Таймер завершен";
+"Auto paused until agents finish" = "Авторежим на паузе, пока агенты не закончат";
+"Tap the moon to stay awake" = "Нажмите на луну, чтобы Mac не засыпал";
+"%lldh" = "%lld ч";
+"Stay awake for" = "Не спать в течение";
+"On" = "Вкл.";
+"Off" = "Выкл.";
+
+/* Helper setup */
+"One-time setup" = "Разовая настройка";
+"Staying awake with the lid closed needs a tiny helper. You’ll enter your password once." = "Чтобы Mac не засыпал с закрытой крышкой, нужен маленький помощник. Пароль понадобится ввести лишь раз.";
+"Set up" = "Настроить";
+"Update" = "Обновить";
+"Reinstall" = "Переустановить";
+"Helper isn’t responding" = "Помощник не отвечает";
+"Helper update needed" = "Нужно обновить помощника";
+"Setup didn’t finish" = "Настройка не завершена";
+"Couldn’t switch" = "Не переключено";
+"Check System Settings › General › Login Items, or reinstall the helper." = "Проверьте «Системные настройки» › «Основные» › «Объекты входа» или переустановите помощника.";
+"Setup was cancelled." = "Настройка отменена.";
+"Melatonin needs your password once to install its helper." = "Melatonin запрашивает пароль один раз, чтобы установить помощника.";
+"Melatonin needs your password to remove its helper." = "Melatonin запрашивает пароль, чтобы удалить помощника.";
+
+/* Settings */
+"Auto for AI agents" = "Авторежим для ИИ-агентов";
+"Stays awake while Claude Code or Codex works" = "Mac не спит, пока работает Claude Code или Codex";
+"%@ working" = "%@ работает";
+"%@ idle" = "%@ в ожидании";
+"Stop at low battery" = "Останавливать при низком заряде";
+"Stop if it gets hot" = "Останавливать при перегреве";
+"Show in notch" = "Показывать в вырезе";
+"Open at login" = "Открывать при входе";
+
+/* Menu */
+"About Melatonin" = "О программе Melatonin";
+"Uninstall helper…" = "Удалить помощника…";
+"Quit Melatonin" = "Завершить Melatonin";
+"Quit" = "Завершить";
+"On power" = "Питание от сети";
+"Running hot" = "Сильный нагрев";
+
+/* Notch banners */
+"Sleep" = "Сон";
+"Too hot" = "Перегрев";
+"Time’s up" = "Время вышло";
+"Lid can close" = "Можно закрыть";
+"Back to normal" = "Обычный режим";
+"Sleep resumed" = "Сон включен";
+"Staying awake" = "Не засыпает";
+"Open the menu" = "Откройте меню";
+
+/* Stay online */
+"Stay online" = "Оставаться на связи";
+"Choose networks" = "Выбрать сети";
+"Switch networks when the internet drops" = "Переключать сеть, если пропал интернет";
+"Add networks to fall back to" = "Добавьте резервные сети";
+"Ready · watches while awake" = "Готово · следит, пока Mac не спит";
+"Online" = "Онлайн";
+"Online via %@" = "Онлайн через %@";
+"Internet is down" = "Нет интернета";
+"Joining %@…" = "Подключение к «%@»…";
+"Couldn’t reconnect" = "Не подключено";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Если интернет пропадет, пока Melatonin не дает Mac уснуть, приложение подключится к следующей сети в списке.";
+"Priority" = "Приоритет";
+"Add network" = "Добавить сеть";
+"No other saved networks" = "Других сохраненных сетей нет";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "Добавьте резервные сети: домашнюю, рабочую, точку доступа телефона.";
+"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "Перетащите, чтобы изменить порядок. Можно добавить только сети, к которым этот Mac уже подключался; используются сохраненные пароли.";
+"Needs the helper. Set it up from the menu bar." = "Нужен помощник. Настройте его в строке меню.";
+"Hotspot" = "Точка доступа";
+"Joined" = "Подключено";
+"Mark as hotspot" = "Отметить как точку доступа";
+"Remove" = "Удалить";
+"Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "Используете iPhone? macOS может сама подключаться к нему в режиме модема: «Настройки Wi-Fi» › «Спрашивать о подключении к точкам доступа» › «Автоматически».";
+"Open Wi-Fi Settings" = "Открыть настройки Wi-Fi";
+"Switched network" = "Сеть изменена";
+"Offline" = "Офлайн";

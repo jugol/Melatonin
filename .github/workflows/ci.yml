@@ -1,0 +1,16 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check translations
+        run: python3 Scripts/check-localizations.py
+      - name: Build universal app
+        run: UNIVERSAL=1 Scripts/build.sh

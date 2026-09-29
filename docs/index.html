@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Melatonin — keep your Mac awake with the lid closed</title>
+<meta name="description" content="A tiny macOS menu bar app that keeps your MacBook awake with the lid closed, on battery, while Claude Code, Codex and other AI agents finish their work. Free and open source.">
+<meta property="og:title" content="Melatonin — close the lid, keep the agents running">
+<meta property="og:description" content="Keep your MacBook awake with the lid closed while AI agents work. Lives in your notch. Free and open source.">
+<meta property="og:image" content="https://jugol.github.io/Melatonin/images/notch-expanded-on.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="images/icon.png">
+<style>
+  :root {
+    --night: #0b0d1f;
+    --night-2: #171b3d;
+    --ink: #f4efe6;
+    --muted: #a7a9c4;
+    --amber: #ffb547;
+    --ember: #ff7a2e;
+    --lamp: #fff5de;
+    --card: rgba(255, 255, 255, 0.04);
+    --line: rgba(255, 255, 255, 0.09);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--night);
+    color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  .sky {
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(255, 150, 60, 0.18), transparent 60%),
+      radial-gradient(900px 700px at 80% 20%, rgba(80, 90, 200, 0.22), transparent 60%),
+      linear-gradient(180deg, var(--night-2), var(--night) 70%);
+  }
+  .sky::after {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 18%, rgba(255,255,255,.8), transparent),
+      radial-gradient(1px 1px at 28% 62%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1.5px 1.5px at 72% 12%, rgba(255,255,255,.7), transparent),
+      radial-gradient(1px 1px at 86% 48%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1px 1px at 45% 30%, rgba(255,255,255,.4), transparent),
+      radial-gradient(1.5px 1.5px at 92% 78%, rgba(255,255,255,.6), transparent),
+      radial-gradient(1px 1px at 6% 84%, rgba(255,255,255,.45), transparent),
+      radial-gradient(1px 1px at 58% 88%, rgba(255,255,255,.35), transparent);
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* Live notch demo */
+  .notch-stage { position: relative; height: 190px; display: flex; justify-content: center; }
+  .notch {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 330px; height: 34px; background: #000;
+    border-radius: 0 0 16px 16px;
+    display: flex; flex-direction: column; overflow: hidden; cursor: default;
+    transition: width .45s cubic-bezier(.3,1.35,.5,1), height .45s cubic-bezier(.3,1.35,.5,1), border-radius .45s;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+  }
+  .notch:hover, .notch.open {
+    width: min(470px, calc(100vw - 32px)); height: 178px; border-radius: 0 0 30px 30px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+  }
+  .notch-row { height: 34px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font-size: 13px; font-weight: 600; }
+  .orb {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: radial-gradient(circle at 38% 34%, var(--lamp), var(--amber) 45%, var(--ember));
+    box-shadow: 0 0 10px 2px rgba(255, 170, 70, .8);
+    animation: pulse 1.6s ease-in-out infinite alternate;
+  }
+  @keyframes pulse { from { box-shadow: 0 0 4px 1px rgba(255,170,70,.35); } to { box-shadow: 0 0 14px 4px rgba(255,170,70,.95); } }
+  .count { color: var(--amber); font-variant-numeric: tabular-nums; font-family: ui-rounded, -apple-system, sans-serif; }
+  .notch-body { display: flex; gap: 18px; align-items: center; padding: 14px 26px 0; opacity: 0; transition: opacity .2s; }
+  .notch:hover .notch-body, .notch.open .notch-body { opacity: 1; transition-delay: .15s; }
+  .big-orb {
+    flex: none; width: 60px; height: 60px; border-radius: 50%;
+    background: radial-gradient(circle at 38% 32%, var(--lamp), #ffc766 30%, var(--ember) 75%, #dc5a24);
+    box-shadow: 0 0 26px rgba(255, 122, 46, .6);
+  }
+  .notch-title { font: 600 17px/1.2 ui-rounded, -apple-system, sans-serif; }
+  .notch-sub { font-size: 12px; color: rgba(255,255,255,.55); margin: 2px 0 9px; }
+  .chips { display: flex; gap: 5px; }
+  .chip { font: 600 12px/24px ui-rounded, -apple-system, sans-serif; padding: 0 11px; border-radius: 12px; background: rgba(255,255,255,.08); color: rgba(255,255,255,.6); }
+  .chip.on { background: linear-gradient(var(--amber), var(--ember)); color: #3f2105; }
+  .hint { position: absolute; top: 46px; font-size: 12px; color: var(--muted); transition: opacity .3s; }
+  .notch-stage:hover .hint { opacity: 0; }
+
+  header.hero { text-align: center; padding: 10px 0 70px; }
+  .icon { width: 116px; height: 116px; filter: drop-shadow(0 14px 30px rgba(255, 140, 50, .25)); }
+  h1 { font: 700 clamp(38px, 7vw, 64px)/1.05 ui-rounded, -apple-system, sans-serif; letter-spacing: -0.02em; margin: 18px 0 14px; }
+  h1 .glow { color: var(--amber); text-shadow: 0 0 30px rgba(255, 160, 60, .45); }
+  .lede { font-size: clamp(17px, 2.3vw, 20px); color: var(--muted); max-width: 640px; margin: 0 auto 30px; }
+  .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px; text-decoration: none;
+    font-weight: 600; font-size: 16px; padding: 13px 22px; border-radius: 14px;
+    transition: transform .15s, box-shadow .2s, background .2s;
+  }
+  .btn:active { transform: scale(.97); }
+  .btn.primary { background: linear-gradient(180deg, var(--amber), var(--ember)); color: #3a1d03; box-shadow: 0 10px 30px rgba(255, 122, 46, .35); }
+  .btn.primary:hover { box-shadow: 0 12px 38px rgba(255, 122, 46, .55); }
+  .btn.ghost { border: 1px solid var(--line); background: rgba(255,255,255,.04); }
+  .btn.ghost:hover { background: rgba(255,255,255,.08); }
+  .meta { margin-top: 16px; font-size: 13px; color: var(--muted); }
+  .meta code { background: rgba(255,255,255,.07); padding: 2px 7px; border-radius: 6px; font-size: 12.5px; }
+
+  section { padding: 56px 0; }
+  h2 { font: 700 clamp(26px, 4vw, 34px)/1.2 ui-rounded, -apple-system, sans-serif; margin: 0 0 12px; text-align: center; }
+  .sub { text-align: center; color: var(--muted); max-width: 620px; margin: 0 auto 36px; }
+
+  .shots { display: flex; gap: 22px; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+  .shots img { border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.45); max-width: 100%; height: auto; }
+  .wide-shot { display: block; margin: 0 auto 28px; width: 760px; max-width: 100%; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.45); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+  .card h3 { margin: 12px 0 6px; font-size: 17px; }
+  .card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .glyph { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; font-size: 19px; }
+
+  .why { max-width: 720px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 28px; }
+  .why p { margin: 0 0 12px; color: var(--muted); }
+  .why p:last-child { margin: 0; }
+  .why strong { color: var(--ink); }
+
+  .steps { max-width: 720px; margin: 0 auto; counter-reset: step; }
+  .step { position: relative; padding: 0 0 22px 52px; }
+  .step::before {
+    counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%;
+    display: grid; place-items: center; font-weight: 700;
+    background: linear-gradient(var(--amber), var(--ember)); color: #3a1d03;
+  }
+  .step h3 { margin: 4px 0 4px; font-size: 17px; }
+  .step p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  pre { background: rgba(0,0,0,.35); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; overflow-x: auto; font-size: 13.5px; margin: 10px 0 0; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 40px 0 60px; border-top: 1px solid var(--line); margin-top: 30px; }
+  footer a { color: var(--ink); }
+
+  @media (max-width: 560px) {
+    .notch { width: 250px; }
+    .chip { padding: 0 8px; }
+    .notch-body { padding: 14px 18px 0; gap: 12px; }
+    .big-orb { width: 48px; height: 48px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .orb { animation: none; }
+    .notch { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="sky"></div>
+
+<div class="notch-stage" aria-hidden="true">
+  <div class="notch" id="notch">
+    <div class="notch-row"><span class="orb"></span><span class="count" id="count">1:59:12</span></div>
+    <div class="notch-body">
+      <div class="big-orb"></div>
+      <div>
+        <div class="notch-title">Awake</div>
+        <div class="notch-sub">Until you turn it off · lid can close</div>
+        <div class="chips"><span class="chip">1h</span><span class="chip">2h</span><span class="chip">4h</span><span class="chip">8h</span><span class="chip on">∞</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="hint">↑ hover the notch</div>
+</div>
+
+<header class="hero wrap">
+  <img class="icon" src="images/icon.png" alt="Melatonin app icon" width="116" height="116">
+  <h1>Close the lid.<br><span class="glow">Keep the agents running.</span></h1>
+  <p class="lede">Melatonin keeps your MacBook awake with the lid closed — on battery, no external display — while Claude Code, Codex and friends finish their work.</p>
+  <div class="cta">
+    <a class="btn primary" href="https://github.com/jugol/Melatonin/releases/latest/download/Melatonin.dmg">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
+      Download for macOS
+    </a>
+    <a class="btn ghost" href="https://github.com/jugol/Melatonin">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      View on GitHub
+    </a>
+  </div>
+  <p class="meta">Free and open source (MIT) · macOS 14+ · Apple silicon and Intel · or <code>brew install --cask jugol/tap/melatonin</code></p>
+</header>
+
+<section class="wrap">
+  <div class="why">
+    <p><strong>Why another keep-awake app?</strong> Because the others stop working the moment you close the lid.</p>
+    <p><code>caffeinate</code>, KeepingYouAwake and friends ask macOS nicely not to sleep. macOS ignores that request when the lid closes. The only switch that really holds is <code>pmset disablesleep</code>, and it needs root.</p>
+    <p>Melatonin wraps it in a tiny, auditable helper with safety rails, and puts the switch where you'll actually see it: <strong>in your notch</strong>.</p>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>Lives in your notch</h2>
+  <p class="sub">A warm lamp glows beside the camera while your Mac is staying up, with the time left. Hover to expand. No notch? It hangs from the menu bar instead.</p>
+  <img class="wide-shot" src="images/notch-expanded-on.png" alt="Melatonin expanded in the notch" width="760" height="250" loading="lazy">
+  <div class="shots">
+    <img src="images/menu-on-light.png" width="300" alt="Menu while awake" loading="lazy">
+    <img src="images/menu-off-dark.png" width="300" alt="Menu while sleep is allowed" loading="lazy">
+    <img src="images/connection-light.png" width="380" alt="Stay online settings" loading="lazy">
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>Everything a long run needs</h2>
+  <p class="sub">Start the task, close the lid, walk away.</p>
+  <div class="grid">
+    <div class="card"><div class="glyph" style="background:rgba(255,181,71,.15)">🌙</div><h3>One-tap switch</h3><p>Keep awake for 1, 2, 4 or 8 hours, or until you turn it off. From the notch or the menu bar.</p></div>
+    <div class="card"><div class="glyph" style="background:rgba(170,120,255,.15)">✨</div><h3>Auto for AI agents</h3><p>Stays awake only while Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI and others are actually working, judged by CPU activity.</p></div>
+    <div class="card"><div class="glyph" style="background:rgba(90,150,255,.15)">📶</div><h3>Stay online</h3><p>Pick backup networks from your saved Wi-Fi and your phone's hotspot. If the internet drops, Melatonin joins the next one.</p></div>
+    <div class="card"><div class="glyph" style="background:rgba(80,200,120,.15)">🔋</div><h3>Battery floor</h3><p>Lets your Mac sleep again at the battery level you choose, so a forgotten run never drains it flat.</p></div>
+    <div class="card"><div class="glyph" style="background:rgba(255,120,60,.15)">🌡️</div><h3>Heat guard</h3><p>Backs off if your Mac gets hot. A running laptop in a closed bag is how batteries get cooked.</p></div>
+    <div class="card"><div class="glyph" style="background:rgba(255,255,255,.08)">🛡️</div><h3>Fail-safe by design</h3><p>If the app quits, crashes or is force-killed, the helper restores normal sleep immediately, and after reboots too.</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="install">
+  <h2>Install</h2>
+  <p class="sub">Available in English, 한국어, 简体中文, 日本語, Español, Français, Deutsch, Português, Русский, العربية, हिन्दी and Bahasa Indonesia.</p>
+  <div class="steps">
+    <div class="step"><h3>Download and drag to Applications</h3><p><a href="https://github.com/jugol/Melatonin/releases/latest/download/Melatonin.dmg">Melatonin.dmg</a>, or with Homebrew:</p><pre><code>brew install --cask jugol/tap/melatonin</code></pre></div>
+    <div class="step"><h3>Open it the first time</h3><p>Early builds aren't notarized by Apple yet, so macOS will stop the first launch. Open <b>System Settings › Privacy &amp; Security</b> and click <b>Open Anyway</b>, or run:</p><pre><code>xattr -dr com.apple.quarantine /Applications/Melatonin.app</code></pre></div>
+    <div class="step"><h3>Tap the moon</h3><p>The first time, macOS asks for your password once to install the helper. After that, it's one tap.</p></div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <p>Made for people who let agents work overnight. <a href="https://github.com/jugol/Melatonin">Source on GitHub</a> · <a href="https://github.com/jugol/Melatonin/releases">Releases</a> · <a href="https://github.com/jugol/Melatonin/blob/main/README.ko.md">한국어</a></p>
+  <p>MIT License</p>
+</footer>
+
+<script>
+  // Tick the demo countdown and let touch devices open the notch with a tap.
+  (function () {
+    var left = 2 * 3600 - 48;
+    var el = document.getElementById('count');
+    setInterval(function () {
+      left = left > 0 ? left - 1 : 2 * 3600;
+      var h = Math.floor(left / 3600), m = Math.floor(left % 3600 / 60), s = left % 60;
+      el.textContent = h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }, 1000);
+    var notch = document.getElementById('notch');
+    notch.addEventListener('click', function () { notch.classList.toggle('open'); });
+  })();
+</script>
+</body>
+</html>

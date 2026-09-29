@@ -1,0 +1,86 @@
+/* Status */
+"Awake" = "깨어 있어요";
+"Sleeps when closed" = "덮으면 잠들어요";
+"Until %@ · lid can close" = "%@까지 · 덮어도 계속 작동";
+"Until you turn it off · lid can close" = "끌 때까지 · 덮어도 계속 작동";
+"While %@ works · lid can close" = "%@ 작업 중 · 덮어도 계속 작동";
+"Setting up…" = "설정하는 중…";
+"Stopped at %@ battery" = "배터리 %@에서 멈췄어요";
+"Stopped because your Mac got hot" = "맥이 뜨거워져서 멈췄어요";
+"Timer ended" = "타이머가 끝났어요";
+"Auto paused until agents finish" = "에이전트 작업이 끝날 때까지 자동 모드를 쉬어요";
+"Tap the moon to stay awake" = "달을 누르면 깨어 있어요";
+"%lldh" = "%lld시간";
+"Stay awake for" = "깨어 있을 시간";
+"On" = "켬";
+"Off" = "끔";
+
+/* Helper setup */
+"One-time setup" = "처음 한 번만 설정";
+"Staying awake with the lid closed needs a tiny helper. You’ll enter your password once." = "뚜껑을 닫아도 깨어 있으려면 작은 헬퍼가 필요해요. 비밀번호는 한 번만 입력하면 돼요.";
+"Set up" = "설정하기";
+"Update" = "업데이트";
+"Reinstall" = "다시 설치";
+"Helper isn’t responding" = "헬퍼가 응답하지 않아요";
+"Helper update needed" = "헬퍼 업데이트가 필요해요";
+"Setup didn’t finish" = "설정을 마치지 못했어요";
+"Couldn’t switch" = "전환하지 못했어요";
+"Check System Settings › General › Login Items, or reinstall the helper." = "시스템 설정 › 일반 › 로그인 항목을 확인하거나 헬퍼를 다시 설치하세요.";
+"Setup was cancelled." = "설정을 취소했어요.";
+"Melatonin needs your password once to install its helper." = "Melatonin 헬퍼를 설치하려면 비밀번호가 한 번 필요해요.";
+"Melatonin needs your password to remove its helper." = "Melatonin 헬퍼를 제거하려면 비밀번호가 필요해요.";
+
+/* Settings */
+"Auto for AI agents" = "AI 에이전트 자동 감지";
+"Stays awake while Claude Code or Codex works" = "Claude Code·Codex가 일하는 동안 깨어 있어요";
+"%@ working" = "%@ 작업 중";
+"%@ idle" = "%@ 대기 중";
+"Stop at low battery" = "배터리 부족 시 멈춤";
+"Stop if it gets hot" = "뜨거워지면 멈춤";
+"Show in notch" = "노치에 표시";
+"Open at login" = "로그인 시 열기";
+
+/* Menu */
+"About Melatonin" = "Melatonin 정보";
+"Uninstall helper…" = "헬퍼 제거…";
+"Quit Melatonin" = "Melatonin 종료";
+"Quit" = "종료";
+"On power" = "전원 연결됨";
+"Running hot" = "발열 높음";
+
+/* Notch banners */
+"Sleep" = "잠자기";
+"Too hot" = "너무 뜨거움";
+"Time’s up" = "시간 종료";
+"Lid can close" = "덮어도 OK";
+"Back to normal" = "평소대로";
+"Sleep resumed" = "잠자기 복귀";
+"Staying awake" = "깨어 있음";
+"Open the menu" = "메뉴 확인";
+
+/* Stay online */
+"Stay online" = "연결 유지";
+"Choose networks" = "네트워크 선택";
+"Switch networks when the internet drops" = "인터넷이 끊기면 다른 네트워크로 전환";
+"Add networks to fall back to" = "전환할 네트워크를 추가하세요";
+"Ready · watches while awake" = "대기 중 · 깨어 있을 때 감시";
+"Online" = "온라인";
+"Online via %@" = "%@ 연결됨";
+"Internet is down" = "인터넷 끊김";
+"Joining %@…" = "%@ 연결 중…";
+"Couldn’t reconnect" = "재연결 실패";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Melatonin이 맥을 깨워두는 동안 인터넷이 끊기면, 이 목록의 다음 네트워크로 연결해요.";
+"Priority" = "우선순위";
+"Add network" = "네트워크 추가";
+"No other saved networks" = "추가할 저장된 네트워크가 없어요";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "백업으로 쓸 네트워크를 추가하세요. 집, 사무실, 휴대폰 핫스팟 등.";
+"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "드래그해서 순서를 바꿔요. 이 맥이 연결한 적 있는 네트워크만 추가할 수 있고, 저장된 비밀번호를 그대로 써요.";
+"Needs the helper. Set it up from the menu bar." = "헬퍼가 필요해요. 메뉴바에서 설정하세요.";
+"Hotspot" = "핫스팟";
+"Joined" = "연결함";
+"Mark as hotspot" = "핫스팟으로 표시";
+"Remove" = "삭제";
+"Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "iPhone을 쓰나요? Wi-Fi 설정 › 핫스팟 연결 요청 › 자동으로 바꾸면 macOS가 알아서 연결해요.";
+"Open Wi-Fi Settings" = "Wi-Fi 설정 열기";
+"Switched network" = "네트워크 전환";
+"Offline" = "오프라인";

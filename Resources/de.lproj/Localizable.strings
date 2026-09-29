@@ -1,0 +1,86 @@
+/* Status */
+"Awake" = "Wach";
+"Sleeps when closed" = "Schläft beim Zuklappen";
+"Until %@ · lid can close" = "Bis %@ · auch zugeklappt";
+"Until you turn it off · lid can close" = "Bis du es ausschaltest · auch zugeklappt";
+"While %@ works · lid can close" = "Solange %@ arbeitet · auch zugeklappt";
+"Setting up…" = "Wird eingerichtet …";
+"Stopped at %@ battery" = "Bei %@ Batterie gestoppt";
+"Stopped because your Mac got hot" = "Gestoppt, weil dein Mac heiß wurde";
+"Timer ended" = "Timer abgelaufen";
+"Auto paused until agents finish" = "Automatik pausiert, bis die Agenten fertig sind";
+"Tap the moon to stay awake" = "Klicke auf den Mond, um wach zu bleiben";
+"%lldh" = "%lld Std.";
+"Stay awake for" = "Wach bleiben für";
+"On" = "Ein";
+"Off" = "Aus";
+
+/* Helper setup */
+"One-time setup" = "Einmalige Einrichtung";
+"Staying awake with the lid closed needs a tiny helper. You’ll enter your password once." = "Um zugeklappt wach zu bleiben, braucht Melatonin ein kleines Hilfsprogramm. Dein Passwort gibst du nur einmal ein.";
+"Set up" = "Einrichten";
+"Update" = "Aktualisieren";
+"Reinstall" = "Neu installieren";
+"Helper isn’t responding" = "Hilfsprogramm reagiert nicht";
+"Helper update needed" = "Hilfsprogramm-Update erforderlich";
+"Setup didn’t finish" = "Einrichtung nicht abgeschlossen";
+"Couldn’t switch" = "Fehler";
+"Check System Settings › General › Login Items, or reinstall the helper." = "Prüfe Systemeinstellungen › Allgemein › Anmeldeobjekte oder installiere das Hilfsprogramm neu.";
+"Setup was cancelled." = "Einrichtung abgebrochen.";
+"Melatonin needs your password once to install its helper." = "Melatonin benötigt einmalig dein Passwort, um sein Hilfsprogramm zu installieren.";
+"Melatonin needs your password to remove its helper." = "Melatonin benötigt dein Passwort, um sein Hilfsprogramm zu entfernen.";
+
+/* Settings */
+"Auto for AI agents" = "Automatisch für KI-Agenten";
+"Stays awake while Claude Code or Codex works" = "Bleibt wach für Claude Code und Codex";
+"%@ working" = "%@ arbeitet";
+"%@ idle" = "%@ wartet";
+"Stop at low battery" = "Bei schwacher Batterie stoppen";
+"Stop if it gets hot" = "Bei Hitze stoppen";
+"Show in notch" = "In der Notch anzeigen";
+"Open at login" = "Bei der Anmeldung öffnen";
+
+/* Menu */
+"About Melatonin" = "Über Melatonin";
+"Uninstall helper…" = "Hilfsprogramm deinstallieren …";
+"Quit Melatonin" = "Melatonin beenden";
+"Quit" = "Beenden";
+"On power" = "Am Netzteil";
+"Running hot" = "Hohe Temperatur";
+
+/* Notch banners */
+"Sleep" = "Ruhezustand";
+"Too hot" = "Zu heiß";
+"Time’s up" = "Zeit ist um";
+"Lid can close" = "Zuklappen OK";
+"Back to normal" = "Wieder normal";
+"Sleep resumed" = "Schläft wieder";
+"Staying awake" = "Bleibt wach";
+"Open the menu" = "Öffne das Menü";
+
+/* Stay online */
+"Stay online" = "Online bleiben";
+"Choose networks" = "Netzwerke auswählen";
+"Switch networks when the internet drops" = "Netzwechsel bei Internetausfall";
+"Add networks to fall back to" = "Füge Ersatznetzwerke hinzu";
+"Ready · watches while awake" = "Bereit · überwacht, solange wach";
+"Online" = "Online";
+"Online via %@" = "Online über %@";
+"Internet is down" = "Kein Internet";
+"Joining %@…" = "Mit %@ verbinden …";
+"Couldn’t reconnect" = "Keine Verbindung";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Fällt das Internet aus, während Melatonin deinen Mac wach hält, verbindet es sich mit dem nächsten Netzwerk dieser Liste.";
+"Priority" = "Priorität";
+"Add network" = "Netzwerk hinzufügen";
+"No other saved networks" = "Keine weiteren gespeicherten Netzwerke";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "Füge Netzwerke hinzu, die als Reserve dienen: Zuhause, Büro, der Hotspot deines Handys.";
+"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "Ziehe, um die Reihenfolge zu ändern. Nur Netzwerke, mit denen dieser Mac schon verbunden war, können hinzugefügt werden; ihre gespeicherten Passwörter werden verwendet.";
+"Needs the helper. Set it up from the menu bar." = "Benötigt das Hilfsprogramm. Richte es über die Menüleiste ein.";
+"Hotspot" = "Hotspot";
+"Joined" = "Verbunden";
+"Mark as hotspot" = "Als Hotspot markieren";
+"Remove" = "Entfernen";
+"Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "Nutzt du ein iPhone? macOS kann sich automatisch mit dessen Persönlichem Hotspot verbinden: WLAN-Einstellungen › Zugriff auf Hotspots anfordern › Automatisch.";
+"Open Wi-Fi Settings" = "WLAN-Einstellungen öffnen";
+"Switched network" = "Netz gewechselt";
+"Offline" = "Offline";

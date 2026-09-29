@@ -1,0 +1,87 @@
+/* Source strings. Keys are the English text; translations live in the other .lproj folders. */
+/* Status */
+"Awake" = "Awake";
+"Sleeps when closed" = "Sleeps when closed";
+"Until %@ · lid can close" = "Until %@ · lid can close";
+"Until you turn it off · lid can close" = "Until you turn it off · lid can close";
+"While %@ works · lid can close" = "While %@ works · lid can close";
+"Setting up…" = "Setting up…";
+"Stopped at %@ battery" = "Stopped at %@ battery";
+"Stopped because your Mac got hot" = "Stopped because your Mac got hot";
+"Timer ended" = "Timer ended";
+"Auto paused until agents finish" = "Auto paused until agents finish";
+"Tap the moon to stay awake" = "Tap the moon to stay awake";
+"%lldh" = "%lldh";
+"Stay awake for" = "Stay awake for";
+"On" = "On";
+"Off" = "Off";
+
+/* Helper setup */
+"One-time setup" = "One-time setup";
+"Staying awake with the lid closed needs a tiny helper. You’ll enter your password once." = "Staying awake with the lid closed needs a tiny helper. You’ll enter your password once.";
+"Set up" = "Set up";
+"Update" = "Update";
+"Reinstall" = "Reinstall";
+"Helper isn’t responding" = "Helper isn’t responding";
+"Helper update needed" = "Helper update needed";
+"Setup didn’t finish" = "Setup didn’t finish";
+"Couldn’t switch" = "Couldn’t switch";
+"Check System Settings › General › Login Items, or reinstall the helper." = "Check System Settings › General › Login Items, or reinstall the helper.";
+"Setup was cancelled." = "Setup was cancelled.";
+"Melatonin needs your password once to install its helper." = "Melatonin needs your password once to install its helper.";
+"Melatonin needs your password to remove its helper." = "Melatonin needs your password to remove its helper.";
+
+/* Settings */
+"Auto for AI agents" = "Auto for AI agents";
+"Stays awake while Claude Code or Codex works" = "Stays awake while Claude Code or Codex works";
+"%@ working" = "%@ working";
+"%@ idle" = "%@ idle";
+"Stop at low battery" = "Stop at low battery";
+"Stop if it gets hot" = "Stop if it gets hot";
+"Show in notch" = "Show in notch";
+"Open at login" = "Open at login";
+
+/* Menu */
+"About Melatonin" = "About Melatonin";
+"Uninstall helper…" = "Uninstall helper…";
+"Quit Melatonin" = "Quit Melatonin";
+"Quit" = "Quit";
+"On power" = "On power";
+"Running hot" = "Running hot";
+
+/* Notch banners */
+"Sleep" = "Sleep";
+"Too hot" = "Too hot";
+"Time’s up" = "Time’s up";
+"Lid can close" = "Lid can close";
+"Back to normal" = "Back to normal";
+"Sleep resumed" = "Sleep resumed";
+"Staying awake" = "Staying awake";
+"Open the menu" = "Open the menu";
+
+/* Stay online */
+"Stay online" = "Stay online";
+"Choose networks" = "Choose networks";
+"Switch networks when the internet drops" = "Switch networks when the internet drops";
+"Add networks to fall back to" = "Add networks to fall back to";
+"Ready · watches while awake" = "Ready · watches while awake";
+"Online" = "Online";
+"Online via %@" = "Online via %@";
+"Internet is down" = "Internet is down";
+"Joining %@…" = "Joining %@…";
+"Couldn’t reconnect" = "Couldn’t reconnect";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list.";
+"Priority" = "Priority";
+"Add network" = "Add network";
+"No other saved networks" = "No other saved networks";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "Add the networks you want as backups: home, office, your phone’s hotspot.";
+"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used.";
+"Needs the helper. Set it up from the menu bar." = "Needs the helper. Set it up from the menu bar.";
+"Hotspot" = "Hotspot";
+"Joined" = "Joined";
+"Mark as hotspot" = "Mark as hotspot";
+"Remove" = "Remove";
+"Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic.";
+"Open Wi-Fi Settings" = "Open Wi-Fi Settings";
+"Switched network" = "Switched network";
+"Offline" = "Offline";

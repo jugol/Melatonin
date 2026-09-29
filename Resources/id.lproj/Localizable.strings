@@ -1,0 +1,86 @@
+/* Status */
+"Awake" = "Terjaga";
+"Sleeps when closed" = "Tidur saat ditutup";
+"Until %@ · lid can close" = "Hingga %@ · Mac boleh ditutup";
+"Until you turn it off · lid can close" = "Sampai Anda mematikannya · Mac boleh ditutup";
+"While %@ works · lid can close" = "Selama %@ bekerja · Mac boleh ditutup";
+"Setting up…" = "Menyiapkan…";
+"Stopped at %@ battery" = "Berhenti saat baterai %@";
+"Stopped because your Mac got hot" = "Berhenti karena Mac terlalu panas";
+"Timer ended" = "Timer selesai";
+"Auto paused until agents finish" = "Otomatis dijeda sampai agen selesai";
+"Tap the moon to stay awake" = "Klik bulan agar tetap terjaga";
+"%lldh" = "%lld jam";
+"Stay awake for" = "Tetap terjaga selama";
+"On" = "Nyala";
+"Off" = "Mati";
+
+/* Helper setup */
+"One-time setup" = "Penyiapan satu kali";
+"Staying awake with the lid closed needs a tiny helper. You’ll enter your password once." = "Agar tetap terjaga saat ditutup, diperlukan alat bantu kecil. Anda cukup memasukkan kata sandi sekali.";
+"Set up" = "Atur";
+"Update" = "Perbarui";
+"Reinstall" = "Instal Ulang";
+"Helper isn’t responding" = "Alat bantu tidak merespons";
+"Helper update needed" = "Alat bantu perlu diperbarui";
+"Setup didn’t finish" = "Penyiapan tidak selesai";
+"Couldn’t switch" = "Gagal beralih";
+"Check System Settings › General › Login Items, or reinstall the helper." = "Periksa Pengaturan Sistem › Umum › Item Masuk, atau instal ulang alat bantu.";
+"Setup was cancelled." = "Penyiapan dibatalkan.";
+"Melatonin needs your password once to install its helper." = "Melatonin memerlukan kata sandi Anda sekali untuk menginstal alat bantunya.";
+"Melatonin needs your password to remove its helper." = "Melatonin memerlukan kata sandi Anda untuk menghapus alat bantunya.";
+
+/* Settings */
+"Auto for AI agents" = "Otomatis untuk agen AI";
+"Stays awake while Claude Code or Codex works" = "Tetap terjaga selama Claude Code atau Codex bekerja";
+"%@ working" = "%@ sedang bekerja";
+"%@ idle" = "%@ siaga";
+"Stop at low battery" = "Berhenti saat baterai lemah";
+"Stop if it gets hot" = "Berhenti jika terlalu panas";
+"Show in notch" = "Tampilkan di notch";
+"Open at login" = "Buka saat masuk";
+
+/* Menu */
+"About Melatonin" = "Mengenai Melatonin";
+"Uninstall helper…" = "Copot alat bantu…";
+"Quit Melatonin" = "Tutup Melatonin";
+"Quit" = "Tutup";
+"On power" = "Terhubung ke daya";
+"Running hot" = "Suhu tinggi";
+
+/* Notch banners */
+"Sleep" = "Tidur";
+"Too hot" = "Terlalu panas";
+"Time’s up" = "Waktu habis";
+"Lid can close" = "Boleh ditutup";
+"Back to normal" = "Kembali normal";
+"Sleep resumed" = "Tidur kembali";
+"Staying awake" = "Tetap terjaga";
+"Open the menu" = "Buka menu";
+
+/* Stay online */
+"Stay online" = "Tetap online";
+"Choose networks" = "Pilih jaringan";
+"Switch networks when the internet drops" = "Ganti jaringan saat internet terputus";
+"Add networks to fall back to" = "Tambahkan jaringan cadangan";
+"Ready · watches while awake" = "Siap · memantau saat terjaga";
+"Online" = "Online";
+"Online via %@" = "Online melalui %@";
+"Internet is down" = "Internet terputus";
+"Joining %@…" = "Bergabung dengan %@…";
+"Couldn’t reconnect" = "Koneksi gagal";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Jika internet terputus saat Melatonin membuat Mac Anda tetap terjaga, Melatonin akan bergabung dengan jaringan berikutnya dalam daftar ini.";
+"Priority" = "Prioritas";
+"Add network" = "Tambahkan jaringan";
+"No other saved networks" = "Tidak ada jaringan tersimpan lainnya";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "Tambahkan jaringan yang ingin dijadikan cadangan: rumah, kantor, hotspot ponsel Anda.";
+"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "Seret untuk mengubah urutan. Hanya jaringan yang pernah tersambung ke Mac ini yang dapat ditambahkan; kata sandi yang tersimpan akan digunakan.";
+"Needs the helper. Set it up from the menu bar." = "Memerlukan alat bantu. Atur dari bar menu.";
+"Hotspot" = "Hotspot";
+"Joined" = "Tersambung";
+"Mark as hotspot" = "Tandai sebagai hotspot";
+"Remove" = "Hapus";
+"Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "Menggunakan iPhone? macOS dapat bergabung dengan Hotspot Pribadi iPhone secara otomatis: pengaturan Wi-Fi › Minta untuk bergabung dengan hotspot › Otomatis.";
+"Open Wi-Fi Settings" = "Buka Pengaturan Wi-Fi";
+"Switched network" = "Ganti jaringan";
+"Offline" = "Offline";

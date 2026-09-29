@@ -1,0 +1,86 @@
+/* Status */
+"Awake" = "保持唤醒";
+"Sleeps when closed" = "合盖后会睡眠";
+"Until %@ · lid can close" = "持续到 %@ · 合盖也能运行";
+"Until you turn it off · lid can close" = "直到你关闭 · 合盖也能运行";
+"While %@ works · lid can close" = "%@ 工作期间 · 合盖也能运行";
+"Setting up…" = "正在设置…";
+"Stopped at %@ battery" = "电量 %@ 时已停止";
+"Stopped because your Mac got hot" = "Mac 温度过高，已停止";
+"Timer ended" = "计时已结束";
+"Auto paused until agents finish" = "智能体完成前，自动模式暂停";
+"Tap the moon to stay awake" = "点按月亮即可保持唤醒";
+"%lldh" = "%lld小时";
+"Stay awake for" = "保持唤醒时长";
+"On" = "开";
+"Off" = "关";
+
+/* Helper setup */
+"One-time setup" = "只需设置一次";
+"Staying awake with the lid closed needs a tiny helper. You’ll enter your password once." = "合盖后保持唤醒需要一个小小的辅助程序。你只需输入一次密码。";
+"Set up" = "设置";
+"Update" = "更新";
+"Reinstall" = "重新安装";
+"Helper isn’t responding" = "辅助程序未响应";
+"Helper update needed" = "辅助程序需要更新";
+"Setup didn’t finish" = "设置未完成";
+"Couldn’t switch" = "无法切换";
+"Check System Settings › General › Login Items, or reinstall the helper." = "请检查“系统设置 › 通用 › 登录项”，或重新安装辅助程序。";
+"Setup was cancelled." = "已取消设置。";
+"Melatonin needs your password once to install its helper." = "Melatonin 需要你输入一次密码来安装辅助程序。";
+"Melatonin needs your password to remove its helper." = "Melatonin 需要你的密码来移除辅助程序。";
+
+/* Settings */
+"Auto for AI agents" = "AI 智能体自动模式";
+"Stays awake while Claude Code or Codex works" = "Claude Code 或 Codex 工作时保持唤醒";
+"%@ working" = "%@ 工作中";
+"%@ idle" = "%@ 空闲";
+"Stop at low battery" = "电量低时停止";
+"Stop if it gets hot" = "过热时停止";
+"Show in notch" = "在刘海中显示";
+"Open at login" = "登录时打开";
+
+/* Menu */
+"About Melatonin" = "关于 Melatonin";
+"Uninstall helper…" = "卸载辅助程序…";
+"Quit Melatonin" = "退出 Melatonin";
+"Quit" = "退出";
+"On power" = "已接通电源";
+"Running hot" = "温度较高";
+
+/* Notch banners */
+"Sleep" = "睡眠";
+"Too hot" = "温度过高";
+"Time’s up" = "时间到";
+"Lid can close" = "可以合盖";
+"Back to normal" = "恢复正常";
+"Sleep resumed" = "已恢复睡眠";
+"Staying awake" = "保持唤醒";
+"Open the menu" = "查看菜单";
+
+/* Stay online */
+"Stay online" = "保持在线";
+"Choose networks" = "选择网络";
+"Switch networks when the internet drops" = "断网时切换到其他网络";
+"Add networks to fall back to" = "添加备用网络";
+"Ready · watches while awake" = "就绪 · 唤醒时监测";
+"Online" = "在线";
+"Online via %@" = "通过 %@ 在线";
+"Internet is down" = "互联网已断开";
+"Joining %@…" = "正在加入 %@…";
+"Couldn’t reconnect" = "无法重新连接";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Melatonin 保持 Mac 唤醒期间如果断网，会加入此列表中的下一个网络。";
+"Priority" = "优先级";
+"Add network" = "添加网络";
+"No other saved networks" = "没有其他已存储的网络";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "添加想用作备用的网络：家里、办公室、手机热点。";
+"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "拖动以调整顺序。只能添加这台 Mac 加入过的网络，并使用已存储的密码。";
+"Needs the helper. Set it up from the menu bar." = "需要辅助程序。请从菜单栏进行设置。";
+"Hotspot" = "热点";
+"Joined" = "已加入";
+"Mark as hotspot" = "标记为热点";
+"Remove" = "移除";
+"Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "在用 iPhone？macOS 可以自动加入它的个人热点：Wi-Fi 设置 › 询问是否加入热点 › 自动。";
+"Open Wi-Fi Settings" = "打开 Wi-Fi 设置";
+"Switched network" = "已切换网络";
+"Offline" = "已离线";
