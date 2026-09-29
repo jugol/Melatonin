@@ -102,6 +102,15 @@ struct MenuPanel: View {
                     .background(Capsule().fill(Theme.amber.opacity(0.85)))
                     .padding(.top, 8)
                     .transition(.scale(scale: 0.8).combined(with: .opacity))
+            } else if model.isAwake, !model.manualOn {
+                Label("Auto", systemImage: "sparkles")
+                    .font(.system(size: 11, weight: .semibold, design: Theme.rounded))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 3)
+                    .background(Capsule().fill(Color.purple.gradient))
+                    .padding(.top, 8)
+                    .transition(.scale(scale: 0.8).combined(with: .opacity))
             }
         }
         .padding(.bottom, 18)
@@ -218,13 +227,23 @@ private struct SetupCard: View {
 private struct SettingsList: View {
     @Environment(AppModel.self) private var model
     @Environment(\.openWindow) private var openWindow
+    @State private var explainsAuto = false
 
     var body: some View {
         @Bindable var model = model
         @Bindable var connection = model.connection
         VStack(spacing: 0) {
-            SettingRow(symbol: "sparkles", tint: .purple, title: "Auto for AI agents", subtitle: agentSummary) {
+            SettingRow(
+                symbol: "sparkles", tint: .purple, title: "Auto-on while agents work", subtitle: autoSummary,
+                info: { withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) { explainsAuto.toggle() } }
+            ) {
                 Toggle("", isOn: $model.autoForAgents)
+            }
+            if explainsAuto {
+                AutoExplainer()
+                    .padding(.horizontal, 12)
+                    .padding(.bottom, 6)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
             }
             SettingRow(symbol: "wifi", tint: .blue, title: "Stay online", subtitle: connection.summary) {
                 HStack(spacing: 8) {
@@ -265,13 +284,79 @@ private struct SettingsList: View {
         .tint(Theme.ember)
     }
 
-    private var agentSummary: String {
-        if let agent = model.agents.first(where: \.isWorking) ?? model.agents.first {
-            return agent.isWorking
-                ? String(localized: "\(agent.name) working")
-                : String(localized: "\(agent.name) idle")
+    /// Says what the switch does when off, and what it's doing when on.
+    private var autoSummary: String {
+        guard model.autoForAgents else {
+            return String(localized: "Turns on by itself while Claude Code, Codex and others work")
         }
-        return String(localized: "Stays awake while Claude Code or Codex works")
+        if model.autoPaused { return String(localized: "Auto paused until agents finish") }
+        if let working = model.workingAgentList {
+            return String(localized: "\(working) working · keeping awake")
+        }
+        return String(localized: "Waiting for an agent to start")
+    }
+}
+
+/// What auto mode does, as a four-step picture plus the on/off difference.
+struct AutoExplainer: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .top, spacing: 2) {
+                step("Agent starts") { symbol("sparkles", .purple) }
+                arrow
+                step("Awake") { LampOrb(isOn: true, size: 18).frame(width: 26, height: 26) }
+                arrow
+                step("Done + 3 min") { symbol("clock", .secondary) }
+                arrow
+                step("Sleep resumed") { symbol("moon.fill", Theme.night) }
+            }
+            VStack(alignment: .leading, spacing: 6) {
+                explanation("When on", "Melatonin turns itself on as soon as an AI agent starts working, and lets your Mac sleep again 3 minutes after it finishes.")
+                explanation("When off", "Melatonin only turns on when you tap the moon.")
+            }
+            Text("Agents waiting for your input don’t count. Works with Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI and more.")
+                .font(.system(size: 10.5))
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color.purple.opacity(0.08))
+                .strokeBorder(Color.purple.opacity(0.25), lineWidth: 0.5)
+        )
+    }
+
+    private func step(_ label: LocalizedStringKey, @ViewBuilder icon: () -> some View) -> some View {
+        VStack(spacing: 4) {
+            icon()
+            Text(label)
+                .font(.system(size: 10, weight: .medium))
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private func symbol(_ name: String, _ tint: Color) -> some View {
+        Image(systemName: name)
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(tint)
+            .frame(width: 26, height: 26)
+            .background(Circle().fill(tint.opacity(0.14)))
+    }
+
+    private var arrow: some View {
+        Image(systemName: "chevron.forward")
+            .font(.system(size: 9, weight: .bold))
+            .foregroundStyle(.tertiary)
+            .frame(height: 26)
+    }
+
+    private func explanation(_ title: LocalizedStringKey, _ body: LocalizedStringKey) -> some View {
+        (Text(title).fontWeight(.semibold) + Text(verbatim: "  ") + Text(body).foregroundStyle(.secondary))
+            .font(.system(size: 11))
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
 
@@ -280,6 +365,8 @@ private struct SettingRow<Accessory: View>: View {
     let tint: Color
     let title: LocalizedStringKey
     var subtitle: String?
+    /// Shows an ⓘ button beside the title.
+    var info: (() -> Void)?
     @ViewBuilder var accessory: Accessory
 
     var body: some View {
@@ -290,12 +377,24 @@ private struct SettingRow<Accessory: View>: View {
                 .frame(width: 24, height: 24)
                 .background(RoundedRectangle(cornerRadius: 6.5, style: .continuous).fill(tint.gradient))
             VStack(alignment: .leading, spacing: 1) {
-                Text(title).font(.system(size: 13))
+                HStack(spacing: 4) {
+                    Text(title).font(.system(size: 13))
+                    if let info {
+                        Button(action: info) {
+                            Image(systemName: "info.circle")
+                                .font(.system(size: 11))
+                                .foregroundStyle(.secondary)
+                        }
+                        .buttonStyle(.borderless)
+                        .help("How it works")
+                    }
+                }
                 if let subtitle {
                     Text(subtitle)
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             Spacer(minLength: 8)

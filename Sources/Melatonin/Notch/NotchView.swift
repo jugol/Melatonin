@@ -144,6 +144,8 @@ private struct BannerWings: View {
             Image(systemName: "wifi").foregroundStyle(Theme.amber)
         case .offline:
             Image(systemName: "wifi.slash").foregroundStyle(.red)
+        case .autoArmed:
+            Image(systemName: "sparkles").foregroundStyle(.purple)
         }
     }
 
@@ -158,6 +160,7 @@ private struct BannerWings: View {
         case .failed: String(localized: "Couldn’t switch")
         case .joinedNetwork(let ssid): ssid
         case .offline: String(localized: "Offline")
+        case .autoArmed: String(localized: "Auto on")
         }
     }
 
@@ -170,6 +173,7 @@ private struct BannerWings: View {
         case .failed: String(localized: "Open the menu")
         case .joinedNetwork: String(localized: "Switched network")
         case .offline: String(localized: "Couldn’t reconnect")
+        case .autoArmed: String(localized: "Waiting for agents")
         }
     }
 
@@ -228,9 +232,7 @@ private struct ExpandedNotch: View {
 
             HStack(spacing: 14) {
                 BatteryLabel(battery: model.battery)
-                if let agent = model.agents.first(where: \.isWorking) ?? model.agents.first {
-                    AgentLabel(agent: agent)
-                }
+                AgentLabel()
                 Spacer()
             }
             .font(.system(size: 11, weight: .medium))

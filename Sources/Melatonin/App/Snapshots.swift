@@ -42,6 +42,16 @@ enum Snapshots {
             render(menu(model), scheme: scheme, to: directory.appending(path: "menu-on-\(suffix).png"))
         }
 
+        for scheme in [ColorScheme.light, .dark] {
+            let suffix = scheme == .dark ? "dark" : "light"
+            model.stage(awake: true, agents: working + [AgentActivity(name: "Hermes", isWorking: true)], auto: true)
+            render(menu(model), scheme: scheme, to: directory.appending(path: "menu-auto-\(suffix).png"))
+            render(AutoExplainer().frame(width: 288).padding(12).background(.background), scheme: scheme,
+                   to: directory.appending(path: "auto-explainer-\(suffix).png"))
+        }
+        model.stage(awake: false, auto: true)
+        render(menu(model), scheme: .light, to: directory.appending(path: "menu-auto-waiting.png"))
+
         let backups = [
             FallbackNetwork(ssid: "Home 5G", isHotspot: false),
             FallbackNetwork(ssid: "Office", isHotspot: false),

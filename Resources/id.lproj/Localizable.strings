@@ -31,8 +31,6 @@
 "Melatonin needs your password to remove its helper." = "Melatonin memerlukan kata sandi Anda untuk menghapus alat bantunya.";
 
 /* Settings */
-"Auto for AI agents" = "Otomatis untuk agen AI";
-"Stays awake while Claude Code or Codex works" = "Tetap terjaga selama Claude Code atau Codex bekerja";
 "%@ working" = "%@ sedang bekerja";
 "%@ idle" = "%@ siaga";
 "Stop at low battery" = "Berhenti saat baterai lemah";
@@ -88,3 +86,21 @@
 /* Language */
 "Language" = "Bahasa";
 "Same as macOS" = "Sama seperti macOS";
+
+/* Auto mode */
+"Auto-on while agents work" = "Otomatis saat agen bekerja";
+"Turns on by itself while Claude Code, Codex and others work" = "Menyala sendiri saat Claude Code, Codex, dan lainnya bekerja";
+"Waiting for an agent to start" = "Menunggu agen mulai bekerja";
+"%@ working · keeping awake" = "%@ bekerja · tetap terjaga";
+"Turns on when an agent starts working" = "Akan menyala saat agen mulai bekerja";
+"When on" = "Saat aktif";
+"When off" = "Saat nonaktif";
+"Melatonin turns itself on as soon as an AI agent starts working, and lets your Mac sleep again 3 minutes after it finishes." = "Melatonin menyala sendiri begitu agen AI mulai bekerja, dan membiarkan Mac tidur lagi 3 menit setelah agen selesai.";
+"Melatonin only turns on when you tap the moon." = "Melatonin hanya menyala saat kamu mengetuk bulan.";
+"Agents waiting for your input don’t count. Works with Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI and more." = "Agen yang menunggu input darimu tidak dihitung. Mendukung Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, dan lainnya.";
+"Agent starts" = "Agen mulai";
+"Done + 3 min" = "Selesai + 3 mnt";
+"Auto" = "Otomatis";
+"Auto on" = "Otomatis aktif";
+"Waiting for agents" = "Menunggu agen";
+"How it works" = "Cara kerjanya";

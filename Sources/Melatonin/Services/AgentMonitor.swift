@@ -73,6 +73,67 @@ enum AgentCatalog {
     }
 }
 
+/// Some agents spend most of a task waiting on the model and barely use CPU,
+/// but they write to their own logs whenever a turn makes progress.
+enum AgentLogs {
+    private static let home = FileManager.default.homeDirectoryForCurrentUser
+
+    /// When each agent last logged real work.
+    static func lastActivity() -> [String: Date] {
+        var result: [String: Date] = [:]
+        result["Hermes"] = hermes()
+        result["Codex"] = codex()
+        return result.compactMapValues { $0 }
+    }
+
+    private static let hermesTimestamp: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter
+    }()
+
+    /// Hermes logs from `agent.*` loggers only while a conversation turn runs
+    /// (model calls, tool runs); when idle it only logs MCP polling.
+    private static func hermes() -> Date? {
+        let url = home.appending(path: ".hermes/logs/agent.log")
+        guard let modified = modificationDate(of: url), Date().timeIntervalSince(modified) < 600,
+              let handle = try? FileHandle(forReadingFrom: url) else { return nil }
+        defer { try? handle.close() }
+        guard let size = try? handle.seekToEnd() else { return nil }
+        try? handle.seek(toOffset: size > 32_768 ? size - 32_768 : 0)
+        let tail = String(decoding: handle.readDataToEndOfFile(), as: UTF8.self)
+        // "2026-09-29 15:45:00,453 INFO [20260924_165417_6716c5] agent.tool_executor: …"
+        let pattern = #"^\d{4}-\d\d-\d\d \d\d:\d\d:\d\d,\d+ [A-Z]+ (\[[^\]]+\] )?agent\."#
+        for line in tail.split(separator: "\n").reversed()
+        where line.range(of: pattern, options: .regularExpression) != nil {
+            return hermesTimestamp.date(from: String(line.prefix(19)))
+        }
+        return nil
+    }
+
+    /// Codex appends to a session file under ~/.codex/sessions/YYYY/MM/DD for
+    /// every event in a turn.
+    private static func codex() -> Date? {
+        let base = home.appending(path: ".codex/sessions")
+        var newest: Date?
+        for day in [Date(), Date().addingTimeInterval(-86_400)] {
+            let parts = Calendar.current.dateComponents([.year, .month, .day], from: day)
+            let folder = base.appending(path: String(format: "%04d/%02d/%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0))
+            let files = (try? FileManager.default.contentsOfDirectory(
+                at: folder, includingPropertiesForKeys: [.contentModificationDateKey])) ?? []
+            for file in files {
+                if let date = modificationDate(of: file), date > (newest ?? .distantPast) { newest = date }
+            }
+        }
+        return newest
+    }
+
+    private static func modificationDate(of url: URL) -> Date? {
+        try? url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate
+    }
+}
+
 /// Decides whether each running agent is actually doing something. An agent
 /// sitting at its prompt uses almost no CPU; one that's streaming, editing or
 /// running tools (its child processes count too) uses plenty.
@@ -106,7 +167,12 @@ final class AgentScanner {
             }
         }
 
-        return roots.map { name, pids in
+        let logged = AgentLogs.lastActivity()
+        for (name, date) in logged where date > (lastActive[name] ?? .distantPast) {
+            lastActive[name] = date
+        }
+
+        var activities: [AgentActivity] = roots.map { name, pids in
             var burned: UInt64 = 0
             var visited = Set<pid_t>()
             var stack = pids
@@ -122,10 +188,17 @@ final class AgentScanner {
             let load = Double(burned) / 1e9 / elapsed
             lastLoad[name] = load
             if load >= AgentCatalog.activity[name, default: AgentCatalog.defaultActivity] { lastActive[name] = now }
-            let working = lastActive[name].map { now.timeIntervalSince($0) < grace } ?? false
-            return AgentActivity(name: name, isWorking: working)
+            return AgentActivity(name: name, isWorking: isRecent(lastActive[name], now: now))
         }
-        .sorted { $0.name < $1.name }
+        // An agent whose log shows work counts even if its process wasn't recognized.
+        for name in logged.keys where roots[name] == nil && isRecent(lastActive[name], now: now) {
+            activities.append(AgentActivity(name: name, isWorking: true))
+        }
+        return activities.sorted { $0.name < $1.name }
+    }
+
+    private func isRecent(_ date: Date?, now: Date) -> Bool {
+        date.map { now.timeIntervalSince($0) < grace } ?? false
     }
 }
 

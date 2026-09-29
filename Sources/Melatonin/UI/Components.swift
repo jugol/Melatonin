@@ -24,14 +24,17 @@ struct DurationPicker: View {
         .animation(.snappy(duration: 0.25), value: model.isAwake)
     }
 
+    /// Lit only when the user turned Melatonin on, not when auto mode did.
+    private var timerRunning: Bool { model.isAwake && model.manualOn }
+
     private func foreground(_ selected: Bool) -> AnyShapeStyle {
         guard selected else { return AnyShapeStyle(.secondary) }
-        return model.isAwake ? AnyShapeStyle(Theme.ink) : AnyShapeStyle(.primary)
+        return timerRunning ? AnyShapeStyle(Theme.ink) : AnyShapeStyle(.primary)
     }
 
     private func fill(_ selected: Bool) -> AnyShapeStyle {
         guard selected else { return AnyShapeStyle(.primary.opacity(0.06)) }
-        return model.isAwake
+        return timerRunning
             ? AnyShapeStyle(LinearGradient(colors: [Theme.amber, Theme.ember.opacity(0.9)], startPoint: .top, endPoint: .bottom))
             : AnyShapeStyle(.primary.opacity(0.14))
     }
@@ -78,15 +81,24 @@ struct BatteryLabel: View {
     }
 }
 
+/// "Claude Code and Hermes working", or the first idle agent.
 struct AgentLabel: View {
-    let agent: AgentActivity
+    @Environment(AppModel.self) private var model
 
     var body: some View {
+        if let working = model.workingAgentList {
+            label(Text("\(working) working"), active: true)
+        } else if let idle = model.agents.first {
+            label(Text("\(idle.name) idle"), active: false)
+        }
+    }
+
+    private func label(_ text: Text, active: Bool) -> some View {
         HStack(spacing: 5) {
             Circle()
-                .fill(agent.isWorking ? Theme.amber : Color.secondary.opacity(0.5))
+                .fill(active ? Theme.amber : Color.secondary.opacity(0.5))
                 .frame(width: 6, height: 6)
-            Text(agent.isWorking ? "\(agent.name) working" : "\(agent.name) idle")
+            text.lineLimit(1)
         }
     }
 }

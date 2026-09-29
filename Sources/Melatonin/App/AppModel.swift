@@ -32,6 +32,8 @@ struct Banner: Equatable, Identifiable {
     enum Kind: Equatable {
         case awake, asleep, stopped(StopReason), agentStarted(String), failed
         case joinedNetwork(String), offline
+        /// Auto mode just switched on and is waiting for an agent.
+        case autoArmed
     }
 
     let id = UUID()
@@ -52,6 +54,7 @@ final class AppModel {
         didSet {
             defaults.set(autoForAgents, forKey: Keys.autoForAgents)
             autoPaused = false
+            if autoForAgents, workingAgent == nil { show(.autoArmed) }
             reconcile()
         }
     }
@@ -161,6 +164,11 @@ final class AppModel {
     // MARK: Derived
 
     var workingAgent: String? { agents.first(where: \.isWorking)?.name }
+    /// Every working agent, as a localized list: "Claude Code and Hermes".
+    var workingAgentList: String? {
+        let names = agents.filter(\.isWorking).map(\.name)
+        return names.isEmpty ? nil : names.formatted(.list(type: .and))
+    }
     var autoEngaged: Bool { autoForAgents && workingAgent != nil && !autoPaused }
     var wantsAwake: Bool { manualOn || autoEngaged }
 
@@ -175,7 +183,7 @@ final class AppModel {
                 return String(localized: "Until \(time) · lid can close")
             }
             if manualOn { return String(localized: "Until you turn it off · lid can close") }
-            if let agent = workingAgent { return String(localized: "While \(agent) works · lid can close") }
+            if let agents = workingAgentList { return String(localized: "While \(agents) works · lid can close") }
         }
         if helperStatus == .installing { return String(localized: "Setting up…") }
         switch lastStop {
@@ -187,6 +195,7 @@ final class AppModel {
         case nil: break
         }
         if autoPaused { return String(localized: "Auto paused until agents finish") }
+        if autoForAgents { return String(localized: "Turns on when an agent starts working") }
         return String(localized: "Tap the moon to stay awake")
     }
 
@@ -387,7 +396,7 @@ final class AppModel {
             isAwake = target
             lastError = nil
             if target {
-                show(manualOn ? .awake : .agentStarted(workingAgent ?? "Agent"))
+                show(manualOn ? .awake : .agentStarted(workingAgentList ?? "Agent"))
             } else if lastStop == nil {
                 show(.asleep)
             }
@@ -457,11 +466,14 @@ extension AppModel {
         banner: Banner.Kind? = nil,
         agents: [AgentActivity] = [],
         helper: HelperStatus = .ready,
+        auto: Bool = false,
         battery: BatteryStatus = BatteryStatus(percent: 78, onPower: false, hasBattery: true)
     ) {
         pollTimer?.invalidate()
         isAwake = awake
-        manualOn = awake
+        manualOn = awake && !auto
+        autoForAgents = auto
+        autoPaused = false
         manualUntil = until
         self.banner = banner.map { Banner(kind: $0) }
         self.agents = agents

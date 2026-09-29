@@ -31,8 +31,6 @@
 "Melatonin needs your password to remove its helper." = "Melatonin 需要你的密码来移除辅助程序。";
 
 /* Settings */
-"Auto for AI agents" = "AI 智能体自动模式";
-"Stays awake while Claude Code or Codex works" = "Claude Code 或 Codex 工作时保持唤醒";
 "%@ working" = "%@ 工作中";
 "%@ idle" = "%@ 空闲";
 "Stop at low battery" = "电量低时停止";
@@ -88,3 +86,21 @@
 /* Language */
 "Language" = "语言";
 "Same as macOS" = "跟随 macOS";
+
+/* Auto mode */
+"Auto-on while agents work" = "智能体工作时自动开启";
+"Turns on by itself while Claude Code, Codex and others work" = "Claude Code、Codex 等工作时自动开启";
+"Waiting for an agent to start" = "等待智能体开始工作";
+"%@ working · keeping awake" = "%@ 正在工作 · 保持唤醒";
+"Turns on when an agent starts working" = "智能体开始工作时会自动唤醒";
+"When on" = "开启时";
+"When off" = "关闭时";
+"Melatonin turns itself on as soon as an AI agent starts working, and lets your Mac sleep again 3 minutes after it finishes." = "AI 智能体一开始工作，Melatonin 就会自动开启；工作结束 3 分钟后，Mac 又可以正常睡眠。";
+"Melatonin only turns on when you tap the moon." = "只有点按月亮时才会开启。";
+"Agents waiting for your input don’t count. Works with Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI and more." = "等待你输入的智能体不计入。支持 Claude Code、Codex、Hermes、OpenCode、T3 Code、Gemini CLI 等。";
+"Agent starts" = "智能体开始";
+"Done + 3 min" = "结束后 3 分钟";
+"Auto" = "自动";
+"Auto on" = "自动开启";
+"Waiting for agents" = "等待智能体";
+"How it works" = "工作原理";

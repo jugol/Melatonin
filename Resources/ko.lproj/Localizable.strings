@@ -31,8 +31,6 @@
 "Melatonin needs your password to remove its helper." = "Melatonin 헬퍼를 제거하려면 비밀번호가 필요해요.";
 
 /* Settings */
-"Auto for AI agents" = "AI 에이전트 자동 감지";
-"Stays awake while Claude Code or Codex works" = "Claude Code·Codex가 일하는 동안 깨어 있어요";
 "%@ working" = "%@ 작업 중";
 "%@ idle" = "%@ 대기 중";
 "Stop at low battery" = "배터리 부족 시 멈춤";
@@ -88,3 +86,21 @@
 /* Language */
 "Language" = "언어";
 "Same as macOS" = "macOS 설정 따르기";
+
+/* Auto mode */
+"Auto-on while agents work" = "에이전트가 일하면 자동 켜기";
+"Turns on by itself while Claude Code, Codex and others work" = "Claude Code·Codex 등이 일하는 동안 알아서 켜져요";
+"Waiting for an agent to start" = "에이전트가 일을 시작하면 켜져요";
+"%@ working · keeping awake" = "%@ 작업 중 · 깨어 있는 중";
+"Turns on when an agent starts working" = "에이전트가 일을 시작하면 알아서 깨어나요";
+"When on" = "켜 두면";
+"When off" = "꺼 두면";
+"Melatonin turns itself on as soon as an AI agent starts working, and lets your Mac sleep again 3 minutes after it finishes." = "AI 에이전트가 일을 시작하면 Melatonin이 알아서 켜지고, 일이 끝나고 3분 뒤 다시 잠들 수 있게 돌아가요.";
+"Melatonin only turns on when you tap the moon." = "달을 직접 눌렀을 때만 켜져요.";
+"Agents waiting for your input don’t count. Works with Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI and more." = "입력을 기다리며 쉬고 있는 에이전트는 세지 않아요. Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI 등을 지원해요.";
+"Agent starts" = "에이전트 시작";
+"Done + 3 min" = "끝나고 3분";
+"Auto" = "자동";
+"Auto on" = "자동 켜기";
+"Waiting for agents" = "에이전트 대기";
+"How it works" = "작동 방식";
