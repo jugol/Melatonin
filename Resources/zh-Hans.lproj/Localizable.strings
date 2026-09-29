@@ -58,29 +58,13 @@
 
 /* Stay online */
 "Stay online" = "保持在线";
-"Choose networks" = "选择网络";
-"Switch networks when the internet drops" = "断网时切换到其他网络";
-"Add networks to fall back to" = "添加备用网络";
 "Ready · watches while awake" = "就绪 · 唤醒时监测";
 "Online" = "在线";
-"Online via %@" = "通过 %@ 在线";
 "Internet is down" = "互联网已断开";
-"Joining %@…" = "正在加入 %@…";
 "Couldn’t reconnect" = "无法重新连接";
-"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Melatonin 保持 Mac 唤醒期间如果断网，会加入此列表中的下一个网络。";
-"Priority" = "优先级";
-"Add network" = "添加网络";
-"No other saved networks" = "没有其他已存储的网络";
-"Add the networks you want as backups: home, office, your phone’s hotspot." = "添加想用作备用的网络：家里、办公室、手机热点。";
-"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "拖动以调整顺序。只能添加这台 Mac 加入过的网络，并使用已存储的密码。";
 "Needs the helper. Set it up from the menu bar." = "需要辅助程序。请从菜单栏进行设置。";
-"Hotspot" = "热点";
-"Joined" = "已加入";
-"Mark as hotspot" = "标记为热点";
-"Remove" = "移除";
 "Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "在用 iPhone？macOS 可以自动加入它的个人热点：Wi-Fi 设置 › 询问是否加入热点 › 自动。";
 "Open Wi-Fi Settings" = "打开 Wi-Fi 设置";
-"Switched network" = "已切换网络";
 "Offline" = "已离线";
 
 /* Language */
@@ -104,3 +88,21 @@
 "Auto on" = "自动开启";
 "Waiting for agents" = "等待智能体";
 "How it works" = "工作原理";
+
+/* Diagnostics and switching */
+"Restarting Wi-Fi…" = "正在重启 Wi-Fi…";
+"Show activity log" = "显示活动日志";
+"Wi-Fi" = "Wi-Fi";
+"Open Melatonin" = "打开 Melatonin";
+
+/* Stay online: reconnecting */
+"Reconnects Wi-Fi if the internet drops" = "网络中断时重新连接 Wi-Fi";
+"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Melatonin 保持 Mac 唤醒期间，如果网络中断超过 20 秒，它会重启 Wi-Fi，让 macOS 重新加入范围内已存储的网络，比如手机热点。";
+"Test now" = "立即测试";
+"Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi 会关闭几秒，然后 Mac 会重新加入最合适的已存储网络。";
+"Last reconnected at %@, back online in %lld s" = "%@ 重新连接，%lld 秒后恢复联网";
+"Make sure your Mac picks your phone’s hotspot" = "确保 Mac 能连上手机热点";
+"Join the hotspot once from the Wi-Fi menu so your Mac saves it." = "先从 Wi-Fi 菜单连接一次热点，让 Mac 存储它。";
+"In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "在“系统设置”›“Wi-Fi”中打开热点的“详细信息”，开启“自动加入此网络”。";
+"Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android：关闭“无设备连接时自动关闭热点”的设置。";
+"Reconnected" = "已重新连接";

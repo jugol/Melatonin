@@ -46,7 +46,7 @@ Aplikasi anti-tidur seperti `caffeinate`, KeepingYouAwake, dan sebagian besar ap
 - **Sakelar di bar menu.** Garis bulan sabit berarti Mac Anda akan tidur; bulan sabit yang memeluk lampu amber berarti Mac tetap terjaga.
 - **Timer.** 1, 2, 4, atau 8 jam, atau sampai Anda mematikannya.
 - **Otomatis untuk agen AI.** Tetap terjaga hanya selama ada agen yang benar-benar bekerja: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose, atau Crush. Deteksinya melihat aktivitas CPU di seluruh pohon proses tiap agen, jadi agen yang cuma diam menunggu di prompt tidak dihitung. Agen yang dijalankan oleh T3 Code dihitung sebagai T3 Code.
-- **Tetap online.** Pilih jaringan cadangan dari jaringan Wi-Fi yang sudah dikenal Mac Anda, seret untuk mengatur urutan prioritas, lalu tandai hotspot ponsel Anda. Jika internet terputus saat Melatonin membuat Mac Anda tetap terjaga, Melatonin akan bergabung dengan jaringan berikutnya dalam daftar memakai kata sandi yang tersimpan.
+- **Tetap online.** Jika internet terputus saat Melatonin membuat Mac Anda tetap terjaga, misalnya saat Anda menutup laptop dan keluar dari jangkauan Wi-Fi kantor, Melatonin akan memulai ulang Wi-Fi agar macOS bergabung lagi ke jaringan tersimpan di dekat Anda, seperti hotspot ponsel Anda. macOS tidak mengizinkan aplikasi memilih jaringan Wi-Fi berdasarkan nama, jadi pastikan hotspot sudah tersimpan dengan **Otomatis bergabung ke jaringan ini** dinyalakan. Tombol **Uji sekarang** menunjukkan bahwa fitur ini bekerja.
 - **Keamanan nomor satu.**
   - Mati sendiri saat baterai menyentuh batas yang Anda pilih (bawaannya 20%) ketika Mac memakai baterai.
   - Mati jika Mac Anda terlalu panas. Laptop yang menyala di dalam tas tertutup adalah cara jitu memanggang baterai.
@@ -101,10 +101,10 @@ make run
 Melatonin.app  ──XPC──▶  io.github.jugol.melatonin.helper (root, launchd)
   UI, timers,              pmset -a disablesleep 1 / 0
   safety checks,           …and back to 0 when the app disconnects
-  connection watch         networksetup -setairportnetwork (saved networks only)
+  connection watch         networksetup -setairportpower (Wi-Fi off and on)
 ```
 
-- **Alat bantunya sangat terbatas.** Seluruh antarmukanya hanya `setSleepDisabled(Bool)` dan `joinWiFi(ssid)`, dan ia menolak jaringan apa pun yang belum tersimpan di Mac. Tidak ada akses shell dan tidak ada perintah sembarang yang dijalankan. Lihat [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift).
+- **Alat bantunya sangat terbatas.** Seluruh antarmukanya hanya `setSleepDisabled(Bool)` ditambah dua panggilan Wi-Fi: memulai ulang Wi-Fi, dan bergabung ke jaringan yang sudah tersimpan di Mac. Tidak ada akses shell dan tidak ada perintah sembarang yang dijalankan. Lihat [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift).
 - **Hanya mau bicara dengan Melatonin.** Koneksi XPC harus memenuhi persyaratan code signing untuk bundle identifier aplikasi.
 - **Tetap aman saat ada yang gagal.** Mode tidur hanya dinonaktifkan selama ada aplikasi terhubung yang memintanya. Begitu koneksi terputus, mode tidur kembali aktif. Sebuah file penanda menangani saat alat bantu dimulai ulang atau Mac di-reboot.
 - **Instal dan copot hanyalah skrip shell biasa** yang bisa Anda baca sendiri: [`Support/install-helper.sh`](Support/install-helper.sh) dan [`Support/uninstall-helper.sh`](Support/uninstall-helper.sh).
@@ -139,7 +139,7 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 ## Peta jalan
 
 - [ ] Rilis yang ditandatangani dan dinotarisasi, cask Homebrew, serta pembaruan lewat Sparkle
-- [ ] Tetap online: kembali ke jaringan utama begitu jaringan itu tersedia lagi
+- [ ] Tetap online: memilih jaringan tersimpan mana yang akan disambungkan lagi (perlu akses Lokasi)
 - [ ] Integrasi hooks Claude Code untuk sinyal mulai dan berhenti yang akurat
 - [ ] Ringkasan "Selagi Anda pergi" saat laptop dibuka kembali
 

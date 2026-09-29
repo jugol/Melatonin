@@ -31,7 +31,8 @@ enum StopReason: Equatable {
 struct Banner: Equatable, Identifiable {
     enum Kind: Equatable {
         case awake, asleep, stopped(StopReason), agentStarted(String), failed
-        case joinedNetwork(String), offline
+        /// Stay online brought the connection back, or couldn't.
+        case reconnected, offline
         /// Auto mode just switched on and is waiting for an agent.
         case autoArmed
     }
@@ -54,7 +55,9 @@ final class AppModel {
         didSet {
             defaults.set(autoForAgents, forKey: Keys.autoForAgents)
             autoPaused = false
+            ActivityLog.write("Auto-on while agents work: \(autoForAgents ? "on" : "off")")
             if autoForAgents, workingAgent == nil { show(.autoArmed) }
+            updateActivity()
             reconcile()
         }
     }
@@ -110,7 +113,10 @@ final class AppModel {
     private(set) var helperStatus = HelperStatus.checking
     /// What the helper has confirmed, not what we asked for.
     private(set) var isAwake = false {
-        didSet { connection.setWatching(isAwake) }
+        didSet {
+            connection.setWatching(isAwake)
+            updateActivity()
+        }
     }
     private(set) var lastStop: StopReason?
     private(set) var lastError: String?
@@ -125,6 +131,10 @@ final class AppModel {
     @ObservationIgnored private var expiryTimer: Timer?
     @ObservationIgnored private var applying: Task<Void, Never>?
     @ObservationIgnored private var requested: Bool?
+    /// Keeps macOS from napping the app, which with the lid closed would stall
+    /// the timers that watch agents and the connection.
+    @ObservationIgnored private var activity: NSObjectProtocol?
+    @ObservationIgnored private var lastLoggedAgents: String?
 
     private enum Keys {
         static let duration = "duration"
@@ -152,12 +162,12 @@ final class AppModel {
         opensAtLogin = SMAppService.mainApp.status == .enabled
         language = AppLanguage.override ?? ""
 
-        connection.join = { [weak self] ssid in
+        connection.restartWiFi = { [weak self] in
             guard let self, self.helperStatus == .ready else { throw HelperError(message: "The helper isn’t set up.") }
-            try await self.helper.joinWiFi(ssid)
+            try await self.helper.restartWiFi()
         }
-        connection.onSwitch = { [weak self] ssid in
-            self?.show(ssid.map { .joinedNetwork($0) } ?? .offline)
+        connection.onRecovery = { [weak self] recovered in
+            self?.show(recovered ? .reconnected : .offline)
         }
     }
 
@@ -202,6 +212,9 @@ final class AppModel {
     // MARK: Lifecycle
 
     func start() {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
+        ActivityLog.write("Melatonin \(version) started")
+        updateActivity()
         poll()
         Task {
             await refreshHelperStatus()
@@ -310,6 +323,11 @@ final class AppModel {
         battery = PowerMonitor.battery()
         thermal = ProcessInfo.processInfo.thermalState
         agents = scanner.scan()
+        let working = workingAgentList ?? "none"
+        if working != lastLoggedAgents {
+            ActivityLog.write("Agents working: \(working)")
+            lastLoggedAgents = working
+        }
         if workingAgent == nil { autoPaused = false }
         checkSafety()
         reconcile()
@@ -332,6 +350,7 @@ final class AppModel {
     }
 
     private func stop(_ reason: StopReason) {
+        ActivityLog.write("Safety stop: \(reason)")
         lastStop = reason
         if autoEngaged { autoPaused = true }
         clearManual()
@@ -395,12 +414,15 @@ final class AppModel {
             try await helper.setSleepDisabled(target)
             isAwake = target
             lastError = nil
+            let reason = manualOn ? "turned on by you" : (target ? "agents working: \(workingAgentList ?? "?")" : "")
+            ActivityLog.write(target ? "Awake (\(reason))" : "Sleep allowed again")
             if target {
                 show(manualOn ? .awake : .agentStarted(workingAgentList ?? "Agent"))
             } else if lastStop == nil {
                 show(.asleep)
             }
         } catch {
+            ActivityLog.write("Couldn’t \(target ? "disable" : "enable") sleep: \(error.localizedDescription)")
             requested = nil
             lastError = error.localizedDescription
             if target { clearManual() }
@@ -442,6 +464,19 @@ final class AppModel {
         case HelperConstants.version: helperStatus = .ready
         case nil: helperStatus = .unreachable
         default: helperStatus = .outdated
+        }
+    }
+
+    private func updateActivity() {
+        let needed = isAwake || autoForAgents
+        if needed, activity == nil {
+            activity = ProcessInfo.processInfo.beginActivity(
+                options: .userInitiatedAllowingIdleSystemSleep,
+                reason: "Watching agents and the connection while the lid may be closed"
+            )
+        } else if !needed, let activity {
+            ProcessInfo.processInfo.endActivity(activity)
+            self.activity = nil
         }
     }
 

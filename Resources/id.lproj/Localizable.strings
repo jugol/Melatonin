@@ -58,29 +58,13 @@
 
 /* Stay online */
 "Stay online" = "Tetap online";
-"Choose networks" = "Pilih jaringan";
-"Switch networks when the internet drops" = "Ganti jaringan saat internet terputus";
-"Add networks to fall back to" = "Tambahkan jaringan cadangan";
 "Ready · watches while awake" = "Siap · memantau saat terjaga";
 "Online" = "Online";
-"Online via %@" = "Online melalui %@";
 "Internet is down" = "Internet terputus";
-"Joining %@…" = "Bergabung dengan %@…";
 "Couldn’t reconnect" = "Koneksi gagal";
-"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Jika internet terputus saat Melatonin membuat Mac Anda tetap terjaga, Melatonin akan bergabung dengan jaringan berikutnya dalam daftar ini.";
-"Priority" = "Prioritas";
-"Add network" = "Tambahkan jaringan";
-"No other saved networks" = "Tidak ada jaringan tersimpan lainnya";
-"Add the networks you want as backups: home, office, your phone’s hotspot." = "Tambahkan jaringan yang ingin dijadikan cadangan: rumah, kantor, hotspot ponsel Anda.";
-"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "Seret untuk mengubah urutan. Hanya jaringan yang pernah tersambung ke Mac ini yang dapat ditambahkan; kata sandi yang tersimpan akan digunakan.";
 "Needs the helper. Set it up from the menu bar." = "Memerlukan alat bantu. Atur dari bar menu.";
-"Hotspot" = "Hotspot";
-"Joined" = "Tersambung";
-"Mark as hotspot" = "Tandai sebagai hotspot";
-"Remove" = "Hapus";
 "Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "Menggunakan iPhone? macOS dapat bergabung dengan Hotspot Pribadi iPhone secara otomatis: pengaturan Wi-Fi › Minta untuk bergabung dengan hotspot › Otomatis.";
 "Open Wi-Fi Settings" = "Buka Pengaturan Wi-Fi";
-"Switched network" = "Ganti jaringan";
 "Offline" = "Offline";
 
 /* Language */
@@ -104,3 +88,21 @@
 "Auto on" = "Otomatis aktif";
 "Waiting for agents" = "Menunggu agen";
 "How it works" = "Cara kerjanya";
+
+/* Diagnostics and switching */
+"Restarting Wi-Fi…" = "Memulai ulang Wi-Fi…";
+"Show activity log" = "Tampilkan log aktivitas";
+"Wi-Fi" = "Wi-Fi";
+"Open Melatonin" = "Buka Melatonin";
+
+/* Stay online: reconnecting */
+"Reconnects Wi-Fi if the internet drops" = "Menyambungkan ulang Wi-Fi jika internet putus";
+"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Jika internet putus selama 20 detik saat Melatonin membuat Mac tetap terjaga, Wi-Fi dimulai ulang agar macOS bergabung lagi ke jaringan tersimpan di dekatmu, seperti hotspot ponsel.";
+"Test now" = "Uji sekarang";
+"Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi mati beberapa detik, lalu Mac bergabung ke jaringan tersimpan terbaik.";
+"Last reconnected at %@, back online in %lld s" = "Tersambung ulang pukul %@, online lagi dalam %lld dtk";
+"Make sure your Mac picks your phone’s hotspot" = "Agar Mac memilih hotspot ponselmu";
+"Join the hotspot once from the Wi-Fi menu so your Mac saves it." = "Sambungkan ke hotspot sekali dari menu Wi-Fi agar Mac menyimpannya.";
+"In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "Di Pengaturan Sistem › Wi-Fi, buka Detail hotspot dan nyalakan “Otomatis bergabung ke jaringan ini”.";
+"Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android: matikan pengaturan yang mematikan hotspot saat tidak ada perangkat yang tersambung.";
+"Reconnected" = "Tersambung ulang";

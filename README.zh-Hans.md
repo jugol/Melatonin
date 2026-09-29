@@ -46,7 +46,7 @@
 - **菜单栏开关**：只有月牙轮廓时，Mac 会进入睡眠；月牙里亮着一盏琥珀色小灯时，就不会。
 - **定时**：1、2、4 或 8 小时，或者一直保持到你手动关闭。
 - **AI 智能体自动模式**：只在智能体真正工作时保持唤醒，支持 Claude Code、Codex、Hermes、OpenCode、T3 Code、Gemini CLI、Cursor Agent、Amp、Goose 和 Crush。检测时会查看每个智能体整个进程树的 CPU 活动，所以停在提示符前闲着的智能体不算在内。由 T3 Code 启动的智能体会算在 T3 Code 名下。
-- **保持在线**：从 Mac 已经记住的 Wi-Fi 网络中挑选备用网络，拖动调整优先级，并标记出你的手机热点。如果在 Melatonin 保持 Mac 唤醒期间断网，它会使用已存储的密码加入列表中的下一个网络。
+- **保持在线**：如果在 Melatonin 保持 Mac 唤醒期间断网，例如你合上盖子、走出了办公室 Wi-Fi 的覆盖范围，它会重启 Wi-Fi，让 macOS 重新加入范围内已存储的网络，比如你的手机热点。macOS 不允许应用按名称选择 Wi-Fi 网络，所以请确保热点已经存储，并开启了**自动加入此网络**。点一下**立即测试**按钮，就能看到它的实际效果。
 - **安全第一**：
   - 使用电池时，电量降到你设定的下限（默认 20%）就会自动关闭。
   - Mac 过热时会自动关闭。运行中的笔记本闷在合上的包里，电池就是这么被烤坏的。
@@ -101,10 +101,10 @@ make run
 Melatonin.app  ──XPC──▶  io.github.jugol.melatonin.helper (root, launchd)
   UI, timers,              pmset -a disablesleep 1 / 0
   safety checks,           …and back to 0 when the app disconnects
-  connection watch         networksetup -setairportnetwork (saved networks only)
+  connection watch         networksetup -setairportpower (Wi-Fi off and on)
 ```
 
-- **辅助程序的暴露面极小**：它的全部接口只有 `setSleepDisabled(Bool)` 和 `joinWiFi(ssid)`，并且会拒绝任何没有存储在这台 Mac 上的网络。它没有 shell 访问权限，也不会执行任意命令。详见 [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift)。
+- **辅助程序的暴露面极小**：它的全部接口只有 `setSleepDisabled(Bool)`，外加两个 Wi-Fi 调用：重启 Wi-Fi，以及加入这台 Mac 上已存储的网络。它没有 shell 访问权限，也不会执行任意命令。详见 [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift)。
 - **它只和 Melatonin 通信**：XPC 连接必须满足针对本应用 Bundle ID 的代码签名要求。
 - **故障时自动恢复**：只有在已连接的应用提出请求时，睡眠才会保持禁用。连接一旦断开，睡眠就会恢复。辅助程序重启和系统重启的情况则由一个标记文件兜底。
 - **安装和卸载都是普通的 shell 脚本**，你可以直接查看：[`Support/install-helper.sh`](Support/install-helper.sh) 和 [`Support/uninstall-helper.sh`](Support/uninstall-helper.sh)。
@@ -139,7 +139,7 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 ## 路线图
 
 - [ ] 经过签名和公证的发行版、Homebrew cask，以及 Sparkle 自动更新
-- [ ] 保持在线：首选网络恢复后自动切回
+- [ ] 保持在线：自行选择要重新加入哪个已存储的网络（需要定位权限）
 - [ ] 集成 Claude Code hooks，获取精确的开始和结束信号
 - [ ] 打开盖子时显示“离开期间”摘要
 

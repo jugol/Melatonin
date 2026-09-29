@@ -59,29 +59,13 @@
 
 /* Stay online */
 "Stay online" = "Stay online";
-"Choose networks" = "Choose networks";
-"Switch networks when the internet drops" = "Switch networks when the internet drops";
-"Add networks to fall back to" = "Add networks to fall back to";
 "Ready · watches while awake" = "Ready · watches while awake";
 "Online" = "Online";
-"Online via %@" = "Online via %@";
 "Internet is down" = "Internet is down";
-"Joining %@…" = "Joining %@…";
 "Couldn’t reconnect" = "Couldn’t reconnect";
-"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list.";
-"Priority" = "Priority";
-"Add network" = "Add network";
-"No other saved networks" = "No other saved networks";
-"Add the networks you want as backups: home, office, your phone’s hotspot." = "Add the networks you want as backups: home, office, your phone’s hotspot.";
-"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used.";
 "Needs the helper. Set it up from the menu bar." = "Needs the helper. Set it up from the menu bar.";
-"Hotspot" = "Hotspot";
-"Joined" = "Joined";
-"Mark as hotspot" = "Mark as hotspot";
-"Remove" = "Remove";
 "Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic.";
 "Open Wi-Fi Settings" = "Open Wi-Fi Settings";
-"Switched network" = "Switched network";
 "Offline" = "Offline";
 
 /* Language */
@@ -105,3 +89,21 @@
 "Auto on" = "Auto on";
 "Waiting for agents" = "Waiting for agents";
 "How it works" = "How it works";
+
+/* Diagnostics and switching */
+"Restarting Wi-Fi…" = "Restarting Wi-Fi…";
+"Show activity log" = "Show activity log";
+"Wi-Fi" = "Wi-Fi";
+"Open Melatonin" = "Open Melatonin";
+
+/* Stay online: reconnecting */
+"Reconnects Wi-Fi if the internet drops" = "Reconnects Wi-Fi if the internet drops";
+"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot.";
+"Test now" = "Test now";
+"Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network.";
+"Last reconnected at %@, back online in %lld s" = "Last reconnected at %@, back online in %lld s";
+"Make sure your Mac picks your phone’s hotspot" = "Make sure your Mac picks your phone’s hotspot";
+"Join the hotspot once from the Wi-Fi menu so your Mac saves it." = "Join the hotspot once from the Wi-Fi menu so your Mac saves it.";
+"In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”.";
+"Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android: turn off the setting that switches the hotspot off when no devices are connected.";
+"Reconnected" = "Reconnected";

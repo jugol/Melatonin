@@ -21,8 +21,6 @@ enum NotchPhase: Equatable {
 enum NotchLayout {
     static let compactWing: CGFloat = 70
     static let bannerWing: CGFloat = 116
-    /// Network names need more room than the stock two-word banners.
-    static let wideBannerWing: CGFloat = 156
     static let expandedWidth: CGFloat = 470
     static let expandedBody: CGFloat = 150
 
@@ -33,17 +31,12 @@ enum NotchLayout {
         return model.isAwake ? .compact : .idle
     }
 
-    static func bannerWing(for banner: Banner?) -> CGFloat {
-        if case .joinedNetwork = banner?.kind { return wideBannerWing }
-        return bannerWing
-    }
-
     static func size(for phase: NotchPhase, metrics: NotchMetrics, banner: Banner?) -> CGSize {
         let notch = metrics.notchSize
         switch phase {
         case .idle: return notch
         case .compact: return CGSize(width: notch.width + 2 * compactWing, height: notch.height)
-        case .banner: return CGSize(width: notch.width + 2 * bannerWing(for: banner), height: notch.height)
+        case .banner: return CGSize(width: notch.width + 2 * bannerWing, height: notch.height)
         case .expanded: return CGSize(width: max(expandedWidth, notch.width + 2 * compactWing), height: notch.height + expandedBody)
         }
     }
@@ -101,7 +94,10 @@ final class NotchController {
         guard panel == nil, let model else { return }
         let panel = NotchPanel()
         let root = NotchView(state: state).environment(model)
-        panel.contentView = FirstMouseHostingView(rootView: root)
+        let hosting = FirstMouseHostingView(rootView: root)
+        // The panel has a fixed size; don't let SwiftUI drive constraints.
+        hosting.sizingOptions = []
+        panel.contentView = hosting
         self.panel = panel
         place()
         panel.orderFrontRegardless()

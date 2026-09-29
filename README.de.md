@@ -46,7 +46,7 @@ Wachhalte-Apps wie `caffeinate`, KeepingYouAwake und die meisten ihrer Verwandte
 - **Schalter in der Menüleiste.** Nur der Umriss einer Mondsichel heißt: Dein Mac geht in den Ruhezustand. Hält die Sichel eine bernsteinfarbene Lampe, bleibt er wach.
 - **Timer.** 1, 2, 4 oder 8 Stunden – oder bis du es ausschaltest.
 - **Automatisch für KI-Agenten.** Bleibt nur wach, solange ein Agent wirklich arbeitet: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose oder Crush. Die Erkennung prüft die CPU-Aktivität im gesamten Prozessbaum jedes Agenten. Ein Agent, der untätig am Prompt wartet, zählt also nicht. Von T3 Code gestartete Agenten werden T3 Code zugerechnet.
-- **Online bleiben.** Wähle Ersatznetzwerke aus den WLAN-Netzwerken, die dein Mac schon kennt, bring sie per Drag & Drop in die gewünschte Reihenfolge und markiere den Hotspot deines Handys. Fällt das Internet aus, während Melatonin deinen Mac wach hält, verbindet es sich mit dem nächsten Netzwerk der Liste und nutzt dafür das gespeicherte Passwort.
+- **Online bleiben.** Fällt das Internet aus, während Melatonin deinen Mac wach hält – zum Beispiel wenn du den Deckel zuklappst und dich aus dem Büro-WLAN entfernst –, startet es das WLAN neu, damit macOS sich wieder mit einem gespeicherten Netzwerk in Reichweite verbindet, etwa dem Hotspot deines Handys. macOS lässt Apps kein WLAN-Netzwerk nach Namen auswählen. Achte deshalb darauf, dass der Hotspot gespeichert und **Automatisch mit diesem Netzwerk verbinden** aktiviert ist. Mit der Taste **Jetzt testen** siehst du, dass es funktioniert.
 - **Sicherheit zuerst.**
   - Schaltet sich im Batteriebetrieb bei einem Ladestand ab, den du festlegst (standardmäßig 20 %).
   - Schaltet sich ab, wenn dein Mac heiß wird. Ein laufender Laptop in einer geschlossenen Tasche ist der sicherste Weg, eine Batterie zu grillen.
@@ -101,10 +101,10 @@ make run
 Melatonin.app  ──XPC──▶  io.github.jugol.melatonin.helper (root, launchd)
   UI, timers,              pmset -a disablesleep 1 / 0
   safety checks,           …and back to 0 when the app disconnects
-  connection watch         networksetup -setairportnetwork (saved networks only)
+  connection watch         networksetup -setairportpower (Wi-Fi off and on)
 ```
 
-- **Das Hilfsprogramm bietet kaum Angriffsfläche.** Seine gesamte Schnittstelle besteht aus `setSleepDisabled(Bool)` und `joinWiFi(ssid)`, und es lehnt jedes Netzwerk ab, das nicht bereits auf dem Mac gespeichert ist. Es hat keinen Shell-Zugriff und führt keine beliebigen Befehle aus. Siehe [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift).
+- **Das Hilfsprogramm bietet kaum Angriffsfläche.** Seine gesamte Schnittstelle besteht aus `setSleepDisabled(Bool)` plus zwei WLAN-Aufrufen: WLAN neu starten und mit einem Netzwerk verbinden, das bereits auf dem Mac gespeichert ist. Es hat keinen Shell-Zugriff und führt keine beliebigen Befehle aus. Siehe [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift).
 - **Es spricht nur mit Melatonin.** XPC-Verbindungen müssen eine Codesignatur-Anforderung für die Bundle-ID der App erfüllen.
 - **Es ist ausfallsicher.** Der Ruhezustand bleibt nur deaktiviert, solange eine verbundene App das anfordert. Bricht die Verbindung ab, kommt der Ruhezustand zurück. Eine Markierungsdatei deckt Neustarts des Hilfsprogramms und des Macs ab.
 - **Installation und Deinstallation sind einfache Shell-Skripte**, die du nachlesen kannst: [`Support/install-helper.sh`](Support/install-helper.sh) und [`Support/uninstall-helper.sh`](Support/uninstall-helper.sh).
@@ -139,7 +139,7 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 ## Roadmap
 
 - [ ] Signierte, notarisierte Releases, ein Homebrew-Cask und Updates über Sparkle
-- [ ] Online bleiben: zurück zum bevorzugten Netzwerk wechseln, sobald es wieder verfügbar ist
+- [ ] Online bleiben: auswählen, mit welchem gespeicherten Netzwerk sich der Mac wieder verbindet (erfordert Standortzugriff)
 - [ ] Integration der Claude Code Hooks für exakte Start- und Stoppsignale
 - [ ] Zusammenfassung „Während du weg warst“ beim Aufklappen
 

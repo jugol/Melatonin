@@ -46,7 +46,7 @@ Claude Codeに長いタスクを任せ、フタを閉じて席を離れる。す
 - **メニューバーのスイッチ**：三日月の輪郭だけならMacはスリープします。三日月が琥珀色のランプを抱えていれば、スリープしません。
 - **タイマー**：1、2、4、8時間、またはオフにするまで。
 - **AIエージェント自動モード**：Claude Code、Codex、Hermes、OpenCode、T3 Code、Gemini CLI、Cursor Agent、Amp、Goose、Crushが実際に作業している間だけ起きています。各エージェントのプロセスツリー全体のCPU使用状況を見て判定するので、プロンプトで待機しているだけのエージェントはカウントされません。T3 Codeから起動されたエージェントはT3 Codeとして扱われます。
-- **オンラインを維持**：Macがすでに知っているWi-Fiネットワークから予備のネットワークを選び、ドラッグで優先順位を並べ替え、スマートフォンのテザリングに印を付けておけます。MelatoninがMacを起こしている間にインターネットが切れると、保存済みのパスワードを使ってリストの次のネットワークに接続します。
+- **オンラインを維持**：たとえばフタを閉じてオフィスのWi-Fiの圏外に出たときなど、MelatoninがMacを起こしている間にインターネットが切れると、Wi-Fiを再起動し、macOSが範囲内の保存済みネットワーク（スマートフォンのテザリングなど）に再接続できるようにします。macOSではアプリが名前を指定してWi-Fiネットワークを選ぶことができないため、テザリングを保存したうえで**このネットワークに自動接続**をオンにしておいてください。**今すぐテスト**ボタンで、実際に動く様子を確認できます。
 - **安全第一**：
   - バッテリー駆動中は、設定した残量（デフォルトは20%）を下回るとオフになります。
   - Macが熱くなるとオフになります。閉じたバッグの中でノートパソコンを動かし続けるのは、バッテリーを蒸し焼きにするようなものです。
@@ -101,10 +101,10 @@ make run
 Melatonin.app  ──XPC──▶  io.github.jugol.melatonin.helper (root, launchd)
   UI, timers,              pmset -a disablesleep 1 / 0
   safety checks,           …and back to 0 when the app disconnects
-  connection watch         networksetup -setairportnetwork (saved networks only)
+  connection watch         networksetup -setairportpower (Wi-Fi off and on)
 ```
 
-- **ヘルパーの窓口はごく小さい**：インターフェースは`setSleepDisabled(Bool)`と`joinWiFi(ssid)`だけで、Macに保存されていないネットワークはすべて拒否します。シェルへのアクセス権はなく、任意のコマンドも実行しません。詳しくは[`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift)をご覧ください。
+- **ヘルパーの窓口はごく小さい**：インターフェースは`setSleepDisabled(Bool)`と、2つのWi-Fi呼び出し（Wi-Fiの再起動と、Macに保存済みのネットワークへの接続）だけです。シェルへのアクセス権はなく、任意のコマンドも実行しません。詳しくは[`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift)をご覧ください。
 - **Melatoninとしか通信しない**：XPC接続は、アプリのバンドルIDに対するコード署名要件を満たす必要があります。
 - **フェイルセーフ**：スリープが無効になるのは、接続中のアプリがそれを求めている間だけです。接続が切れれば、スリープは元に戻ります。ヘルパーやMacの再起動には、マーカーファイルで対応します。
 - **インストールとアンインストールはただのシェルスクリプト**なので、中身を読んで確認できます：[`Support/install-helper.sh`](Support/install-helper.sh)、[`Support/uninstall-helper.sh`](Support/uninstall-helper.sh)
@@ -139,7 +139,7 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 ## ロードマップ
 
 - [ ] 署名・公証済みのリリース、Homebrew cask、Sparkleによるアップデート
-- [ ] オンラインを維持：優先ネットワークが復帰したら自動で切り替えて戻る
+- [ ] オンラインを維持：再接続する保存済みネットワークを選べるようにする（位置情報へのアクセスが必要）
 - [ ] Claude Code hooksとの連携で、開始と終了を正確に検知
 - [ ] フタを開けたときに「離れていた間」のまとめを表示
 

@@ -11,13 +11,6 @@ struct MelatoninApp: App {
             MenuBarLabel(model: AppModel.shared)
         }
         .menuBarExtraStyle(.window)
-
-        Window("Stay online", id: ConnectionSettings.windowID) {
-            ConnectionSettings().environment(AppModel.shared)
-        }
-        .windowResizability(.contentSize)
-        .windowStyle(.hiddenTitleBar)
-        .defaultPosition(.center)
     }
 }
 
@@ -29,6 +22,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         #endif
         AppModel.shared.start()
         NotchController.shared.start(model: AppModel.shared)
+    }
+
+    /// Opening Melatonin again (Spotlight, Finder, Dock) shows its panel in a
+    /// window, for when the menu bar icon is hidden behind the notch.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        WindowPresenter.shared.showPanel()
+        return false
     }
 
     func applicationWillTerminate(_ notification: Notification) {

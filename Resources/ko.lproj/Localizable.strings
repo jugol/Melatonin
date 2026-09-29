@@ -58,29 +58,13 @@
 
 /* Stay online */
 "Stay online" = "연결 유지";
-"Choose networks" = "네트워크 선택";
-"Switch networks when the internet drops" = "인터넷이 끊기면 다른 네트워크로 전환";
-"Add networks to fall back to" = "전환할 네트워크를 추가하세요";
 "Ready · watches while awake" = "대기 중 · 깨어 있을 때 감시";
 "Online" = "온라인";
-"Online via %@" = "%@ 연결됨";
 "Internet is down" = "인터넷 끊김";
-"Joining %@…" = "%@ 연결 중…";
 "Couldn’t reconnect" = "재연결 실패";
-"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Melatonin이 맥을 깨워두는 동안 인터넷이 끊기면, 이 목록의 다음 네트워크로 연결해요.";
-"Priority" = "우선순위";
-"Add network" = "네트워크 추가";
-"No other saved networks" = "추가할 저장된 네트워크가 없어요";
-"Add the networks you want as backups: home, office, your phone’s hotspot." = "백업으로 쓸 네트워크를 추가하세요. 집, 사무실, 휴대폰 핫스팟 등.";
-"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "드래그해서 순서를 바꿔요. 이 맥이 연결한 적 있는 네트워크만 추가할 수 있고, 저장된 비밀번호를 그대로 써요.";
 "Needs the helper. Set it up from the menu bar." = "헬퍼가 필요해요. 메뉴바에서 설정하세요.";
-"Hotspot" = "핫스팟";
-"Joined" = "연결함";
-"Mark as hotspot" = "핫스팟으로 표시";
-"Remove" = "삭제";
 "Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "iPhone을 쓰나요? Wi-Fi 설정 › 핫스팟 연결 요청 › 자동으로 바꾸면 macOS가 알아서 연결해요.";
 "Open Wi-Fi Settings" = "Wi-Fi 설정 열기";
-"Switched network" = "네트워크 전환";
 "Offline" = "오프라인";
 
 /* Language */
@@ -104,3 +88,21 @@
 "Auto on" = "자동 켜기";
 "Waiting for agents" = "에이전트 대기";
 "How it works" = "작동 방식";
+
+/* Diagnostics and switching */
+"Restarting Wi-Fi…" = "Wi-Fi 다시 켜는 중…";
+"Show activity log" = "활동 기록 보기";
+"Wi-Fi" = "Wi-Fi";
+"Open Melatonin" = "Melatonin 열기";
+
+/* Stay online: reconnecting */
+"Reconnects Wi-Fi if the internet drops" = "인터넷이 끊기면 Wi-Fi를 다시 연결해요";
+"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Melatonin이 맥을 깨워두는 동안 인터넷이 20초 넘게 끊기면, Wi-Fi를 껐다 켜서 macOS가 범위 안의 저장된 네트워크(휴대폰 핫스팟 등)에 다시 연결하게 해요.";
+"Test now" = "지금 테스트";
+"Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi가 몇 초간 꺼졌다가, 맥이 가장 좋은 저장된 네트워크에 다시 연결돼요.";
+"Last reconnected at %@, back online in %lld s" = "%@에 다시 연결됨 · %lld초 만에 복구";
+"Make sure your Mac picks your phone’s hotspot" = "맥이 휴대폰 핫스팟을 잡게 하려면";
+"Join the hotspot once from the Wi-Fi menu so your Mac saves it." = "Wi-Fi 메뉴에서 핫스팟에 한 번 연결해 맥에 저장해두세요.";
+"In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "시스템 설정 › Wi-Fi에서 핫스팟의 세부사항을 열고 “이 네트워크에 자동으로 연결”을 켜세요.";
+"Android: turn off the setting that switches the hotspot off when no devices are connected." = "안드로이드: 연결된 기기가 없으면 핫스팟을 끄는 설정을 꺼두세요.";
+"Reconnected" = "다시 연결됨";

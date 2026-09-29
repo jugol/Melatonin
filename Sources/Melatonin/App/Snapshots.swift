@@ -22,6 +22,7 @@ enum Snapshots {
         }
         guard let flag = arguments.firstIndex(of: "--snapshot"), flag + 1 < arguments.count else { return false }
         let directory = URL(fileURLWithPath: arguments[flag + 1])
+        ActivityLog.isEnabled = false
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
         if let screen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) {
@@ -52,22 +53,13 @@ enum Snapshots {
         model.stage(awake: false, auto: true)
         render(menu(model), scheme: .light, to: directory.appending(path: "menu-auto-waiting.png"))
 
-        let backups = [
-            FallbackNetwork(ssid: "Home 5G", isHotspot: false),
-            FallbackNetwork(ssid: "Office", isHotspot: false),
-            FallbackNetwork(ssid: "Galaxy Z Fold", isHotspot: true),
-        ]
-        model.stage(awake: true, until: later, agents: working)
-        model.connection.stage(enabled: true, networks: backups, status: .online, lastJoined: "Office")
+        let recovery = ConnectionGuard.Recovery(date: Date(), seconds: 5)
+        model.connection.stage(enabled: true, status: .online, lastRecovery: recovery)
         for scheme in [ColorScheme.light, .dark] {
             let suffix = scheme == .dark ? "dark" : "light"
             render(ConnectionSettings().environment(model).background(.background), scheme: scheme,
                    to: directory.appending(path: "connection-\(suffix).png"))
         }
-        model.connection.stage(enabled: false, networks: [], status: .off)
-        render(ConnectionSettings().environment(model).background(.background), scheme: .light,
-               to: directory.appending(path: "connection-empty.png"))
-        model.connection.stage(enabled: true, networks: backups, status: .online, lastJoined: "Office")
 
         let notch = NotchMetrics(notchSize: CGSize(width: 185, height: 32), hasNotch: true)
         let shots: [(String, Bool, () -> Void)] = [
@@ -75,7 +67,7 @@ enum Snapshots {
             ("notch-compact-auto", false, { model.stage(awake: false, agents: working); model.stage(awake: true, agents: working) }),
             ("notch-banner", false, { model.stage(awake: true, banner: .awake) }),
             ("notch-banner-battery", false, { model.stage(awake: false, banner: .stopped(.lowBattery(20))) }),
-            ("notch-banner-network", false, { model.stage(awake: true, banner: .joinedNetwork("선웅의 Z Fold8")) }),
+            ("notch-banner-network", false, { model.stage(awake: true, banner: .reconnected) }),
             ("notch-expanded-on", true, { model.stage(awake: true, until: later, agents: working) }),
             ("notch-expanded-off", true, { model.stage(awake: false, agents: [AgentActivity(name: "Codex", isWorking: false)]) }),
         ]

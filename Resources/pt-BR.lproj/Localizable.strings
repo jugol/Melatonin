@@ -58,29 +58,13 @@
 
 /* Stay online */
 "Stay online" = "Manter conexão";
-"Choose networks" = "Escolher redes";
-"Switch networks when the internet drops" = "Troca de rede se a internet cair";
-"Add networks to fall back to" = "Adicione redes de reserva";
 "Ready · watches while awake" = "Pronto · monitora com o Mac acordado";
 "Online" = "Conectado";
-"Online via %@" = "Conectado a %@";
 "Internet is down" = "Sem internet";
-"Joining %@…" = "Conectando a %@…";
 "Couldn’t reconnect" = "Não reconectou";
-"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Se a internet cair enquanto o Melatonin mantém seu Mac acordado, ele se conecta à próxima rede desta lista.";
-"Priority" = "Prioridade";
-"Add network" = "Adicionar rede";
-"No other saved networks" = "Nenhuma outra rede salva";
-"Add the networks you want as backups: home, office, your phone’s hotspot." = "Adicione as redes que você quer usar como reserva: casa, trabalho, o ponto de acesso do seu celular.";
-"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "Arraste para mudar a ordem. Só é possível adicionar redes a que este Mac já se conectou; as senhas salvas serão usadas.";
 "Needs the helper. Set it up from the menu bar." = "Requer a ferramenta auxiliar. Configure-a na barra de menus.";
-"Hotspot" = "Ponto de acesso";
-"Joined" = "Conectada";
-"Mark as hotspot" = "Marcar como ponto de acesso";
-"Remove" = "Remover";
 "Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "Usa um iPhone? O macOS pode se conectar ao Acesso Pessoal dele automaticamente: ajustes de Wi-Fi › Solicitar conexão a pontos de acesso › Automático.";
 "Open Wi-Fi Settings" = "Abrir ajustes de Wi-Fi";
-"Switched network" = "Trocou de rede";
 "Offline" = "Sem conexão";
 
 /* Language */
@@ -104,3 +88,21 @@
 "Auto on" = "Auto ligado";
 "Waiting for agents" = "Aguardando agentes";
 "How it works" = "Como funciona";
+
+/* Diagnostics and switching */
+"Restarting Wi-Fi…" = "Reiniciando o Wi-Fi…";
+"Show activity log" = "Mostrar registro de atividade";
+"Wi-Fi" = "Wi-Fi";
+"Open Melatonin" = "Abrir o Melatonin";
+
+/* Stay online: reconnecting */
+"Reconnects Wi-Fi if the internet drops" = "Reconecta o Wi-Fi se a internet cair";
+"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Se a internet cair por 20 segundos enquanto o Melatonin mantém seu Mac acordado, ele reinicia o Wi-Fi para o macOS voltar a uma rede salva por perto, como o ponto de acesso do seu celular.";
+"Test now" = "Testar agora";
+"Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "O Wi-Fi desliga por alguns segundos e o Mac volta para a melhor rede salva.";
+"Last reconnected at %@, back online in %lld s" = "Reconectado às %@, online de novo em %lld s";
+"Make sure your Mac picks your phone’s hotspot" = "Faça seu Mac escolher o ponto de acesso do celular";
+"Join the hotspot once from the Wi-Fi menu so your Mac saves it." = "Conecte-se uma vez ao ponto de acesso pelo menu Wi-Fi para o Mac salvá-lo.";
+"In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "Em Ajustes do Sistema › Wi-Fi, abra os Detalhes do ponto de acesso e ative “Conectar automaticamente a esta rede”.";
+"Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android: desative a opção que desliga o ponto de acesso quando nenhum dispositivo está conectado.";
+"Reconnected" = "Reconectado";

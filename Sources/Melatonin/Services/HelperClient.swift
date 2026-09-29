@@ -28,15 +28,23 @@ final class HelperClient {
         try await call { proxy, reply in proxy.setSleepDisabled(disabled, reply: reply) }
     }
 
-    func joinWiFi(_ ssid: String) async throws {
-        try await call { proxy, reply in proxy.joinWiFi(ssid, reply: reply) }
+    func restartWiFi() async throws {
+        try await call(timeout: 40) { proxy, reply in proxy.restartWiFi(reply: reply) }
     }
 
-    private func call(_ body: (MelatoninHelperProtocol, @escaping (Bool, String?) -> Void) -> Void) async throws {
+    /// Calls the helper, giving up after `timeout` seconds so a stuck request
+    /// can't stall whoever is waiting on it.
+    private func call(
+        timeout: TimeInterval = 20,
+        _ body: (MelatoninHelperProtocol, @escaping (Bool, String?) -> Void) -> Void
+    ) async throws {
         let error: String? = await withCheckedContinuation { continuation in
             let once = ResumeOnce(continuation)
             guard let proxy = remote(onError: { once.resume($0.localizedDescription) }) else {
                 return once.resume("Couldn’t reach the helper.")
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
+                once.resume("The helper didn’t answer within \(Int(timeout)) s.")
             }
             body(proxy) { ok, message in
                 once.resume(ok ? nil : (message ?? "Unknown helper error"))

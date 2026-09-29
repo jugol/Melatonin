@@ -58,29 +58,13 @@
 
 /* Stay online */
 "Stay online" = "Оставаться на связи";
-"Choose networks" = "Выбрать сети";
-"Switch networks when the internet drops" = "Переключать сеть, если пропал интернет";
-"Add networks to fall back to" = "Добавьте резервные сети";
 "Ready · watches while awake" = "Готово · следит, пока Mac не спит";
 "Online" = "Онлайн";
-"Online via %@" = "Онлайн через %@";
 "Internet is down" = "Нет интернета";
-"Joining %@…" = "Подключение к «%@»…";
 "Couldn’t reconnect" = "Не подключено";
-"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "Если интернет пропадет, пока Melatonin не дает Mac уснуть, приложение подключится к следующей сети в списке.";
-"Priority" = "Приоритет";
-"Add network" = "Добавить сеть";
-"No other saved networks" = "Других сохраненных сетей нет";
-"Add the networks you want as backups: home, office, your phone’s hotspot." = "Добавьте резервные сети: домашнюю, рабочую, точку доступа телефона.";
-"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "Перетащите, чтобы изменить порядок. Можно добавить только сети, к которым этот Mac уже подключался; используются сохраненные пароли.";
 "Needs the helper. Set it up from the menu bar." = "Нужен помощник. Настройте его в строке меню.";
-"Hotspot" = "Точка доступа";
-"Joined" = "Подключено";
-"Mark as hotspot" = "Отметить как точку доступа";
-"Remove" = "Удалить";
 "Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "Используете iPhone? macOS может сама подключаться к нему в режиме модема: «Настройки Wi-Fi» › «Спрашивать о подключении к точкам доступа» › «Автоматически».";
 "Open Wi-Fi Settings" = "Открыть настройки Wi-Fi";
-"Switched network" = "Сеть изменена";
 "Offline" = "Офлайн";
 
 /* Language */
@@ -104,3 +88,21 @@
 "Auto on" = "Авто вкл.";
 "Waiting for agents" = "Ждёт агентов";
 "How it works" = "Как это работает";
+
+/* Diagnostics and switching */
+"Restarting Wi-Fi…" = "Перезапуск Wi-Fi…";
+"Show activity log" = "Показать журнал активности";
+"Wi-Fi" = "Wi-Fi";
+"Open Melatonin" = "Открыть Melatonin";
+
+/* Stay online: reconnecting */
+"Reconnects Wi-Fi if the internet drops" = "Переподключает Wi-Fi, если пропал интернет";
+"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Если интернет пропадает на 20 секунд, пока Melatonin не даёт Mac уснуть, он перезапускает Wi-Fi, чтобы macOS снова подключилась к сохранённой сети поблизости, например к точке доступа телефона.";
+"Test now" = "Проверить";
+"Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi выключится на несколько секунд, затем Mac подключится к лучшей сохранённой сети.";
+"Last reconnected at %@, back online in %lld s" = "Переподключено в %@, интернет вернулся через %lld с";
+"Make sure your Mac picks your phone’s hotspot" = "Чтобы Mac выбирал точку доступа телефона";
+"Join the hotspot once from the Wi-Fi menu so your Mac saves it." = "Один раз подключитесь к точке доступа через меню Wi-Fi, чтобы Mac её запомнил.";
+"In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "В Системных настройках › Wi-Fi откройте «Подробнее» для точки доступа и включите «Автоматически подключаться к этой сети».";
+"Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android: отключите параметр, который выключает точку доступа, когда нет подключённых устройств.";
+"Reconnected" = "Переподключено";

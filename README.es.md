@@ -46,7 +46,7 @@ Las apps para mantener el Mac despierto, como `caffeinate`, KeepingYouAwake y ca
 - **Interruptor en la barra de menús.** Si ves solo el contorno de una media luna, tu Mac se dormirá; si la media luna sostiene una lámpara ámbar, no.
 - **Temporizadores.** 1, 2, 4 u 8 horas, o hasta que lo desactives.
 - **Automático con agentes de IA.** Se mantiene despierto solo mientras un agente está trabajando de verdad: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose o Crush. La detección mira la actividad de CPU de todo el árbol de procesos de cada agente, así que un agente esperando en su prompt no cuenta. Los agentes que lanza T3 Code se atribuyen a T3 Code.
-- **Seguir conectado.** Elige redes de respaldo entre las redes Wi-Fi que tu Mac ya conoce, arrástralas para ordenarlas por prioridad y marca el punto de acceso de tu teléfono. Si se cae internet mientras Melatonin mantiene despierto tu Mac, se conecta a la siguiente red de la lista con la contraseña guardada.
+- **Seguir conectado.** Si se cae internet mientras Melatonin mantiene despierto tu Mac, por ejemplo cuando cierras la tapa y sales del alcance del Wi-Fi de la oficina, reinicia el Wi-Fi para que macOS vuelva a conectarse a una red guardada cercana, como el punto de acceso de tu teléfono. macOS no permite que las apps elijan una red Wi-Fi por su nombre, así que asegúrate de que el punto de acceso esté guardado con **Conectarse automáticamente a esta red** activado. El botón **Probar ahora** te muestra que funciona.
 - **La seguridad, lo primero.**
   - Con batería, se desactiva al llegar al mínimo que elijas (20 % por defecto).
   - Se desactiva si tu Mac se calienta. Un portátil encendido dentro de una mochila cerrada es la receta perfecta para cocinar la batería.
@@ -101,10 +101,10 @@ make run
 Melatonin.app  ──XPC──▶  io.github.jugol.melatonin.helper (root, launchd)
   UI, timers,              pmset -a disablesleep 1 / 0
   safety checks,           …and back to 0 when the app disconnects
-  connection watch         networksetup -setairportnetwork (saved networks only)
+  connection watch         networksetup -setairportpower (Wi-Fi off and on)
 ```
 
-- **La herramienta auxiliar expone lo mínimo.** Toda su interfaz se reduce a `setSleepDisabled(Bool)` y `joinWiFi(ssid)`, y rechaza cualquier red que no esté ya guardada en el Mac. No tiene acceso a la shell ni ejecuta comandos arbitrarios. Compruébalo en [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift).
+- **La herramienta auxiliar expone lo mínimo.** Toda su interfaz se reduce a `setSleepDisabled(Bool)` más dos llamadas de Wi-Fi: reiniciar el Wi-Fi y conectarse a una red ya guardada en el Mac. No tiene acceso a la shell ni ejecuta comandos arbitrarios. Compruébalo en [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift).
 - **Solo habla con Melatonin.** Las conexiones XPC deben cumplir un requisito de firma de código ligado al identificador de paquete de la app.
 - **Es a prueba de fallos.** El reposo solo sigue desactivado mientras una app conectada lo pida. Si se corta la conexión, vuelve el reposo. Un archivo marcador cubre los reinicios de la herramienta auxiliar y del sistema.
 - **La instalación y la desinstalación son simples scripts de shell** que puedes leer: [`Support/install-helper.sh`](Support/install-helper.sh) y [`Support/uninstall-helper.sh`](Support/uninstall-helper.sh).
@@ -139,7 +139,7 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 ## Hoja de ruta
 
 - [ ] Versiones firmadas y notarizadas, un cask de Homebrew y actualizaciones con Sparkle
-- [ ] Seguir conectado: volver a la red preferida cuando esté disponible de nuevo
+- [ ] Seguir conectado: elegir a qué red guardada volver a conectarse (requiere acceso a la ubicación)
 - [ ] Integración con los hooks de Claude Code para detectar con exactitud el inicio y el fin
 - [ ] Resumen «Mientras no estabas» al abrir la tapa
 

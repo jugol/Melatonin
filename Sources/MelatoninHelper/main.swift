@@ -5,7 +5,9 @@ import MelatoninShared
 // flips it back the moment the app that asked goes away — quit, crash, or
 // force-kill — so a Mac is never left unable to sleep by accident.
 
-func run(_ executable: String, _ arguments: [String]) -> (status: Int32, output: String) {
+/// Runs a tool and returns its exit status and combined output. A tool still
+/// running after `timeout` seconds is terminated, so nothing can wedge the helper.
+func run(_ executable: String, _ arguments: [String], timeout: TimeInterval = 30) -> (status: Int32, output: String) {
     let process = Process()
     process.executableURL = URL(fileURLWithPath: executable)
     process.arguments = arguments
@@ -13,9 +15,16 @@ func run(_ executable: String, _ arguments: [String]) -> (status: Int32, output:
     process.standardOutput = pipe
     process.standardError = pipe
     do { try process.run() } catch { return (-1, error.localizedDescription) }
+    DispatchQueue.global().asyncAfter(deadline: .now() + timeout) {
+        if process.isRunning { process.terminate() }
+    }
     let data = pipe.fileHandleForReading.readDataToEndOfFile()
     process.waitUntilExit()
-    return (process.terminationStatus, String(decoding: data, as: UTF8.self))
+    let output = String(decoding: data, as: UTF8.self)
+    if process.terminationReason == .uncaughtSignal {
+        return (-1, "Timed out after \(Int(timeout)) s. \(output)")
+    }
+    return (process.terminationStatus, output)
 }
 
 enum Power {
@@ -41,8 +50,8 @@ enum Power {
 }
 
 enum WiFi {
-    private static func networksetup(_ arguments: [String]) -> (status: Int32, output: String) {
-        run("/usr/sbin/networksetup", arguments)
+    private static func networksetup(_ arguments: [String], timeout: TimeInterval = 15) -> (status: Int32, output: String) {
+        run("/usr/sbin/networksetup", arguments, timeout: timeout)
     }
 
     /// The Wi-Fi interface, usually en0.
@@ -65,10 +74,21 @@ enum WiFi {
         guard let device else { return "No Wi-Fi interface found." }
         guard savedNetworks(on: device).contains(ssid) else { return "“\(ssid)” isn’t a saved network." }
         // networksetup exits 0 even when joining fails; any output is an error.
-        let result = networksetup(["-setairportnetwork", device, ssid])
+        let result = networksetup(["-setairportnetwork", device, ssid], timeout: 25)
         let message = result.output.trimmingCharacters(in: .whitespacesAndNewlines)
         if result.status == 0 && message.isEmpty { return nil }
         return message.isEmpty ? "networksetup exited with \(result.status)" : message
+    }
+
+    /// Turns Wi-Fi off and on. macOS then scans and joins the best network it
+    /// already knows, which works even where joining by name is refused.
+    static func restart() -> String? {
+        guard let device else { return "No Wi-Fi interface found." }
+        let off = networksetup(["-setairportpower", device, "off"])
+        Thread.sleep(forTimeInterval: 2)
+        let on = networksetup(["-setairportpower", device, "on"])
+        let failures = [off, on].filter { $0.status != 0 }.map { $0.output.trimmingCharacters(in: .whitespacesAndNewlines) }
+        return failures.isEmpty ? nil : failures.joined(separator: " ")
     }
 }
 
@@ -110,9 +130,20 @@ final class Session: NSObject, MelatoninHelperProtocol {
         reply(Power.isSleepDisabled)
     }
 
+    // Wi-Fi work can take a while; keep it off the connection's queue so a
+    // sleep request never waits behind it.
     func joinWiFi(_ ssid: String, reply: @escaping (Bool, String?) -> Void) {
-        let error = WiFi.join(ssid)
-        reply(error == nil, error)
+        DispatchQueue.global().async {
+            let error = WiFi.join(ssid)
+            reply(error == nil, error)
+        }
+    }
+
+    func restartWiFi(reply: @escaping (Bool, String?) -> Void) {
+        DispatchQueue.global().async {
+            let error = WiFi.restart()
+            reply(error == nil, error)
+        }
     }
 }
 

@@ -58,29 +58,13 @@
 
 /* Stay online */
 "Stay online" = "オンラインを維持";
-"Choose networks" = "ネットワークを選択";
-"Switch networks when the internet drops" = "インターネットが切れたら別のネットワークに切り替え";
-"Add networks to fall back to" = "切り替え先のネットワークを追加";
 "Ready · watches while awake" = "準備完了 · 起きている間は監視";
 "Online" = "オンライン";
-"Online via %@" = "%@で接続中";
 "Internet is down" = "インターネット切断";
-"Joining %@…" = "%@に接続中…";
 "Couldn’t reconnect" = "再接続に失敗";
-"If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list." = "MelatoninがMacを起こしている間にインターネットが切れると、このリストの次のネットワークに接続します。";
-"Priority" = "優先順位";
-"Add network" = "ネットワークを追加";
-"No other saved networks" = "ほかに保存済みのネットワークはありません";
-"Add the networks you want as backups: home, office, your phone’s hotspot." = "予備のネットワークを追加しましょう：自宅、オフィス、スマートフォンのテザリングなど。";
-"Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used." = "ドラッグで並べ替えられます。追加できるのはこのMacが接続したことのあるネットワークだけで、保存済みのパスワードが使われます。";
 "Needs the helper. Set it up from the menu bar." = "ヘルパーが必要です。メニューバーから設定してください。";
-"Hotspot" = "テザリング";
-"Joined" = "接続済み";
-"Mark as hotspot" = "テザリングとしてマーク";
-"Remove" = "削除";
 "Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic." = "iPhoneをお使いですか？「Wi-Fi設定 › インターネット共有への接続を確認 › 自動」にすると、macOSがインターネット共有に自動で接続します。";
 "Open Wi-Fi Settings" = "Wi-Fi設定を開く";
-"Switched network" = "切り替えました";
 "Offline" = "オフライン";
 
 /* Language */
@@ -104,3 +88,21 @@
 "Auto on" = "自動オン";
 "Waiting for agents" = "エージェント待機";
 "How it works" = "しくみ";
+
+/* Diagnostics and switching */
+"Restarting Wi-Fi…" = "Wi-Fi を再起動中…";
+"Show activity log" = "アクティビティログを表示";
+"Wi-Fi" = "Wi-Fi";
+"Open Melatonin" = "Melatonin を開く";
+
+/* Stay online: reconnecting */
+"Reconnects Wi-Fi if the internet drops" = "インターネットが切れたら Wi-Fi を再接続";
+"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Melatonin が Mac を起こしている間にインターネットが 20 秒以上切れると、Wi-Fi を再起動して、範囲内の保存済みネットワーク（スマートフォンのテザリングなど）に macOS が再接続するようにします。";
+"Test now" = "今すぐテスト";
+"Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi が数秒オフになり、Mac が最適な保存済みネットワークに再接続します。";
+"Last reconnected at %@, back online in %lld s" = "%@ に再接続、%lld 秒で復旧";
+"Make sure your Mac picks your phone’s hotspot" = "Mac がスマートフォンのテザリングを選ぶようにするには";
+"Join the hotspot once from the Wi-Fi menu so your Mac saves it." = "Wi-Fi メニューから一度テザリングに接続して、Mac に保存しておきます。";
+"In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "「システム設定」›「Wi-Fi」でテザリングの「詳細」を開き、「このネットワークに自動接続」をオンにします。";
+"Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android：接続中のデバイスがないときにテザリングをオフにする設定を無効にします。";
+"Reconnected" = "再接続しました";

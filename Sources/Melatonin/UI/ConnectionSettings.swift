@@ -1,10 +1,8 @@
 import SwiftUI
 
-/// Picks and orders the saved networks Melatonin falls back to when the
-/// internet drops.
+/// "Stay online": what it does, whether it's working, a way to test it, and
+/// the macOS settings that decide which network the Mac rejoins.
 struct ConnectionSettings: View {
-    static let windowID = "connection"
-
     @Environment(AppModel.self) private var model
 
     var body: some View {
@@ -12,32 +10,35 @@ struct ConnectionSettings: View {
         VStack(alignment: .leading, spacing: 0) {
             header(isOn: $connection.isEnabled)
                 .padding(.horizontal, 22)
-                .padding(.top, 38)
+                .padding(.top, 20)
                 .padding(.bottom, 16)
 
-            StatusLine(connection: connection)
-                .padding(.horizontal, 22)
-                .padding(.bottom, 18)
-
-            HStack {
-                Text("Priority")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.secondary)
+            HStack(spacing: 10) {
+                StatusLine(connection: connection)
                 Spacer()
-                AddNetworkMenu(connection: connection)
+                Button { connection.testNow() } label: {
+                    Label("Test now", systemImage: "arrow.clockwise")
+                        .font(.system(size: 12, weight: .semibold))
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .disabled(connection.isRecovering || model.helperStatus != .ready)
             }
             .padding(.horizontal, 22)
-            .padding(.bottom, 8)
 
-            NetworkList(connection: connection)
-                .padding(.horizontal, 16)
-
-            Text("Drag to reorder. Only networks this Mac has joined before can be added; their saved passwords are used.")
-                .font(.system(size: 11))
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 22)
-                .padding(.top, 8)
+            Group {
+                if let recovery = connection.lastRecovery {
+                    let time = recovery.date.formatted(date: .omitted, time: .shortened)
+                    Text("Last reconnected at \(time), back online in \(recovery.seconds) s")
+                } else {
+                    Text("Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network.")
+                }
+            }
+            .font(.system(size: 11))
+            .foregroundStyle(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.horizontal, 22)
+            .padding(.top, 8)
 
             if model.helperStatus != .ready {
                 Label("Needs the helper. Set it up from the menu bar.", systemImage: "lock.shield")
@@ -49,7 +50,7 @@ struct ConnectionSettings: View {
 
             Divider().padding(.horizontal, 22).padding(.vertical, 18)
 
-            iPhoneTip
+            HotspotTips()
                 .padding(.horizontal, 22)
                 .padding(.bottom, 22)
         }
@@ -62,9 +63,8 @@ struct ConnectionSettings: View {
             .frame(height: 260)
             .allowsHitTesting(false)
         }
-        .onAppear { connection.reloadSavedNetworks() }
-        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: connection.networks)
         .animation(.spring(response: 0.4, dampingFraction: 0.85), value: connection.isEnabled)
+        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: connection.status)
     }
 
     private func header(isOn: Binding<Bool>) -> some View {
@@ -82,7 +82,7 @@ struct ConnectionSettings: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Stay online")
                     .font(.system(size: 20, weight: .semibold, design: Theme.rounded))
-                Text("If the internet drops while Melatonin keeps your Mac awake, it joins the next network on this list.")
+                Text("If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot.")
                     .font(.system(size: 12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -94,24 +94,39 @@ struct ConnectionSettings: View {
                 .labelsHidden()
         }
     }
+}
 
-    private var iPhoneTip: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: "personalhotspot")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(.green)
-                .frame(width: 22)
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic.")
-                    .font(.system(size: 11))
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                Button("Open Wi-Fi Settings") {
-                    NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.wifi-settings-extension")!)
-                }
-                .buttonStyle(.link)
-                .font(.system(size: 11, weight: .medium))
+/// The macOS and phone settings that decide whether the hotspot gets picked.
+private struct HotspotTips: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label("Make sure your Mac picks your phone’s hotspot", systemImage: "personalhotspot")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(.primary)
+            tip(1, "Join the hotspot once from the Wi-Fi menu so your Mac saves it.")
+            tip(2, "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”.")
+            tip(3, "Android: turn off the setting that switches the hotspot off when no devices are connected.")
+            tip(4, "Using an iPhone? macOS can join its Personal Hotspot automatically: Wi-Fi settings › Ask to join hotspots › Automatic.")
+            Button("Open Wi-Fi Settings") {
+                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.wifi-settings-extension")!)
             }
+            .buttonStyle(.link)
+            .font(.system(size: 11, weight: .medium))
+            .padding(.leading, 26)
+        }
+    }
+
+    private func tip(_ number: Int, _ text: LocalizedStringKey) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            Text(verbatim: "\(number)")
+                .font(.system(size: 10, weight: .bold, design: Theme.rounded))
+                .foregroundStyle(.green)
+                .frame(width: 18, height: 18)
+                .background(Circle().fill(.green.opacity(0.14)))
+            Text(text)
+                .font(.system(size: 11))
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }
@@ -138,128 +153,8 @@ private struct StatusLine: View {
         switch connection.status {
         case .online: .green
         case .offline, .exhausted: .red
-        case .switching: Theme.amber
+        case .restartingWiFi: Theme.amber
         case .off, .standby: .secondary
         }
-    }
-}
-
-private struct AddNetworkMenu: View {
-    let connection: ConnectionGuard
-
-    var body: some View {
-        Menu {
-            if connection.availableToAdd.isEmpty {
-                Text("No other saved networks")
-            }
-            ForEach(connection.availableToAdd, id: \.self) { ssid in
-                Button {
-                    connection.add(ssid)
-                } label: {
-                    Label(ssid, systemImage: FallbackNetwork.looksLikeHotspot(ssid) ? "personalhotspot" : "wifi")
-                }
-            }
-        } label: {
-            Label("Add network", systemImage: "plus")
-                .font(.system(size: 12, weight: .medium))
-        }
-        .menuStyle(.borderlessButton)
-        .fixedSize()
-    }
-}
-
-private struct NetworkList: View {
-    let connection: ConnectionGuard
-    private let rowHeight: CGFloat = 40
-
-    var body: some View {
-        Group {
-            if connection.networks.isEmpty {
-                VStack(spacing: 8) {
-                    Image(systemName: "wifi.exclamationmark")
-                        .font(.system(size: 22, weight: .medium))
-                        .foregroundStyle(.tertiary)
-                    Text("Add the networks you want as backups: home, office, your phone’s hotspot.")
-                        .font(.system(size: 12))
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 26)
-                .padding(.horizontal, 30)
-            } else {
-                List {
-                    ForEach(Array(connection.networks.enumerated()), id: \.element.id) { index, network in
-                        NetworkRow(rank: index + 1, network: network, connection: connection)
-                            .listRowSeparator(.hidden)
-                            .listRowInsets(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
-                    }
-                    .onMove(perform: connection.move)
-                }
-                .listStyle(.plain)
-                .scrollContentBackground(.hidden)
-                .scrollDisabled(connection.networks.count <= 6)
-                .frame(height: min(CGFloat(connection.networks.count), 6) * rowHeight + 8)
-            }
-        }
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.primary.opacity(0.04))
-                .strokeBorder(.primary.opacity(0.08), lineWidth: 0.5)
-        )
-    }
-}
-
-private struct NetworkRow: View {
-    let rank: Int
-    let network: FallbackNetwork
-    let connection: ConnectionGuard
-
-    var body: some View {
-        HStack(spacing: 10) {
-            Text(verbatim: "\(rank)")
-                .font(.system(size: 11, weight: .bold, design: Theme.rounded))
-                .foregroundStyle(rank == 1 ? AnyShapeStyle(Theme.ink) : AnyShapeStyle(.secondary))
-                .frame(width: 20, height: 20)
-                .background(Circle().fill(rank == 1 ? AnyShapeStyle(Theme.amber) : AnyShapeStyle(.primary.opacity(0.08))))
-            Image(systemName: network.isHotspot ? "personalhotspot" : "wifi")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundStyle(network.isHotspot ? .green : .blue)
-                .frame(width: 18)
-            Text(network.ssid)
-                .font(.system(size: 13))
-                .lineLimit(1)
-            if network.isHotspot {
-                Text("Hotspot")
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundStyle(.green)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(Capsule().fill(.green.opacity(0.14)))
-            }
-            if connection.lastJoined == network.ssid {
-                Text("Joined")
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundStyle(Theme.ember)
-            }
-            Spacer(minLength: 6)
-            Button { connection.toggleHotspot(network) } label: {
-                Image(systemName: network.isHotspot ? "personalhotspot.circle.fill" : "personalhotspot.circle")
-                    .font(.system(size: 15))
-                    .foregroundStyle(network.isHotspot ? AnyShapeStyle(.green) : AnyShapeStyle(.tertiary))
-            }
-            .buttonStyle(.borderless)
-            .help("Mark as hotspot")
-            Button { connection.remove(network) } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 15))
-                    .foregroundStyle(.tertiary)
-            }
-            .buttonStyle(.borderless)
-            .help("Remove")
-        }
-        .frame(height: 40)
-        .contentShape(Rectangle())
     }
 }

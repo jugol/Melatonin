@@ -46,7 +46,7 @@ Les apps anti-veille comme `caffeinate`, KeepingYouAwake et la plupart de leurs 
 - **Interrupteur dans la barre des menus.** Un simple contour de croissant de lune : votre Mac se mettra en veille. Un croissant qui tient une lampe ambrée : il restera éveillé.
 - **Minuteurs.** 1, 2, 4 ou 8 heures, ou jusqu’à ce que vous le désactiviez.
 - **Auto pour les agents IA.** Reste éveillé uniquement quand un agent travaille vraiment : Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose ou Crush. La détection surveille l’activité CPU de toute l’arborescence de processus de chaque agent : un agent qui attend sagement à son invite ne compte donc pas. Les agents lancés par T3 Code sont attribués à T3 Code.
-- **Rester en ligne.** Choisissez des réseaux de secours parmi les réseaux Wi-Fi que votre Mac connaît déjà, faites-les glisser pour les classer par priorité et indiquez lequel est le partage de connexion de votre téléphone. Si Internet est coupé pendant que Melatonin garde votre Mac éveillé, il se connecte au réseau suivant de la liste avec le mot de passe enregistré.
+- **Rester en ligne.** Si Internet est coupé pendant que Melatonin garde votre Mac éveillé, par exemple quand vous fermez l’écran et vous éloignez du Wi-Fi du bureau, il redémarre le Wi-Fi pour que macOS rejoigne un réseau enregistré à portée, comme le partage de connexion de votre téléphone. macOS ne permet pas aux apps de choisir un réseau Wi-Fi par son nom : assurez-vous donc que le partage de connexion est enregistré avec l’option **Rejoindre automatiquement ce réseau** activée. Un bouton **Tester maintenant** vous montre que tout fonctionne.
 - **La sécurité avant tout.**
   - Sur batterie, se désactive au seuil de charge que vous choisissez (20 % par défaut).
   - Se désactive si votre Mac chauffe trop. Un portable allumé dans un sac fermé, c’est le meilleur moyen de cuire une batterie.
@@ -101,10 +101,10 @@ make run
 Melatonin.app  ──XPC──▶  io.github.jugol.melatonin.helper (root, launchd)
   UI, timers,              pmset -a disablesleep 1 / 0
   safety checks,           …and back to 0 when the app disconnects
-  connection watch         networksetup -setairportnetwork (saved networks only)
+  connection watch         networksetup -setairportpower (Wi-Fi off and on)
 ```
 
-- **L’utilitaire a une surface d’attaque minimale.** Toute son interface se résume à `setSleepDisabled(Bool)` et `joinWiFi(ssid)`, et il refuse tout réseau qui n’est pas déjà enregistré sur le Mac. Il n’a pas accès au shell et n’exécute aucune commande arbitraire. Voir [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift).
+- **L’utilitaire a une surface d’attaque minimale.** Toute son interface se résume à `setSleepDisabled(Bool)` plus deux appels Wi-Fi : redémarrer le Wi-Fi et rejoindre un réseau déjà enregistré sur le Mac. Il n’a pas accès au shell et n’exécute aucune commande arbitraire. Voir [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift).
 - **Il ne parle qu’à Melatonin.** Les connexions XPC doivent satisfaire une exigence de signature de code liée à l’identifiant de bundle de l’app.
 - **En cas de problème, retour à la normale.** La veille reste désactivée uniquement tant qu’une app connectée le demande. Si la connexion tombe, la veille revient. Un fichier témoin prend le relais en cas de redémarrage de l’utilitaire ou du Mac.
 - **L’installation et la désinstallation sont de simples scripts shell** que vous pouvez lire : [`Support/install-helper.sh`](Support/install-helper.sh) et [`Support/uninstall-helper.sh`](Support/uninstall-helper.sh).
@@ -139,7 +139,7 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 ## Feuille de route
 
 - [ ] Versions signées et notariées, cask Homebrew et mises à jour via Sparkle
-- [ ] Rester en ligne : revenir au réseau préféré dès qu’il est de nouveau disponible
+- [ ] Rester en ligne : choisir le réseau enregistré à rejoindre (nécessite l’accès à la localisation)
 - [ ] Intégration des hooks Claude Code pour des signaux de début et de fin précis
 - [ ] Résumé « Pendant votre absence » à l’ouverture de l’écran
 

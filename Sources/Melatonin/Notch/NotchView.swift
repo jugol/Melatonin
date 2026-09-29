@@ -110,7 +110,7 @@ private struct BannerWings: View {
                     .minimumScaleFactor(0.8)
             }
             .padding(.leading, 16)
-            .frame(width: NotchLayout.bannerWing(for: banner), alignment: .leading)
+            .frame(width: NotchLayout.bannerWing, alignment: .leading)
 
             Spacer(minLength: notch.width)
 
@@ -120,7 +120,7 @@ private struct BannerWings: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
                 .padding(.trailing, 16)
-                .frame(width: NotchLayout.bannerWing(for: banner), alignment: .trailing)
+                .frame(width: NotchLayout.bannerWing, alignment: .trailing)
         }
         .frame(height: notch.height)
     }
@@ -140,7 +140,7 @@ private struct BannerWings: View {
             Image(systemName: "timer").foregroundStyle(Theme.moon)
         case .failed:
             Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.yellow)
-        case .joinedNetwork:
+        case .reconnected:
             Image(systemName: "wifi").foregroundStyle(Theme.amber)
         case .offline:
             Image(systemName: "wifi.slash").foregroundStyle(.red)
@@ -158,7 +158,7 @@ private struct BannerWings: View {
         case .stopped(.timerEnded): String(localized: "Time’s up")
         case .agentStarted(let name): name
         case .failed: String(localized: "Couldn’t switch")
-        case .joinedNetwork(let ssid): ssid
+        case .reconnected: String(localized: "Wi-Fi")
         case .offline: String(localized: "Offline")
         case .autoArmed: String(localized: "Auto on")
         }
@@ -171,7 +171,7 @@ private struct BannerWings: View {
         case .stopped: String(localized: "Sleep resumed")
         case .agentStarted: String(localized: "Staying awake")
         case .failed: String(localized: "Open the menu")
-        case .joinedNetwork: String(localized: "Switched network")
+        case .reconnected: String(localized: "Reconnected")
         case .offline: String(localized: "Couldn’t reconnect")
         case .autoArmed: String(localized: "Waiting for agents")
         }
@@ -179,7 +179,7 @@ private struct BannerWings: View {
 
     private var accent: Color {
         switch banner.kind {
-        case .awake, .agentStarted, .joinedNetwork: Theme.amber
+        case .awake, .agentStarted, .reconnected: Theme.amber
         default: .white.opacity(0.6)
         }
     }
@@ -234,6 +234,15 @@ private struct ExpandedNotch: View {
                 BatteryLabel(battery: model.battery)
                 AgentLabel()
                 Spacer()
+                Button { WindowPresenter.shared.showPanel() } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 13))
+                        .foregroundStyle(.white.opacity(0.55))
+                        .frame(width: 26, height: 26)
+                        .background(Circle().fill(.white.opacity(0.08)))
+                }
+                .buttonStyle(PressableStyle())
+                .help("Open Melatonin")
             }
             .font(.system(size: 11, weight: .medium))
             .foregroundStyle(.white.opacity(0.5))

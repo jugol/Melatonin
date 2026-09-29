@@ -46,7 +46,7 @@ Claude Code에 긴 작업을 맡기고 뚜껑을 닫고 자리를 비우면, 맥
 - **메뉴바 스위치.** 초승달 테두리만 보이면 잠드는 상태, 초승달이 주황 램프를 품고 있으면 깨어 있는 상태예요.
 - **타이머.** 1·2·4·8시간, 또는 직접 끌 때까지.
 - **AI 에이전트 자동 감지.** Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose, Crush가 실제로 일하는 동안에만 깨어 있어요. 에이전트와 그 하위 프로세스의 CPU 사용량을 보기 때문에 프롬프트 앞에서 대기 중인 에이전트는 치지 않아요. T3 Code가 띄운 에이전트는 T3 Code로 표시돼요.
-- **연결 유지.** 맥에 이미 저장된 Wi-Fi 중에서 백업 네트워크를 고르고, 드래그해서 우선순위를 정하고, 휴대폰 핫스팟을 표시할 수 있어요. 깨어 있는 동안 인터넷이 끊기면 목록의 다음 네트워크로 저장된 비밀번호를 써서 연결해요.
+- **연결 유지.** 맥이 깨어 있는 동안 인터넷이 끊기면(예: 뚜껑을 닫고 사무실 Wi-Fi 범위를 벗어났을 때), Wi-Fi를 껐다 켜서 macOS가 범위 안의 저장된 네트워크(휴대폰 핫스팟 등)에 다시 연결하게 해요. macOS는 앱이 이름으로 특정 Wi-Fi를 고르는 걸 막고 있어서, 핫스팟을 한 번 연결해 저장하고 **이 네트워크에 자동으로 연결**을 켜두세요. **지금 테스트** 버튼으로 바로 확인할 수 있어요.
 - **안전장치.**
   - 배터리로 쓸 때 정한 잔량(기본 20%) 아래로 떨어지면 꺼져요.
   - 맥이 뜨거워지면 꺼져요. 켜진 노트북을 닫힌 가방에 넣으면 배터리가 익어요.
@@ -101,10 +101,10 @@ make run
 Melatonin.app  ──XPC──▶  io.github.jugol.melatonin.helper (root, launchd)
   UI, 타이머,              pmset -a disablesleep 1 / 0
   안전 검사,                …앱 연결이 끊기면 다시 0으로
-  연결 감시                 networksetup -setairportnetwork (저장된 네트워크만)
+  연결 감시                 networksetup -setairportpower (Wi-Fi 끄고 켜기)
 ```
 
-- **헬퍼가 하는 일은 아주 적어요.** 인터페이스는 `setSleepDisabled(Bool)`과 `joinWiFi(ssid)` 두 개뿐이고, 맥에 저장되지 않은 네트워크는 거부해요. 셸 접근도, 임의 명령 실행도 없어요. [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift)
+- **헬퍼가 하는 일은 아주 적어요.** 인터페이스는 `setSleepDisabled(Bool)`과 Wi-Fi 호출 두 개(Wi-Fi 재시작, 맥에 저장된 네트워크 연결)뿐이에요. 셸 접근도, 임의 명령 실행도 없어요. [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift)
 - **Melatonin 앱하고만 대화해요.** XPC 연결은 앱 번들 ID에 대한 코드 서명 조건을 통과해야 해요.
 - **안전하게 실패해요.** 연결된 앱이 요청하는 동안에만 잠자기가 꺼져 있어요. 연결이 끊기면 원래대로 돌아와요. 헬퍼 재시작이나 재부팅은 마커 파일로 처리해요.
 - **설치·제거는 읽을 수 있는 셸 스크립트예요.** [`Support/install-helper.sh`](Support/install-helper.sh), [`Support/uninstall-helper.sh`](Support/uninstall-helper.sh)
@@ -139,7 +139,7 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 ## 로드맵
 
 - [ ] 서명·공증된 릴리스, Homebrew cask, Sparkle 자동 업데이트
-- [ ] 연결 유지: 우선순위가 높은 네트워크가 돌아오면 다시 전환
+- [ ] 연결 유지: 다시 연결할 네트워크 직접 고르기(위치 권한 필요)
 - [ ] Claude Code hooks 연동으로 시작·종료를 정확히 감지
 - [ ] 뚜껑을 열었을 때 "자리 비운 사이" 요약
 

@@ -51,6 +51,9 @@ struct MenuPanel: View {
                         Text(verbatim: language.name).tag(language.code)
                     }
                 }
+                Button("Show activity log") {
+                    NSWorkspace.shared.open(ActivityLog.url)
+                }
                 Button("About Melatonin") {
                     NSWorkspace.shared.open(URL(string: "https://github.com/jugol/Melatonin")!)
                 }
@@ -226,7 +229,6 @@ private struct SetupCard: View {
 
 private struct SettingsList: View {
     @Environment(AppModel.self) private var model
-    @Environment(\.openWindow) private var openWindow
     @State private var explainsAuto = false
 
     var body: some View {
@@ -248,15 +250,14 @@ private struct SettingsList: View {
             SettingRow(symbol: "wifi", tint: .blue, title: "Stay online", subtitle: connection.summary) {
                 HStack(spacing: 8) {
                     Button {
-                        openWindow(id: ConnectionSettings.windowID)
-                        NSApp.activate()
+                        WindowPresenter.shared.showConnection()
                     } label: {
                         Image(systemName: "slider.horizontal.3")
                             .font(.system(size: 12, weight: .medium))
                             .foregroundStyle(.secondary)
                     }
                     .buttonStyle(.borderless)
-                    .help("Choose networks")
+                    .help("Stay online")
                     Toggle("", isOn: $connection.isEnabled)
                 }
             }

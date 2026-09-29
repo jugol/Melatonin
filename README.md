@@ -46,7 +46,7 @@ Keep-awake apps like `caffeinate`, KeepingYouAwake and most of their cousins use
 - **Menu bar switch.** A crescent outline means your Mac will sleep; a crescent holding an amber lamp means it won't.
 - **Timers.** 1, 2, 4 or 8 hours, or until you turn it off.
 - **Auto for AI agents.** Stays awake only while an agent is actually working: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose or Crush. Detection looks at CPU activity across each agent's process tree, so an agent sitting idle at its prompt doesn't count. Agents launched by T3 Code are credited to T3 Code.
-- **Stay online.** Pick backup networks from the Wi-Fi networks your Mac already knows, drag them into priority order, and mark your phone's hotspot. If the internet drops while Melatonin is keeping your Mac awake, it joins the next network on the list using the saved password.
+- **Stay online.** If the internet drops while Melatonin is keeping your Mac awake, for example when you close the lid and walk out of the office Wi-Fi, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone's hotspot. macOS doesn't let apps pick a Wi-Fi network by name, so make sure the hotspot is saved with **Automatically join this network** turned on. A **Test now** button shows it working.
 - **Safety first.**
   - Turns off at a battery floor you choose (20% by default) when on battery.
   - Turns off if your Mac gets hot. A running laptop in a closed bag is how you cook a battery.
@@ -101,10 +101,10 @@ make run
 Melatonin.app  ──XPC──▶  io.github.jugol.melatonin.helper (root, launchd)
   UI, timers,              pmset -a disablesleep 1 / 0
   safety checks,           …and back to 0 when the app disconnects
-  connection watch         networksetup -setairportnetwork (saved networks only)
+  connection watch         networksetup -setairportpower (Wi-Fi off and on)
 ```
 
-- **The helper has a tiny surface.** Its whole interface is `setSleepDisabled(Bool)` and `joinWiFi(ssid)`, and it refuses any network that isn't already saved on the Mac. It has no shell access and runs no arbitrary commands. See [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift).
+- **The helper has a tiny surface.** Its whole interface is `setSleepDisabled(Bool)` plus two Wi-Fi calls: restart Wi-Fi, and join a network already saved on the Mac. It has no shell access and runs no arbitrary commands. See [`Sources/MelatoninHelper/main.swift`](Sources/MelatoninHelper/main.swift).
 - **It only talks to Melatonin.** XPC connections must satisfy a code-signing requirement for the app's bundle identifier.
 - **It's fail-safe.** Sleep stays disabled only while a connected app asks for it. When the connection drops, sleep comes back. A marker file covers helper restarts and reboots.
 - **Install and uninstall are plain shell scripts** you can read: [`Support/install-helper.sh`](Support/install-helper.sh) and [`Support/uninstall-helper.sh`](Support/uninstall-helper.sh).
@@ -139,7 +139,7 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 ## Roadmap
 
 - [ ] Signed, notarized releases, a Homebrew cask and Sparkle updates
-- [ ] Stay online: move back to the preferred network when it returns
+- [ ] Stay online: choose which saved network to rejoin (needs Location access)
 - [ ] Claude Code hooks integration for exact start and stop signals
 - [ ] "While you were away" summary when you open the lid
 
