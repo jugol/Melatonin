@@ -205,6 +205,7 @@
   <h2>Lives in your notch</h2>
   <p class="sub">A warm lamp glows beside the camera while your Mac is staying up, with the time left. Hover to expand. No notch? It hangs from the menu bar instead.</p>
   <img class="wide-shot" src="images/notch-expanded-on.png" alt="Melatonin expanded in the notch" width="760" height="250" loading="lazy">
+  <img class="wide-shot" src="images/notch-recap.png" alt="While you were away summary in the notch" width="760" height="250" loading="lazy">
   <div class="shots">
     <img src="images/menu-on-light.png" width="300" alt="Menu while awake" loading="lazy">
     <img src="images/menu-off-dark.png" width="300" alt="Menu while sleep is allowed" loading="lazy">
@@ -216,9 +217,10 @@
   <h2>Everything a long run needs</h2>
   <p class="sub">Start the task, close the lid, walk away.</p>
   <div class="grid">
-    <div class="card"><div class="glyph" style="background:rgba(255,181,71,.15)">🌙</div><h3>One-tap switch</h3><p>Keep awake for 1, 2, 4 or 8 hours, or until you turn it off. From the notch or the menu bar.</p></div>
+    <div class="card"><div class="glyph" style="background:rgba(255,181,71,.15)">🌙</div><h3>Moon, auto, lamp</h3><p>One switch: Off lets your Mac sleep, Auto follows your agents, On keeps it awake for 1, 2, 4 or 8 hours or until you turn it off.</p></div>
     <div class="card"><div class="glyph" style="background:rgba(170,120,255,.15)">✨</div><h3>Auto for AI agents</h3><p>Stays awake only while Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI and others are actually working, judged by CPU activity.</p></div>
-    <div class="card"><div class="glyph" style="background:rgba(90,150,255,.15)">📶</div><h3>Stay online</h3><p>Walked out of Wi-Fi range with the lid closed? Melatonin restarts Wi-Fi so your Mac rejoins a saved network, like your phone's hotspot.</p></div>
+    <div class="card"><div class="glyph" style="background:rgba(90,150,255,.15)">📶</div><h3>Stay online</h3><p>Walked out of Wi-Fi range with the lid closed? Melatonin joins your saved networks in the order you choose, like your phone's hotspot, and restarts Wi-Fi if none answers.</p></div>
+    <div class="card"><div class="glyph" style="background:rgba(255,181,71,.12)">🕰️</div><h3>While you were away</h3><p>Open the lid to a summary in the notch: how long it stayed awake, which agents worked, Wi-Fi drops it fixed and the battery it used.</p></div>
     <div class="card"><div class="glyph" style="background:rgba(80,200,120,.15)">🔋</div><h3>Battery floor</h3><p>Lets your Mac sleep again at the battery level you choose, so a forgotten run never drains it flat.</p></div>
     <div class="card"><div class="glyph" style="background:rgba(255,120,60,.15)">🌡️</div><h3>Heat guard</h3><p>Backs off if your Mac gets hot. A running laptop in a closed bag is how batteries get cooked.</p></div>
     <div class="card"><div class="glyph" style="background:rgba(255,255,255,.08)">🛡️</div><h3>Fail-safe by design</h3><p>If the app quits, crashes or is force-killed, the helper restores normal sleep immediately, and after reboots too.</p></div>
@@ -230,7 +232,7 @@
   <p class="sub">Available in English, 한국어, 简体中文, 日本語, Español, Français, Deutsch, Português, Русский, العربية, हिन्दी and Bahasa Indonesia.</p>
   <div class="steps">
     <div class="step"><h3>Download and drag to Applications</h3><p><a href="https://github.com/jugol/Melatonin/releases/latest/download/Melatonin.dmg">Melatonin.dmg</a>, or with Homebrew:</p><pre><code>brew install --cask jugol/tap/melatonin</code></pre></div>
-    <div class="step"><h3>Open it the first time</h3><p>Early builds aren't notarized by Apple yet, so macOS will stop the first launch. Open <b>System Settings › Privacy &amp; Security</b> and click <b>Open Anyway</b>, or run:</p><pre><code>xattr -dr com.apple.quarantine /Applications/Melatonin.app</code></pre></div>
+    <div class="step"><h3>Open it</h3><p>Releases are signed with a Developer ID and notarized by Apple, so Melatonin opens like any other app.</p></div>
     <div class="step"><h3>Tap the moon</h3><p>The first time, macOS asks for your password once to install the helper. After that, it's one tap.</p></div>
   </div>
 </section>

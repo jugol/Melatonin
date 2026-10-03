@@ -1,0 +1,2 @@
+"NSLocationUsageDescription" = "Melatonin utilise l’accès à la localisation uniquement pour lire le nom des réseaux Wi-Fi proches afin de passer à celui que vous préférez. Votre position n’est jamais utilisée ni enregistrée.";
+"NSLocationWhenInUseUsageDescription" = "Melatonin utilise l’accès à la localisation uniquement pour lire le nom des réseaux Wi-Fi proches afin de passer à celui que vous préférez. Votre position n’est jamais utilisée ni enregistrée.";

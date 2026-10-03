@@ -73,10 +73,6 @@
 "Same as macOS" = "Same as macOS";
 
 /* Auto mode */
-"Auto-on while agents work" = "Auto-on while agents work";
-"Turns on by itself while Claude Code, Codex and others work" = "Turns on by itself while Claude Code, Codex and others work";
-"Waiting for an agent to start" = "Waiting for an agent to start";
-"%@ working · keeping awake" = "%@ working · keeping awake";
 "Turns on when an agent starts working" = "Turns on when an agent starts working";
 "When on" = "When on";
 "When off" = "When off";
@@ -98,8 +94,6 @@
 
 /* Stay online: reconnecting */
 "Reconnects Wi-Fi if the internet drops" = "Reconnects Wi-Fi if the internet drops";
-"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot.";
-"Test now" = "Test now";
 "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network.";
 "Last reconnected at %@, back online in %lld s" = "Last reconnected at %@, back online in %lld s";
 "Make sure your Mac picks your phone’s hotspot" = "Make sure your Mac picks your phone’s hotspot";
@@ -107,3 +101,41 @@
 "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”.";
 "Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android: turn off the setting that switches the hotspot off when no devices are connected.";
 "Reconnected" = "Reconnected";
+
+/* Stay online: preferred networks */
+"Priority" = "Priority";
+"Add network" = "Add network";
+"No other saved networks" = "No other saved networks";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "Add the networks you want as backups: home, office, your phone’s hotspot.";
+"Mark as hotspot" = "Mark as hotspot";
+"Remove" = "Remove";
+"Online via %@" = "Online via %@";
+"Joining %@…" = "Joining %@…";
+"Connect now" = "Connect now";
+"Restart Wi-Fi" = "Restart Wi-Fi";
+"Choose networks by name" = "Choose networks by name";
+"Location access is off. Turn on Melatonin in System Settings › Privacy & Security › Location Services." = "Location access is off. Turn on Melatonin in System Settings › Privacy & Security › Location Services.";
+"macOS only shows Wi-Fi network names to apps with Location access. Allow it and Melatonin can join your networks in the order you set. Your location is never used or stored." = "macOS only shows Wi-Fi network names to apps with Location access. Allow it and Melatonin can join your networks in the order you set. Your location is never used or stored.";
+"Open Privacy Settings" = "Open Privacy Settings";
+"Allow Location Access" = "Allow Location Access";
+"Scan again" = "Scan again";
+"Melatonin joins the first network in range, top to bottom. If none of them works, it restarts Wi-Fi and lets macOS choose." = "Melatonin joins the first network in range, top to bottom. If none of them works, it restarts Wi-Fi and lets macOS choose.";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the first network on your list that’s in range. If none works, it restarts Wi-Fi so macOS can pick one." = "If the internet drops while Melatonin keeps your Mac awake, it joins the first network on your list that’s in range. If none works, it restarts Wi-Fi so macOS can pick one.";
+"Connected" = "Connected";
+"In range" = "In range";
+"Not ready yet: %@" = "Not ready yet: %@";
+"Melatonin needs your OK to use the Wi-Fi passwords macOS already saved for these networks. Until then, they’re skipped when the internet drops." = "Melatonin needs your OK to use the Wi-Fi passwords macOS already saved for these networks. Until then, they’re skipped when the internet drops.";
+"Allow saved passwords" = "Allow saved passwords";
+"In the macOS dialog, enter your Mac account name (%@) and login password." = "In the macOS dialog, enter your Mac account name (%@) and login password.";
+
+/* While you were away */
+"While you were away" = "While you were away";
+"Your Mac went to sleep" = "Your Mac went to sleep";
+"Awake the whole time" = "Awake the whole time";
+"Kept awake for %@" = "Kept awake for %@";
+"Turn on auto mode so agents can finish" = "Turn on auto mode so agents can finish";
+"Still awake" = "Still awake";
+"%@ still working" = "%@ still working";
+"Sleep resumed at %@" = "Sleep resumed at %@";
+"Reconnected %lld×" = "Reconnected %lld×";
+"Dismiss" = "Dismiss";

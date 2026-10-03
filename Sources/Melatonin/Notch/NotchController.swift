@@ -16,16 +16,21 @@ enum NotchPhase: Equatable {
     case banner
     /// Hovered: the full control surface.
     case expanded
+    /// Back from being away: what happened meanwhile.
+    case recap
 }
 
 enum NotchLayout {
     static let compactWing: CGFloat = 70
     static let bannerWing: CGFloat = 116
     static let expandedWidth: CGFloat = 470
-    static let expandedBody: CGFloat = 150
+    static let expandedBody: CGFloat = 186
+    static let recapWidth: CGFloat = 500
+    static let recapBody: CGFloat = 152
 
     @MainActor
     static func phase(expanded: Bool, model: AppModel) -> NotchPhase {
+        if model.recapInNotch, model.recap != nil { return .recap }
         if expanded { return .expanded }
         if model.banner != nil { return .banner }
         return model.isAwake ? .compact : .idle
@@ -38,6 +43,7 @@ enum NotchLayout {
         case .compact: return CGSize(width: notch.width + 2 * compactWing, height: notch.height)
         case .banner: return CGSize(width: notch.width + 2 * bannerWing, height: notch.height)
         case .expanded: return CGSize(width: max(expandedWidth, notch.width + 2 * compactWing), height: notch.height + expandedBody)
+        case .recap: return CGSize(width: max(recapWidth, notch.width + 2 * compactWing), height: notch.height + recapBody)
         }
     }
 }

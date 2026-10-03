@@ -1,0 +1,2 @@
+"NSLocationUsageDescription" = "Melatonin은 주변 Wi-Fi 이름을 읽어 원하는 네트워크로 전환할 때만 위치 권한을 써요. 위치는 절대 사용하거나 저장하지 않아요.";
+"NSLocationWhenInUseUsageDescription" = "Melatonin은 주변 Wi-Fi 이름을 읽어 원하는 네트워크로 전환할 때만 위치 권한을 써요. 위치는 절대 사용하거나 저장하지 않아요.";

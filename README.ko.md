@@ -45,8 +45,10 @@ Claude Code에 긴 작업을 맡기고 뚜껑을 닫고 자리를 비우면, 맥
 - **노치에 살아요.** 켜져 있으면 카메라 옆에 따뜻한 램프가 빛나고 남은 시간이 보여요. 마우스를 올리면 전체 조작 패널로 펼쳐져요. 노치가 없는 모니터에서는 메뉴바 가운데에 알약 모양으로 붙어요.
 - **메뉴바 스위치.** 초승달 테두리만 보이면 잠드는 상태, 초승달이 주황 램프를 품고 있으면 깨어 있는 상태예요.
 - **타이머.** 1·2·4·8시간, 또는 직접 끌 때까지.
+- **달 · 자동 · 해.** 램프 아래 스위치 하나로 정해요. **끔**은 맥이 잠들게 두고, **자동**은 에이전트가 일하는 동안만 깨워두고, **켬**은 타이머가 끝날 때까지 깨워둔 뒤 원래 모드로 돌아가요.
 - **AI 에이전트 자동 감지.** Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose, Crush가 실제로 일하는 동안에만 깨어 있어요. 에이전트와 그 하위 프로세스의 CPU 사용량을 보기 때문에 프롬프트 앞에서 대기 중인 에이전트는 치지 않아요. T3 Code가 띄운 에이전트는 T3 Code로 표시돼요.
-- **연결 유지.** 맥이 깨어 있는 동안 인터넷이 끊기면(예: 뚜껑을 닫고 사무실 Wi-Fi 범위를 벗어났을 때), Wi-Fi를 껐다 켜서 macOS가 범위 안의 저장된 네트워크(휴대폰 핫스팟 등)에 다시 연결하게 해요. macOS는 앱이 이름으로 특정 Wi-Fi를 고르는 걸 막고 있어서, 핫스팟을 한 번 연결해 저장하고 **이 네트워크에 자동으로 연결**을 켜두세요. **지금 테스트** 버튼으로 바로 확인할 수 있어요.
+- **연결 유지.** 맥이 깨어 있는 동안 인터넷이 끊기면(예: 뚜껑을 닫고 사무실 Wi-Fi 범위를 벗어났을 때), 저장된 네트워크 중에서 고른 우선순위 목록을 위에서부터 보고 범위 안에 있는 첫 번째 네트워크(휴대폰 핫스팟 등)에 연결해요. 이름으로 네트워크를 고르려면 위치 권한이 필요해요. macOS가 위치 권한이 있는 앱에만 Wi-Fi 이름을 보여주기 때문이고, 위치 자체는 쓰지 않아요. 모두 실패하면 Wi-Fi를 껐다 켜서 macOS가 저장된 네트워크에 알아서 붙게 해요.
+- **자리 비운 사이.** 맥으로 돌아오면 노치가 그동안 있었던 일을 알려줘요. 얼마나 깨워뒀는지, 어떤 에이전트가 얼마나 일했는지, Wi-Fi 끊김을 몇 번 복구했는지, 배터리를 얼마나 썼는지요.
 - **안전장치.**
   - 배터리로 쓸 때 정한 잔량(기본 20%) 아래로 떨어지면 꺼져요.
   - 맥이 뜨거워지면 꺼져요. 켜진 노트북을 닫힌 가방에 넣으면 배터리가 익어요.
@@ -61,6 +63,10 @@ Claude Code에 긴 작업을 맡기고 뚜껑을 닫고 자리를 비우면, 맥
 
 <p align="center">
   <img src="docs/images/notch-compact.png" width="640" alt="남은 시간이 보이는 노치 알약">
+</p>
+
+<p align="center">
+  <img src="docs/images/notch-recap.png" width="640" alt="노치에 뜬 자리 비운 사이 요약">
 </p>
 
 <p align="center">
@@ -79,11 +85,7 @@ macOS 14 Sonoma 이상이 필요해요.
 brew install --cask jugol/tap/melatonin
 ```
 
-**처음 실행할 때:** 초기 버전은 아직 Apple 공증을 받지 않아서 첫 실행이 막혀요. **시스템 설정 › 개인정보 보호 및 보안**에서 **그래도 열기**를 누르거나 아래 명령을 실행하세요.
-
-```bash
-xattr -dr com.apple.quarantine /Applications/Melatonin.app
-```
+릴리스는 Developer ID로 서명하고 Apple 공증을 받아서 다른 앱처럼 바로 열려요.
 
 처음 켤 때 헬퍼 설치를 위해 비밀번호를 한 번 물어봐요.
 
@@ -120,7 +122,7 @@ sudo bash Support/uninstall-helper.sh
 ## 개발
 
 ```bash
-make app        # build build/Melatonin.app (ad-hoc signed)
+make app        # build build/Melatonin.app (signed with the best identity on this Mac)
 make run        # build and launch
 make package    # universal build, DMG and zip in dist/
 make icon       # regenerate the app icon from Scripts/make-icon.swift
@@ -128,7 +130,7 @@ swift build && .build/debug/Melatonin --snapshot /tmp/shots   # render every UI 
 swift build && .build/debug/Melatonin --agents                 # watch agent detection live
 ```
 
-Developer ID로 서명하려면 `SIGN_IDENTITY`를 지정하고 `HelperConstants.clientRequirement`에 팀 ID를 고정하세요.
+이 맥에 Developer ID가 있으면 그걸로, 없으면 `Scripts/make-signing-identity.sh`로 만든 로컬 인증서로(다시 빌드해도 위치 권한이 유지돼요), 그것도 없으면 ad-hoc으로 서명해요. `melatonin`이라는 notarytool 키체인 프로필이 있으면 `make package`가 공증까지 해요. 직접 가진 Developer ID로 서명하려면 `SIGN_IDENTITY`를 지정하세요.
 
 ```bash
 SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
@@ -138,10 +140,11 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 
 ## 로드맵
 
-- [ ] 서명·공증된 릴리스, Homebrew cask, Sparkle 자동 업데이트
-- [ ] 연결 유지: 다시 연결할 네트워크 직접 고르기(위치 권한 필요)
+- [x] 서명·공증된 릴리스와 Homebrew cask
+- [x] 연결 유지: 저장된 네트워크에 내가 정한 순서대로 연결
+- [x] 돌아왔을 때 "자리 비운 사이" 요약
+- [ ] Sparkle 자동 업데이트
 - [ ] Claude Code hooks 연동으로 시작·종료를 정확히 감지
-- [ ] 뚜껑을 열었을 때 "자리 비운 사이" 요약
 
 ## 라이선스
 

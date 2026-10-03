@@ -45,8 +45,10 @@ Les apps anti-veille comme `caffeinate`, KeepingYouAwake et la plupart de leurs 
 - **Niché dans l’encoche.** Quand Melatonin est activé, une lampe chaleureuse s’allume à côté de la caméra et affiche le temps restant. Survolez-la pour déployer toutes les commandes. Sur les écrans sans encoche, la pastille se suspend à la barre des menus.
 - **Interrupteur dans la barre des menus.** Un simple contour de croissant de lune : votre Mac se mettra en veille. Un croissant qui tient une lampe ambrée : il restera éveillé.
 - **Minuteurs.** 1, 2, 4 ou 8 heures, ou jusqu’à ce que vous le désactiviez.
+- **Lune, auto, lampe.** Un seul interrupteur sous la lampe : **Désactivé** laisse votre Mac se mettre en veille, **Auto** le garde éveillé seulement pendant que les agents travaillent, **Activé** le garde éveillé jusqu’à la fin du minuteur, puis revient au mode précédent.
 - **Auto pour les agents IA.** Reste éveillé uniquement quand un agent travaille vraiment : Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose ou Crush. La détection surveille l’activité CPU de toute l’arborescence de processus de chaque agent : un agent qui attend sagement à son invite ne compte donc pas. Les agents lancés par T3 Code sont attribués à T3 Code.
-- **Rester en ligne.** Si Internet est coupé pendant que Melatonin garde votre Mac éveillé, par exemple quand vous fermez l’écran et vous éloignez du Wi-Fi du bureau, il redémarre le Wi-Fi pour que macOS rejoigne un réseau enregistré à portée, comme le partage de connexion de votre téléphone. macOS ne permet pas aux apps de choisir un réseau Wi-Fi par son nom : assurez-vous donc que le partage de connexion est enregistré avec l’option **Rejoindre automatiquement ce réseau** activée. Un bouton **Tester maintenant** vous montre que tout fonctionne.
+- **Rester en ligne.** Si Internet est coupé pendant que Melatonin garde votre Mac éveillé, par exemple quand vous fermez l’écran et quittez le Wi-Fi du bureau, il rejoint le premier réseau à portée d’une liste de priorité que vous choisissez parmi vos réseaux enregistrés, comme le partage de connexion de votre téléphone. Choisir un réseau par son nom demande l’accès à la position, car macOS ne montre les noms Wi-Fi qu’aux apps qui l’ont ; votre position n’est jamais utilisée. Si aucun ne fonctionne, il redémarre le Wi-Fi pour que macOS rejoigne seul un réseau enregistré.
+- **Pendant votre absence.** À votre retour, l’encoche résume ce qui s’est passé : combien de temps Melatonin a gardé le Mac éveillé, quels agents ont travaillé et combien de temps, combien de coupures Wi-Fi ont été rattrapées et combien de batterie a été utilisée.
 - **La sécurité avant tout.**
   - Sur batterie, se désactive au seuil de charge que vous choisissez (20 % par défaut).
   - Se désactive si votre Mac chauffe trop. Un portable allumé dans un sac fermé, c’est le meilleur moyen de cuire une batterie.
@@ -61,6 +63,10 @@ Les apps anti-veille comme `caffeinate`, KeepingYouAwake et la plupart de leurs 
 
 <p align="center">
   <img src="docs/images/notch-compact.png" width="640" alt="Pastille compacte dans l’encoche avec compte à rebours">
+</p>
+
+<p align="center">
+  <img src="docs/images/notch-recap.png" width="640" alt="Résumé de votre absence dans l’encoche">
 </p>
 
 <p align="center">
@@ -79,11 +85,7 @@ Nécessite macOS 14 Sonoma ou une version ultérieure.
 brew install --cask jugol/tap/melatonin
 ```
 
-**Premier lancement :** les premières versions ne sont pas encore notariées par Apple, donc macOS bloque le premier lancement. Ouvrez **Réglages Système › Confidentialité et sécurité** et cliquez sur **Ouvrir quand même**, ou exécutez :
-
-```bash
-xattr -dr com.apple.quarantine /Applications/Melatonin.app
-```
+Les versions publiées sont signées avec un Developer ID et notarisées par Apple : elles s’ouvrent comme n’importe quelle app.
 
 La première fois que vous activez Melatonin, macOS vous demande votre mot de passe, une seule fois, pour installer l’utilitaire.
 
@@ -120,7 +122,7 @@ sudo bash Support/uninstall-helper.sh
 ## Développement
 
 ```bash
-make app        # build build/Melatonin.app (ad-hoc signed)
+make app        # build build/Melatonin.app (signed with the best identity on this Mac)
 make run        # build and launch
 make package    # universal build, DMG and zip in dist/
 make icon       # regenerate the app icon from Scripts/make-icon.swift
@@ -130,7 +132,7 @@ swift build && .build/debug/Melatonin --agents                 # watch agent det
 
 Après avoir ajouté ou modifié une traduction, lancez `python3 Scripts/check-localizations.py` pour repérer les chaînes manquantes et les marqueurs incohérents.
 
-Pour signer avec un Developer ID, définissez `SIGN_IDENTITY` et fixez l’identifiant de votre équipe (team ID) dans `HelperConstants.clientRequirement` :
+Les builds sont signés avec le Developer ID de ce Mac s’il en a un, sinon avec une identité locale créée par `Scripts/make-signing-identity.sh` (l’accès à la position est conservé d’un build à l’autre), sinon en ad hoc. `make package` notarise aussi quand un profil de trousseau notarytool nommé `melatonin` existe. Pour signer avec votre propre Developer ID, définissez `SIGN_IDENTITY` :
 
 ```bash
 SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
@@ -138,10 +140,11 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 
 ## Feuille de route
 
-- [ ] Versions signées et notariées, cask Homebrew et mises à jour via Sparkle
-- [ ] Rester en ligne : choisir le réseau enregistré à rejoindre (nécessite l’accès à la localisation)
-- [ ] Intégration des hooks Claude Code pour des signaux de début et de fin précis
-- [ ] Résumé « Pendant votre absence » à l’ouverture de l’écran
+- [x] Versions signées et notarisées, et un cask Homebrew
+- [x] Rester en ligne : rejoindre vos réseaux enregistrés dans l’ordre choisi
+- [x] Résumé « Pendant votre absence » à votre retour
+- [ ] Mises à jour avec Sparkle
+- [ ] Intégration des hooks Claude Code pour détecter précisément le début et la fin
 
 ## Licence
 

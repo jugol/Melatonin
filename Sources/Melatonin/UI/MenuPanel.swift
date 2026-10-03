@@ -3,11 +3,18 @@ import SwiftUI
 /// The window that drops down from the menu bar icon.
 struct MenuPanel: View {
     @Environment(AppModel.self) private var model
+    @State private var explainsAuto = false
 
     var body: some View {
         VStack(spacing: 0) {
             header
             hero
+            if let recap = model.recap {
+                RecapCard(recap: recap)
+                    .padding(.horizontal, 12)
+                    .padding(.bottom, 14)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
             VStack(alignment: .leading, spacing: 7) {
                 Text("Stay awake for")
                     .font(.system(size: 11, weight: .medium))
@@ -34,6 +41,7 @@ struct MenuPanel: View {
         .background(alignment: .top) { glow }
         .animation(.spring(response: 0.45, dampingFraction: 0.85), value: model.isAwake)
         .animation(.spring(response: 0.45, dampingFraction: 0.85), value: model.helperStatus)
+        .animation(.spring(response: 0.45, dampingFraction: 0.85), value: model.recap)
     }
 
     private var header: some View {
@@ -105,15 +113,28 @@ struct MenuPanel: View {
                     .background(Capsule().fill(Theme.amber.opacity(0.85)))
                     .padding(.top, 8)
                     .transition(.scale(scale: 0.8).combined(with: .opacity))
-            } else if model.isAwake, !model.manualOn {
-                Label("Auto", systemImage: "sparkles")
-                    .font(.system(size: 11, weight: .semibold, design: Theme.rounded))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 3)
-                    .background(Capsule().fill(Color.purple.gradient))
-                    .padding(.top, 8)
-                    .transition(.scale(scale: 0.8).combined(with: .opacity))
+            }
+
+            HStack(spacing: 8) {
+                ModeSwitch()
+                Button {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) { explainsAuto.toggle() }
+                } label: {
+                    Image(systemName: "info.circle")
+                        .font(.system(size: 13))
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.borderless)
+                .help("How it works")
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 16)
+
+            if explainsAuto {
+                AutoExplainer()
+                    .padding(.horizontal, 12)
+                    .padding(.top, 10)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
         .padding(.bottom, 18)
@@ -229,24 +250,11 @@ private struct SetupCard: View {
 
 private struct SettingsList: View {
     @Environment(AppModel.self) private var model
-    @State private var explainsAuto = false
 
     var body: some View {
         @Bindable var model = model
         @Bindable var connection = model.connection
         VStack(spacing: 0) {
-            SettingRow(
-                symbol: "sparkles", tint: .purple, title: "Auto-on while agents work", subtitle: autoSummary,
-                info: { withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) { explainsAuto.toggle() } }
-            ) {
-                Toggle("", isOn: $model.autoForAgents)
-            }
-            if explainsAuto {
-                AutoExplainer()
-                    .padding(.horizontal, 12)
-                    .padding(.bottom, 6)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
-            }
             SettingRow(symbol: "wifi", tint: .blue, title: "Stay online", subtitle: connection.summary) {
                 HStack(spacing: 8) {
                     Button {
@@ -283,18 +291,6 @@ private struct SettingsList: View {
         .toggleStyle(.switch)
         .controlSize(.mini)
         .tint(Theme.ember)
-    }
-
-    /// Says what the switch does when off, and what it's doing when on.
-    private var autoSummary: String {
-        guard model.autoForAgents else {
-            return String(localized: "Turns on by itself while Claude Code, Codex and others work")
-        }
-        if model.autoPaused { return String(localized: "Auto paused until agents finish") }
-        if let working = model.workingAgentList {
-            return String(localized: "\(working) working · keeping awake")
-        }
-        return String(localized: "Waiting for an agent to start")
     }
 }
 

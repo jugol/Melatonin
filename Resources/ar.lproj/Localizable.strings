@@ -72,10 +72,6 @@
 "Same as macOS" = "مثل macOS";
 
 /* Auto mode */
-"Auto-on while agents work" = "تلقائي أثناء عمل الوكلاء";
-"Turns on by itself while Claude Code, Codex and others work" = "يعمل تلقائيًا أثناء عمل Claude Code وCodex وغيرها";
-"Waiting for an agent to start" = "بانتظار أن يبدأ وكيل العمل";
-"%@ working · keeping awake" = "%@ يعمل · يبقى مستيقظًا";
 "Turns on when an agent starts working" = "سيعمل عندما يبدأ وكيل العمل";
 "When on" = "عند التشغيل";
 "When off" = "عند الإيقاف";
@@ -97,8 +93,6 @@
 
 /* Stay online: reconnecting */
 "Reconnects Wi-Fi if the internet drops" = "يعيد توصيل Wi-Fi عند انقطاع الإنترنت";
-"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "إذا انقطع الإنترنت لمدة 20 ثانية بينما يُبقي Melatonin جهاز Mac مستيقظًا، فإنه يعيد تشغيل Wi-Fi لينضم macOS مجددًا إلى شبكة محفوظة قريبة، مثل نقطة الاتصال في هاتفك.";
-"Test now" = "اختبر الآن";
 "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "يتوقف Wi-Fi لبضع ثوانٍ، ثم ينضم جهاز Mac إلى أفضل شبكة محفوظة.";
 "Last reconnected at %@, back online in %lld s" = "أُعيد الاتصال في %@، وعاد الإنترنت خلال %lld ث";
 "Make sure your Mac picks your phone’s hotspot" = "لكي يختار جهاز Mac نقطة اتصال هاتفك";
@@ -106,3 +100,41 @@
 "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "في إعدادات النظام › Wi-Fi، افتح تفاصيل نقطة الاتصال وفعّل “الانضمام تلقائيًا إلى هذه الشبكة”.";
 "Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android: أوقف الإعداد الذي يطفئ نقطة الاتصال عند عدم اتصال أي جهاز.";
 "Reconnected" = "أُعيد الاتصال";
+
+/* Stay online: preferred networks */
+"Priority" = "الأولوية";
+"Add network" = "إضافة شبكة";
+"No other saved networks" = "لا توجد شبكات محفوظة أخرى";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "أضف الشبكات التي تريدها كشبكات احتياطية: المنزل، المكتب، نقطة اتصال هاتفك.";
+"Mark as hotspot" = "تعيين كنقطة اتصال";
+"Remove" = "إزالة";
+"Online via %@" = "متصل عبر %@";
+"Joining %@…" = "جارٍ الانضمام إلى %@…";
+"Connect now" = "الاتصال الآن";
+"Restart Wi-Fi" = "إعادة تشغيل Wi-Fi";
+"Choose networks by name" = "اختيار الشبكات بالاسم";
+"Location access is off. Turn on Melatonin in System Settings › Privacy & Security › Location Services." = "الوصول إلى الموقع متوقف. فعّل Melatonin في إعدادات النظام › الخصوصية والأمن › خدمات الموقع.";
+"macOS only shows Wi-Fi network names to apps with Location access. Allow it and Melatonin can join your networks in the order you set. Your location is never used or stored." = "لا يعرض macOS أسماء شبكات Wi-Fi إلا للتطبيقات التي لديها إذن الوصول إلى الموقع. اسمح بذلك ليتمكن Melatonin من الانضمام إلى شبكاتك بالترتيب الذي تحدده. لا يستخدم موقعك ولا يحفظه أبدًا.";
+"Open Privacy Settings" = "فتح إعدادات الخصوصية";
+"Allow Location Access" = "السماح بالوصول إلى الموقع";
+"Scan again" = "البحث مجددًا";
+"Melatonin joins the first network in range, top to bottom. If none of them works, it restarts Wi-Fi and lets macOS choose." = "ينضم Melatonin إلى أول شبكة في النطاق من الأعلى إلى الأسفل. وإن لم تنجح أي منها، يعيد تشغيل Wi-Fi ويترك macOS يختار.";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the first network on your list that’s in range. If none works, it restarts Wi-Fi so macOS can pick one." = "إذا انقطع الإنترنت بينما يُبقي Melatonin جهاز Mac مستيقظًا، فإنه ينضم إلى أول شبكة في قائمتك ضمن النطاق. وإن لم تنجح أي منها، يعيد تشغيل Wi-Fi ليختار macOS شبكة.";
+"Connected" = "متصل";
+"In range" = "ضمن النطاق";
+"Not ready yet: %@" = "غير جاهزة بعد: %@";
+"Melatonin needs your OK to use the Wi-Fi passwords macOS already saved for these networks. Until then, they’re skipped when the internet drops." = "يحتاج Melatonin إلى موافقتك لاستخدام كلمات سر Wi-Fi التي حفظها macOS لهذه الشبكات. إلى ذلك الحين، يتم تخطيها عند انقطاع الإنترنت.";
+"Allow saved passwords" = "السماح بكلمات السر المحفوظة";
+"In the macOS dialog, enter your Mac account name (%@) and login password." = "في نافذة macOS، أدخل اسم حساب Mac (%@) وكلمة سر تسجيل الدخول.";
+
+/* While you were away */
+"While you were away" = "أثناء غيابك";
+"Your Mac went to sleep" = "دخل جهاز Mac في وضع السكون";
+"Awake the whole time" = "ظل مستيقظًا طوال الوقت";
+"Kept awake for %@" = "أبقاه مستيقظًا لمدة %@";
+"Turn on auto mode so agents can finish" = "شغّل الوضع التلقائي ليُكمل الوكلاء عملهم";
+"Still awake" = "لا يزال مستيقظًا";
+"%@ still working" = "%@ لا يزال يعمل";
+"Sleep resumed at %@" = "عاد إلى السكون عند %@";
+"Reconnected %lld×" = "أُعيد الاتصال %lld مرة";
+"Dismiss" = "إغلاق";

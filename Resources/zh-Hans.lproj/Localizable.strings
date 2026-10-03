@@ -72,10 +72,6 @@
 "Same as macOS" = "跟随 macOS";
 
 /* Auto mode */
-"Auto-on while agents work" = "智能体工作时自动开启";
-"Turns on by itself while Claude Code, Codex and others work" = "Claude Code、Codex 等工作时自动开启";
-"Waiting for an agent to start" = "等待智能体开始工作";
-"%@ working · keeping awake" = "%@ 正在工作 · 保持唤醒";
 "Turns on when an agent starts working" = "智能体开始工作时会自动唤醒";
 "When on" = "开启时";
 "When off" = "关闭时";
@@ -97,8 +93,6 @@
 
 /* Stay online: reconnecting */
 "Reconnects Wi-Fi if the internet drops" = "网络中断时重新连接 Wi-Fi";
-"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Melatonin 保持 Mac 唤醒期间，如果网络中断超过 20 秒，它会重启 Wi-Fi，让 macOS 重新加入范围内已存储的网络，比如手机热点。";
-"Test now" = "立即测试";
 "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi 会关闭几秒，然后 Mac 会重新加入最合适的已存储网络。";
 "Last reconnected at %@, back online in %lld s" = "%@ 重新连接，%lld 秒后恢复联网";
 "Make sure your Mac picks your phone’s hotspot" = "确保 Mac 能连上手机热点";
@@ -106,3 +100,41 @@
 "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "在“系统设置”›“Wi-Fi”中打开热点的“详细信息”，开启“自动加入此网络”。";
 "Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android：关闭“无设备连接时自动关闭热点”的设置。";
 "Reconnected" = "已重新连接";
+
+/* Stay online: preferred networks */
+"Priority" = "优先级";
+"Add network" = "添加网络";
+"No other saved networks" = "没有其他已存储的网络";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "添加想用作备用的网络：家里、办公室、手机热点。";
+"Mark as hotspot" = "标记为热点";
+"Remove" = "移除";
+"Online via %@" = "通过 %@ 在线";
+"Joining %@…" = "正在加入 %@…";
+"Connect now" = "立即连接";
+"Restart Wi-Fi" = "重启 Wi-Fi";
+"Choose networks by name" = "按名称选择网络";
+"Location access is off. Turn on Melatonin in System Settings › Privacy & Security › Location Services." = "定位服务已关闭。请在“系统设置”›“隐私与安全性”›“定位服务”中打开 Melatonin。";
+"macOS only shows Wi-Fi network names to apps with Location access. Allow it and Melatonin can join your networks in the order you set. Your location is never used or stored." = "macOS 只向拥有定位权限的 App 显示 Wi-Fi 名称。允许后，Melatonin 就能按你设定的顺序连接网络。它不会使用或存储你的位置。";
+"Open Privacy Settings" = "打开隐私设置";
+"Allow Location Access" = "允许定位权限";
+"Scan again" = "重新扫描";
+"Melatonin joins the first network in range, top to bottom. If none of them works, it restarts Wi-Fi and lets macOS choose." = "Melatonin 会从上到下连接第一个在范围内的网络。如果都不行，就重启 Wi-Fi，让 macOS 自己选择。";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the first network on your list that’s in range. If none works, it restarts Wi-Fi so macOS can pick one." = "Melatonin 保持 Mac 唤醒期间如果网络中断，它会连接列表中第一个在范围内的网络。如果都不行，就重启 Wi-Fi，让 macOS 选择。";
+"Connected" = "已连接";
+"In range" = "在范围内";
+"Not ready yet: %@" = "尚未就绪：%@";
+"Melatonin needs your OK to use the Wi-Fi passwords macOS already saved for these networks. Until then, they’re skipped when the internet drops." = "需要你同意 Melatonin 使用 macOS 已为这些网络存储的 Wi-Fi 密码。在此之前，网络中断时会跳过它们。";
+"Allow saved passwords" = "允许使用已存储的密码";
+"In the macOS dialog, enter your Mac account name (%@) and login password." = "请在 macOS 对话框中输入你的 Mac 账户名称（%@）和登录密码。";
+
+/* While you were away */
+"While you were away" = "你离开期间";
+"Your Mac went to sleep" = "Mac 已进入睡眠";
+"Awake the whole time" = "全程保持唤醒";
+"Kept awake for %@" = "保持唤醒 %@";
+"Turn on auto mode so agents can finish" = "开启自动模式，让智能体完成工作";
+"Still awake" = "仍保持唤醒";
+"%@ still working" = "%@ 仍在工作";
+"Sleep resumed at %@" = "%@ 恢复睡眠";
+"Reconnected %lld×" = "重新连接 %lld 次";
+"Dismiss" = "关闭";

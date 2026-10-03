@@ -72,10 +72,6 @@
 "Same as macOS" = "macOSに合わせる";
 
 /* Auto mode */
-"Auto-on while agents work" = "エージェント作業中は自動でオン";
-"Turns on by itself while Claude Code, Codex and others work" = "Claude Code や Codex などが作業中は自動でオン";
-"Waiting for an agent to start" = "エージェントの作業開始を待機中";
-"%@ working · keeping awake" = "%@ 作業中 · 起動を維持";
 "Turns on when an agent starts working" = "エージェントが作業を始めると自動で起きます";
 "When on" = "オンのとき";
 "When off" = "オフのとき";
@@ -97,8 +93,6 @@
 
 /* Stay online: reconnecting */
 "Reconnects Wi-Fi if the internet drops" = "インターネットが切れたら Wi-Fi を再接続";
-"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Melatonin が Mac を起こしている間にインターネットが 20 秒以上切れると、Wi-Fi を再起動して、範囲内の保存済みネットワーク（スマートフォンのテザリングなど）に macOS が再接続するようにします。";
-"Test now" = "今すぐテスト";
 "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi が数秒オフになり、Mac が最適な保存済みネットワークに再接続します。";
 "Last reconnected at %@, back online in %lld s" = "%@ に再接続、%lld 秒で復旧";
 "Make sure your Mac picks your phone’s hotspot" = "Mac がスマートフォンのテザリングを選ぶようにするには";
@@ -106,3 +100,41 @@
 "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "「システム設定」›「Wi-Fi」でテザリングの「詳細」を開き、「このネットワークに自動接続」をオンにします。";
 "Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android：接続中のデバイスがないときにテザリングをオフにする設定を無効にします。";
 "Reconnected" = "再接続しました";
+
+/* Stay online: preferred networks */
+"Priority" = "優先順位";
+"Add network" = "ネットワークを追加";
+"No other saved networks" = "ほかに保存済みのネットワークはありません";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "予備のネットワークを追加しましょう：自宅、オフィス、スマートフォンのテザリングなど。";
+"Mark as hotspot" = "テザリングとしてマーク";
+"Remove" = "削除";
+"Online via %@" = "%@で接続中";
+"Joining %@…" = "%@に接続中…";
+"Connect now" = "今すぐ接続";
+"Restart Wi-Fi" = "Wi-Fi を再起動";
+"Choose networks by name" = "名前でネットワークを選ぶ";
+"Location access is off. Turn on Melatonin in System Settings › Privacy & Security › Location Services." = "位置情報へのアクセスがオフです。「システム設定」›「プライバシーとセキュリティ」›「位置情報サービス」で Melatonin をオンにしてください。";
+"macOS only shows Wi-Fi network names to apps with Location access. Allow it and Melatonin can join your networks in the order you set. Your location is never used or stored." = "macOS は位置情報へのアクセスを許可した App にだけ Wi-Fi 名を表示します。許可すると、Melatonin は設定した順番でネットワークに接続できます。位置情報を使ったり保存したりすることはありません。";
+"Open Privacy Settings" = "プライバシー設定を開く";
+"Allow Location Access" = "位置情報へのアクセスを許可";
+"Scan again" = "再スキャン";
+"Melatonin joins the first network in range, top to bottom. If none of them works, it restarts Wi-Fi and lets macOS choose." = "Melatonin は上から順に、範囲内にある最初のネットワークに接続します。どれもうまくいかなければ、Wi-Fi を再起動して macOS に選ばせます。";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the first network on your list that’s in range. If none works, it restarts Wi-Fi so macOS can pick one." = "Melatonin が Mac を起こしている間にインターネットが切れると、リストの中で範囲内にある最初のネットワークに接続します。どれも使えなければ、Wi-Fi を再起動して macOS に選ばせます。";
+"Connected" = "接続中";
+"In range" = "範囲内";
+"Not ready yet: %@" = "まだ準備できていません：%@";
+"Melatonin needs your OK to use the Wi-Fi passwords macOS already saved for these networks. Until then, they’re skipped when the internet drops." = "これらのネットワークで macOS が保存済みの Wi-Fi パスワードを Melatonin が使えるよう、一度許可が必要です。それまでは、インターネットが切れたときにスキップされます。";
+"Allow saved passwords" = "保存済みのパスワードを許可";
+"In the macOS dialog, enter your Mac account name (%@) and login password." = "macOS のダイアログに Mac のアカウント名（%@）とログインパスワードを入力してください。";
+
+/* While you were away */
+"While you were away" = "離席中のできごと";
+"Your Mac went to sleep" = "Macがスリープしました";
+"Awake the whole time" = "ずっと起きていました";
+"Kept awake for %@" = "%@ 起こしておきました";
+"Turn on auto mode so agents can finish" = "エージェントが最後まで作業できるよう自動モードをオンに";
+"Still awake" = "まだ起きています";
+"%@ still working" = "%@ まだ作業中";
+"Sleep resumed at %@" = "%@ にスリープに戻りました";
+"Reconnected %lld×" = "%lld 回再接続";
+"Dismiss" = "閉じる";

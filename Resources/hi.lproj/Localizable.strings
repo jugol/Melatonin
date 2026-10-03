@@ -72,10 +72,6 @@
 "Same as macOS" = "macOS जैसा";
 
 /* Auto mode */
-"Auto-on while agents work" = "एजेंट काम करें तो अपने-आप चालू";
-"Turns on by itself while Claude Code, Codex and others work" = "Claude Code, Codex जैसे एजेंट काम करें तो अपने-आप चालू";
-"Waiting for an agent to start" = "किसी एजेंट के काम शुरू करने का इंतज़ार";
-"%@ working · keeping awake" = "%@ काम कर रहा है · जागा हुआ";
 "Turns on when an agent starts working" = "कोई एजेंट काम शुरू करे तो अपने-आप जागेगा";
 "When on" = "चालू होने पर";
 "When off" = "बंद होने पर";
@@ -97,8 +93,6 @@
 
 /* Stay online: reconnecting */
 "Reconnects Wi-Fi if the internet drops" = "इंटरनेट कटने पर Wi-Fi फिर से जोड़ता है";
-"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "जब Melatonin आपके Mac को जगाए रखता है और इंटरनेट 20 सेकंड के लिए कट जाता है, तो यह Wi-Fi को फिर से चालू करता है ताकि macOS पास के किसी सेव किए नेटवर्क, जैसे आपके फ़ोन के हॉटस्पॉट, से फिर जुड़ जाए।";
-"Test now" = "अभी जाँचें";
 "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi कुछ सेकंड के लिए बंद होगा, फिर आपका Mac सबसे अच्छे सेव किए नेटवर्क से जुड़ जाएगा।";
 "Last reconnected at %@, back online in %lld s" = "%@ पर फिर जुड़ा, %lld सेकंड में इंटरनेट लौटा";
 "Make sure your Mac picks your phone’s hotspot" = "ताकि आपका Mac फ़ोन का हॉटस्पॉट चुने";
@@ -106,3 +100,41 @@
 "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "सिस्टम सेटिंग › Wi-Fi में हॉटस्पॉट का विवरण खोलें और “इस नेटवर्क से स्वचालित रूप से जुड़ें” चालू करें।";
 "Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android: कोई डिवाइस न जुड़ा हो तो हॉटस्पॉट बंद करने वाली सेटिंग बंद करें।";
 "Reconnected" = "फिर से जुड़ा";
+
+/* Stay online: preferred networks */
+"Priority" = "प्राथमिकता";
+"Add network" = "नेटवर्क जोड़ें";
+"No other saved networks" = "सेव किया गया कोई और नेटवर्क नहीं है";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "जिन नेटवर्क को बैकअप के रूप में रखना चाहते हैं, उन्हें जोड़ें: घर, ऑफ़िस, आपके फ़ोन का हॉटस्पॉट।";
+"Mark as hotspot" = "हॉटस्पॉट के रूप में चिह्नित करें";
+"Remove" = "हटाएँ";
+"Online via %@" = "%@ के ज़रिए ऑनलाइन";
+"Joining %@…" = "%@ से जुड़ रहा है…";
+"Connect now" = "अभी कनेक्ट करें";
+"Restart Wi-Fi" = "Wi-Fi फिर से चालू करें";
+"Choose networks by name" = "नाम से नेटवर्क चुनें";
+"Location access is off. Turn on Melatonin in System Settings › Privacy & Security › Location Services." = "लोकेशन एक्सेस बंद है। सिस्टम सेटिंग › गोपनीयता और सुरक्षा › लोकेशन सेवाएँ में Melatonin चालू करें।";
+"macOS only shows Wi-Fi network names to apps with Location access. Allow it and Melatonin can join your networks in the order you set. Your location is never used or stored." = "macOS सिर्फ़ लोकेशन एक्सेस वाले ऐप्स को Wi-Fi नेटवर्क के नाम दिखाता है। अनुमति दें, तो Melatonin आपके तय किए क्रम में नेटवर्क से जुड़ सकेगा। आपकी लोकेशन कभी इस्तेमाल या सेव नहीं होती।";
+"Open Privacy Settings" = "गोपनीयता सेटिंग खोलें";
+"Allow Location Access" = "लोकेशन एक्सेस दें";
+"Scan again" = "फिर से खोजें";
+"Melatonin joins the first network in range, top to bottom. If none of them works, it restarts Wi-Fi and lets macOS choose." = "Melatonin ऊपर से नीचे, रेंज में मौजूद पहले नेटवर्क से जुड़ता है। कोई काम न करे तो यह Wi-Fi फिर से चालू करता है और macOS को चुनने देता है।";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the first network on your list that’s in range. If none works, it restarts Wi-Fi so macOS can pick one." = "जब Melatonin आपके Mac को जगाए रखता है और इंटरनेट कट जाता है, तो यह आपकी सूची में रेंज में मौजूद पहले नेटवर्क से जुड़ता है। कोई काम न करे तो Wi-Fi फिर से चालू करता है ताकि macOS कोई नेटवर्क चुने।";
+"Connected" = "जुड़ा है";
+"In range" = "रेंज में";
+"Not ready yet: %@" = "अभी तैयार नहीं: %@";
+"Melatonin needs your OK to use the Wi-Fi passwords macOS already saved for these networks. Until then, they’re skipped when the internet drops." = "इन नेटवर्क के लिए macOS में पहले से सेव Wi-Fi पासवर्ड इस्तेमाल करने के लिए Melatonin को आपकी मंज़ूरी चाहिए। तब तक इंटरनेट कटने पर इन्हें छोड़ दिया जाता है।";
+"Allow saved passwords" = "सेव किए पासवर्ड की अनुमति दें";
+"In the macOS dialog, enter your Mac account name (%@) and login password." = "macOS विंडो में अपने Mac खाते का नाम (%@) और लॉगिन पासवर्ड डालें।";
+
+/* While you were away */
+"While you were away" = "आपकी गैरमौजूदगी में";
+"Your Mac went to sleep" = "आपका Mac स्लीप में चला गया";
+"Awake the whole time" = "पूरे समय जागा रहा";
+"Kept awake for %@" = "%@ तक जगाए रखा";
+"Turn on auto mode so agents can finish" = "एजेंट काम पूरा कर सकें, इसके लिए ऑटो मोड चालू करें";
+"Still awake" = "अभी भी जागा है";
+"%@ still working" = "%@ अभी भी काम कर रहा है";
+"Sleep resumed at %@" = "%@ पर फिर से स्लीप";
+"Reconnected %lld×" = "%lld बार फिर से जुड़ा";
+"Dismiss" = "बंद करें";

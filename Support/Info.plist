@@ -34,15 +34,19 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1.3</string>
+	<string>0.1.4</string>
 	<key>CFBundleVersion</key>
-	<string>4</string>
+	<string>5</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>14.0</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>NSLocationUsageDescription</key>
+	<string>Melatonin uses Location access only to read the names of nearby Wi-Fi networks, so it can switch to the one you prefer. It never uses or stores your location.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Melatonin uses Location access only to read the names of nearby Wi-Fi networks, so it can switch to the one you prefer. It never uses or stores your location.</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>

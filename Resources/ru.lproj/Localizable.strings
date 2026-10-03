@@ -72,10 +72,6 @@
 "Same as macOS" = "Как в macOS";
 
 /* Auto mode */
-"Auto-on while agents work" = "Авто, пока работают агенты";
-"Turns on by itself while Claude Code, Codex and others work" = "Включается сам, пока работают Claude Code, Codex и другие";
-"Waiting for an agent to start" = "Ждёт, когда агент начнёт работу";
-"%@ working · keeping awake" = "%@ работает · не спит";
 "Turns on when an agent starts working" = "Включится, когда агент начнёт работу";
 "When on" = "Если включено";
 "When off" = "Если выключено";
@@ -97,8 +93,6 @@
 
 /* Stay online: reconnecting */
 "Reconnects Wi-Fi if the internet drops" = "Переподключает Wi-Fi, если пропал интернет";
-"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Если интернет пропадает на 20 секунд, пока Melatonin не даёт Mac уснуть, он перезапускает Wi-Fi, чтобы macOS снова подключилась к сохранённой сети поблизости, например к точке доступа телефона.";
-"Test now" = "Проверить";
 "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi выключится на несколько секунд, затем Mac подключится к лучшей сохранённой сети.";
 "Last reconnected at %@, back online in %lld s" = "Переподключено в %@, интернет вернулся через %lld с";
 "Make sure your Mac picks your phone’s hotspot" = "Чтобы Mac выбирал точку доступа телефона";
@@ -106,3 +100,41 @@
 "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "В Системных настройках › Wi-Fi откройте «Подробнее» для точки доступа и включите «Автоматически подключаться к этой сети».";
 "Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android: отключите параметр, который выключает точку доступа, когда нет подключённых устройств.";
 "Reconnected" = "Переподключено";
+
+/* Stay online: preferred networks */
+"Priority" = "Приоритет";
+"Add network" = "Добавить сеть";
+"No other saved networks" = "Других сохраненных сетей нет";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "Добавьте резервные сети: домашнюю, рабочую, точку доступа телефона.";
+"Mark as hotspot" = "Отметить как точку доступа";
+"Remove" = "Удалить";
+"Online via %@" = "Онлайн через %@";
+"Joining %@…" = "Подключение к «%@»…";
+"Connect now" = "Подключиться сейчас";
+"Restart Wi-Fi" = "Перезапустить Wi-Fi";
+"Choose networks by name" = "Выбор сетей по названию";
+"Location access is off. Turn on Melatonin in System Settings › Privacy & Security › Location Services." = "Доступ к геопозиции выключен. Включите Melatonin в Системных настройках › Конфиденциальность и безопасность › Службы геолокации.";
+"macOS only shows Wi-Fi network names to apps with Location access. Allow it and Melatonin can join your networks in the order you set. Your location is never used or stored." = "macOS показывает названия сетей Wi-Fi только приложениям с доступом к геопозиции. Разрешите его, и Melatonin сможет подключаться к вашим сетям в заданном порядке. Ваше местоположение не используется и не хранится.";
+"Open Privacy Settings" = "Открыть настройки конфиденциальности";
+"Allow Location Access" = "Разрешить доступ к геопозиции";
+"Scan again" = "Искать снова";
+"Melatonin joins the first network in range, top to bottom. If none of them works, it restarts Wi-Fi and lets macOS choose." = "Melatonin подключается к первой доступной сети сверху вниз. Если ни одна не подошла, он перезапускает Wi-Fi и даёт macOS выбрать.";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the first network on your list that’s in range. If none works, it restarts Wi-Fi so macOS can pick one." = "Если интернет пропал, пока Melatonin не даёт Mac уснуть, он подключается к первой доступной сети из вашего списка. Если ни одна не подошла, перезапускает Wi-Fi, чтобы macOS выбрала сама.";
+"Connected" = "Подключено";
+"In range" = "В зоне";
+"Not ready yet: %@" = "Ещё не готовы: %@";
+"Melatonin needs your OK to use the Wi-Fi passwords macOS already saved for these networks. Until then, they’re skipped when the internet drops." = "Melatonin нужно ваше разрешение, чтобы использовать пароли Wi-Fi, которые macOS уже сохранила для этих сетей. До тех пор они пропускаются, когда пропадает интернет.";
+"Allow saved passwords" = "Разрешить сохранённые пароли";
+"In the macOS dialog, enter your Mac account name (%@) and login password." = "В окне macOS введите имя учётной записи Mac (%@) и пароль для входа.";
+
+/* While you were away */
+"While you were away" = "Пока вас не было";
+"Your Mac went to sleep" = "Mac уснул";
+"Awake the whole time" = "Не спал всё время";
+"Kept awake for %@" = "Не давал спать %@";
+"Turn on auto mode so agents can finish" = "Включите авторежим, чтобы агенты успели закончить";
+"Still awake" = "Всё ещё не спит";
+"%@ still working" = "%@ ещё работает";
+"Sleep resumed at %@" = "Снова уснул в %@";
+"Reconnected %lld×" = "Переподключений: %lld";
+"Dismiss" = "Закрыть";

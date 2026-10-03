@@ -72,10 +72,6 @@
 "Same as macOS" = "Sama seperti macOS";
 
 /* Auto mode */
-"Auto-on while agents work" = "Otomatis saat agen bekerja";
-"Turns on by itself while Claude Code, Codex and others work" = "Menyala sendiri saat Claude Code, Codex, dan lainnya bekerja";
-"Waiting for an agent to start" = "Menunggu agen mulai bekerja";
-"%@ working · keeping awake" = "%@ bekerja · tetap terjaga";
 "Turns on when an agent starts working" = "Akan menyala saat agen mulai bekerja";
 "When on" = "Saat aktif";
 "When off" = "Saat nonaktif";
@@ -97,8 +93,6 @@
 
 /* Stay online: reconnecting */
 "Reconnects Wi-Fi if the internet drops" = "Menyambungkan ulang Wi-Fi jika internet putus";
-"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Jika internet putus selama 20 detik saat Melatonin membuat Mac tetap terjaga, Wi-Fi dimulai ulang agar macOS bergabung lagi ke jaringan tersimpan di dekatmu, seperti hotspot ponsel.";
-"Test now" = "Uji sekarang";
 "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi mati beberapa detik, lalu Mac bergabung ke jaringan tersimpan terbaik.";
 "Last reconnected at %@, back online in %lld s" = "Tersambung ulang pukul %@, online lagi dalam %lld dtk";
 "Make sure your Mac picks your phone’s hotspot" = "Agar Mac memilih hotspot ponselmu";
@@ -106,3 +100,41 @@
 "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "Di Pengaturan Sistem › Wi-Fi, buka Detail hotspot dan nyalakan “Otomatis bergabung ke jaringan ini”.";
 "Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android: matikan pengaturan yang mematikan hotspot saat tidak ada perangkat yang tersambung.";
 "Reconnected" = "Tersambung ulang";
+
+/* Stay online: preferred networks */
+"Priority" = "Prioritas";
+"Add network" = "Tambahkan jaringan";
+"No other saved networks" = "Tidak ada jaringan tersimpan lainnya";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "Tambahkan jaringan yang ingin dijadikan cadangan: rumah, kantor, hotspot ponsel Anda.";
+"Mark as hotspot" = "Tandai sebagai hotspot";
+"Remove" = "Hapus";
+"Online via %@" = "Online melalui %@";
+"Joining %@…" = "Bergabung dengan %@…";
+"Connect now" = "Sambungkan sekarang";
+"Restart Wi-Fi" = "Mulai ulang Wi-Fi";
+"Choose networks by name" = "Pilih jaringan berdasarkan nama";
+"Location access is off. Turn on Melatonin in System Settings › Privacy & Security › Location Services." = "Akses lokasi nonaktif. Nyalakan Melatonin di Pengaturan Sistem › Privasi & Keamanan › Layanan Lokasi.";
+"macOS only shows Wi-Fi network names to apps with Location access. Allow it and Melatonin can join your networks in the order you set. Your location is never used or stored." = "macOS hanya menampilkan nama jaringan Wi-Fi ke app yang punya akses lokasi. Izinkan, dan Melatonin bisa bergabung ke jaringanmu sesuai urutan yang kamu atur. Lokasimu tidak pernah dipakai atau disimpan.";
+"Open Privacy Settings" = "Buka pengaturan privasi";
+"Allow Location Access" = "Izinkan akses lokasi";
+"Scan again" = "Pindai lagi";
+"Melatonin joins the first network in range, top to bottom. If none of them works, it restarts Wi-Fi and lets macOS choose." = "Melatonin bergabung ke jaringan pertama yang terjangkau, dari atas ke bawah. Jika tidak ada yang berhasil, Wi-Fi dimulai ulang dan macOS yang memilih.";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the first network on your list that’s in range. If none works, it restarts Wi-Fi so macOS can pick one." = "Jika internet putus saat Melatonin membuat Mac tetap terjaga, ia bergabung ke jaringan pertama di daftarmu yang terjangkau. Jika tidak ada yang berhasil, Wi-Fi dimulai ulang agar macOS memilih.";
+"Connected" = "Tersambung";
+"In range" = "Terjangkau";
+"Not ready yet: %@" = "Belum siap: %@";
+"Melatonin needs your OK to use the Wi-Fi passwords macOS already saved for these networks. Until then, they’re skipped when the internet drops." = "Melatonin perlu izinmu untuk memakai kata sandi Wi-Fi yang sudah disimpan macOS untuk jaringan ini. Sampai saat itu, jaringan ini dilewati saat internet putus.";
+"Allow saved passwords" = "Izinkan kata sandi tersimpan";
+"In the macOS dialog, enter your Mac account name (%@) and login password." = "Di dialog macOS, masukkan nama akun Mac (%@) dan kata sandi login.";
+
+/* While you were away */
+"While you were away" = "Selama kamu pergi";
+"Your Mac went to sleep" = "Mac kamu tertidur";
+"Awake the whole time" = "Terjaga sepanjang waktu";
+"Kept awake for %@" = "Terjaga selama %@";
+"Turn on auto mode so agents can finish" = "Nyalakan mode otomatis agar agen bisa selesai";
+"Still awake" = "Masih terjaga";
+"%@ still working" = "%@ masih bekerja";
+"Sleep resumed at %@" = "Tidur lagi pukul %@";
+"Reconnected %lld×" = "Tersambung ulang %lld×";
+"Dismiss" = "Tutup";

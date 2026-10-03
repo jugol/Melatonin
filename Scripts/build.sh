@@ -1,14 +1,21 @@
 #!/bin/bash
 # Builds build/Melatonin.app from the Swift package.
 #
-#   Scripts/build.sh                     # ad-hoc signed, for local use
+#   Scripts/build.sh                     # signed with the best identity on this Mac
 #   UNIVERSAL=1 Scripts/build.sh         # Apple silicon + Intel, for releases
 #   SIGN_IDENTITY="Developer ID Application: …" Scripts/build.sh
+#   Scripts/make-signing-identity.sh     # once per Mac: stable local signing
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 CONFIG="${CONFIG:-release}"
-IDENTITY="${SIGN_IDENTITY:--}"
+# Sign with SIGN_IDENTITY, else this Mac's Developer ID, else the local
+# "Melatonin Self-Signed" identity, else ad hoc. Only a Team ID (Developer ID)
+# keeps keychain access across updates; a self-signed identity at least keeps
+# Location access; ad hoc signatures change every build.
+DEVELOPER_ID="$(security find-identity -v -p codesigning 2>/dev/null | awk -F'"' '/"Developer ID Application:/ && !found {print $2; found = 1}')"
+LOCAL_IDENTITY="$(security find-identity -p codesigning 2>/dev/null | awk '/"Melatonin Self-Signed"/ && !found {print $2; found = 1}')"
+IDENTITY="${SIGN_IDENTITY:-${DEVELOPER_ID:-${LOCAL_IDENTITY:--}}}"
 LABEL="io.github.jugol.melatonin.helper"
 APP="build/Melatonin.app"
 
@@ -35,9 +42,10 @@ cp -R Resources/*.lproj "$APP/Contents/Resources/"
 [[ -f Resources/AppIcon.icns ]] && cp Resources/AppIcon.icns "$APP/Contents/Resources/"
 
 SIGN_FLAGS=(--force --options runtime --sign "$IDENTITY")
-[[ "$IDENTITY" != "-" ]] && SIGN_FLAGS+=(--timestamp)
+# Notarization needs a secure timestamp; skip the network round trip for debug builds.
+[[ "$IDENTITY" == Developer\ ID* && "$CONFIG" == release ]] && SIGN_FLAGS+=(--timestamp)
 
 codesign "${SIGN_FLAGS[@]}" --identifier "$LABEL" "$APP/Contents/Library/LaunchServices/$LABEL"
-codesign "${SIGN_FLAGS[@]}" "$APP"
+codesign "${SIGN_FLAGS[@]}" --entitlements Support/Melatonin.entitlements "$APP"
 
-echo "Built $APP"
+echo "Built $APP ($IDENTITY)"

@@ -45,8 +45,10 @@ Las apps para mantener el Mac despierto, como `caffeinate`, KeepingYouAwake y ca
 - **Vive en tu notch.** Cuando Melatonin está activado, una lámpara cálida brilla junto a la cámara con el tiempo restante. Pasa el puntero por encima para desplegar todos los controles. En pantallas sin notch, la píldora cuelga de la barra de menús.
 - **Interruptor en la barra de menús.** Si ves solo el contorno de una media luna, tu Mac se dormirá; si la media luna sostiene una lámpara ámbar, no.
 - **Temporizadores.** 1, 2, 4 u 8 horas, o hasta que lo desactives.
+- **Luna, auto, lámpara.** Un solo interruptor bajo la lámpara: **Desactivado** deja dormir a tu Mac, **Auto** lo mantiene despierto solo mientras trabajan los agentes y **Activado** lo mantiene despierto hasta que termina el temporizador; después vuelve al modo anterior.
 - **Automático con agentes de IA.** Se mantiene despierto solo mientras un agente está trabajando de verdad: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose o Crush. La detección mira la actividad de CPU de todo el árbol de procesos de cada agente, así que un agente esperando en su prompt no cuenta. Los agentes que lanza T3 Code se atribuyen a T3 Code.
-- **Seguir conectado.** Si se cae internet mientras Melatonin mantiene despierto tu Mac, por ejemplo cuando cierras la tapa y sales del alcance del Wi-Fi de la oficina, reinicia el Wi-Fi para que macOS vuelva a conectarse a una red guardada cercana, como el punto de acceso de tu teléfono. macOS no permite que las apps elijan una red Wi-Fi por su nombre, así que asegúrate de que el punto de acceso esté guardado con **Conectarse automáticamente a esta red** activado. El botón **Probar ahora** te muestra que funciona.
+- **Seguir conectado.** Si se cae internet mientras Melatonin mantiene tu Mac despierto, por ejemplo al cerrar la tapa y salir del Wi-Fi de la oficina, se conecta a la primera red al alcance de una lista de prioridad que eliges entre tus redes guardadas, como el punto de acceso de tu teléfono. Elegir redes por nombre requiere acceso a la ubicación, porque macOS solo muestra los nombres de Wi-Fi a las apps que lo tienen; tu ubicación nunca se usa. Si ninguna funciona, reinicia el Wi-Fi para que macOS vuelva a unirse a una red guardada por su cuenta.
+- **Mientras no estabas.** Al volver a tu Mac, el notch te cuenta qué pasó: cuánto tiempo lo mantuvo despierto Melatonin, qué agentes trabajaron y durante cuánto, de cuántas caídas de Wi-Fi se recuperó y cuánta batería usó.
 - **La seguridad, lo primero.**
   - Con batería, se desactiva al llegar al mínimo que elijas (20 % por defecto).
   - Se desactiva si tu Mac se calienta. Un portátil encendido dentro de una mochila cerrada es la receta perfecta para cocinar la batería.
@@ -61,6 +63,10 @@ Las apps para mantener el Mac despierto, como `caffeinate`, KeepingYouAwake y ca
 
 <p align="center">
   <img src="docs/images/notch-compact.png" width="640" alt="Píldora compacta en el notch con cuenta atrás">
+</p>
+
+<p align="center">
+  <img src="docs/images/notch-recap.png" width="640" alt="Resumen de mientras no estabas en el notch">
 </p>
 
 <p align="center">
@@ -79,11 +85,7 @@ Requiere macOS 14 Sonoma o posterior.
 brew install --cask jugol/tap/melatonin
 ```
 
-**Primera apertura:** las primeras versiones aún no están notarizadas por Apple, así que macOS bloqueará la app la primera vez que la abras. Ve a **Ajustes del Sistema › Privacidad y seguridad** y haz clic en **Abrir igualmente**, o ejecuta:
-
-```bash
-xattr -dr com.apple.quarantine /Applications/Melatonin.app
-```
+Las versiones publicadas están firmadas con un Developer ID y notarizadas por Apple, así que se abren como cualquier otra app.
 
 La primera vez que actives Melatonin, macOS te pedirá la contraseña una sola vez para instalar la herramienta auxiliar.
 
@@ -120,7 +122,7 @@ sudo bash Support/uninstall-helper.sh
 ## Desarrollo
 
 ```bash
-make app        # build build/Melatonin.app (ad-hoc signed)
+make app        # build build/Melatonin.app (signed with the best identity on this Mac)
 make run        # build and launch
 make package    # universal build, DMG and zip in dist/
 make icon       # regenerate the app icon from Scripts/make-icon.swift
@@ -130,7 +132,7 @@ swift build && .build/debug/Melatonin --agents                 # watch agent det
 
 Después de añadir o editar una traducción, ejecuta `python3 Scripts/check-localizations.py` para detectar textos que falten o marcadores que no coincidan.
 
-Para firmar con un Developer ID, define `SIGN_IDENTITY` y fija tu ID de equipo en `HelperConstants.clientRequirement`:
+Las compilaciones se firman con el Developer ID de esta Mac si tiene uno; si no, con una identidad local creada por `Scripts/make-signing-identity.sh` (conserva el acceso a la ubicación entre compilaciones); y si no, ad hoc. `make package` también notariza cuando existe un perfil de llavero de notarytool llamado `melatonin`. Para firmar con tu propio Developer ID, define `SIGN_IDENTITY`:
 
 ```bash
 SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
@@ -138,10 +140,11 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 
 ## Hoja de ruta
 
-- [ ] Versiones firmadas y notarizadas, un cask de Homebrew y actualizaciones con Sparkle
-- [ ] Seguir conectado: elegir a qué red guardada volver a conectarse (requiere acceso a la ubicación)
+- [x] Versiones firmadas y notarizadas, y un cask de Homebrew
+- [x] Seguir conectado: unirse a tus redes guardadas en el orden que elijas
+- [x] Resumen "Mientras no estabas" al volver
+- [ ] Actualizaciones con Sparkle
 - [ ] Integración con los hooks de Claude Code para detectar con exactitud el inicio y el fin
-- [ ] Resumen «Mientras no estabas» al abrir la tapa
 
 ## Licencia
 

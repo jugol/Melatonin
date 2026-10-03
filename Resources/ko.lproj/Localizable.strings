@@ -72,10 +72,6 @@
 "Same as macOS" = "macOS 설정 따르기";
 
 /* Auto mode */
-"Auto-on while agents work" = "에이전트가 일하면 자동 켜기";
-"Turns on by itself while Claude Code, Codex and others work" = "Claude Code·Codex 등이 일하는 동안 알아서 켜져요";
-"Waiting for an agent to start" = "에이전트가 일을 시작하면 켜져요";
-"%@ working · keeping awake" = "%@ 작업 중 · 깨어 있는 중";
 "Turns on when an agent starts working" = "에이전트가 일을 시작하면 알아서 깨어나요";
 "When on" = "켜 두면";
 "When off" = "꺼 두면";
@@ -97,8 +93,6 @@
 
 /* Stay online: reconnecting */
 "Reconnects Wi-Fi if the internet drops" = "인터넷이 끊기면 Wi-Fi를 다시 연결해요";
-"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Melatonin이 맥을 깨워두는 동안 인터넷이 20초 넘게 끊기면, Wi-Fi를 껐다 켜서 macOS가 범위 안의 저장된 네트워크(휴대폰 핫스팟 등)에 다시 연결하게 해요.";
-"Test now" = "지금 테스트";
 "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "Wi-Fi가 몇 초간 꺼졌다가, 맥이 가장 좋은 저장된 네트워크에 다시 연결돼요.";
 "Last reconnected at %@, back online in %lld s" = "%@에 다시 연결됨 · %lld초 만에 복구";
 "Make sure your Mac picks your phone’s hotspot" = "맥이 휴대폰 핫스팟을 잡게 하려면";
@@ -106,3 +100,41 @@
 "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "시스템 설정 › Wi-Fi에서 핫스팟의 세부사항을 열고 “이 네트워크에 자동으로 연결”을 켜세요.";
 "Android: turn off the setting that switches the hotspot off when no devices are connected." = "안드로이드: 연결된 기기가 없으면 핫스팟을 끄는 설정을 꺼두세요.";
 "Reconnected" = "다시 연결됨";
+
+/* Stay online: preferred networks */
+"Priority" = "우선순위";
+"Add network" = "네트워크 추가";
+"No other saved networks" = "추가할 저장된 네트워크가 없어요";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "백업으로 쓸 네트워크를 추가하세요. 집, 사무실, 휴대폰 핫스팟 등.";
+"Mark as hotspot" = "핫스팟으로 표시";
+"Remove" = "삭제";
+"Online via %@" = "%@ 연결됨";
+"Joining %@…" = "%@ 연결 중…";
+"Connect now" = "지금 연결";
+"Restart Wi-Fi" = "Wi-Fi 재시작";
+"Choose networks by name" = "이름으로 네트워크 고르기";
+"Location access is off. Turn on Melatonin in System Settings › Privacy & Security › Location Services." = "위치 권한이 꺼져 있어요. 시스템 설정 › 개인정보 보호 및 보안 › 위치 서비스에서 Melatonin을 켜세요.";
+"macOS only shows Wi-Fi network names to apps with Location access. Allow it and Melatonin can join your networks in the order you set. Your location is never used or stored." = "macOS는 위치 권한이 있는 앱에만 Wi-Fi 이름을 보여줘요. 허용하면 Melatonin이 정한 순서대로 네트워크에 연결할 수 있어요. 위치는 사용하거나 저장하지 않아요.";
+"Open Privacy Settings" = "개인정보 설정 열기";
+"Allow Location Access" = "위치 권한 허용";
+"Scan again" = "다시 검색";
+"Melatonin joins the first network in range, top to bottom. If none of them works, it restarts Wi-Fi and lets macOS choose." = "Melatonin은 목록 위에서부터 범위 안에 있는 첫 번째 네트워크에 연결해요. 모두 실패하면 Wi-Fi를 다시 켜서 macOS가 고르게 해요.";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the first network on your list that’s in range. If none works, it restarts Wi-Fi so macOS can pick one." = "Melatonin이 맥을 깨워두는 동안 인터넷이 끊기면, 목록에서 범위 안에 있는 첫 번째 네트워크에 연결해요. 모두 안 되면 Wi-Fi를 다시 켜서 macOS가 고르게 해요.";
+"Connected" = "연결됨";
+"In range" = "범위 안";
+"Not ready yet: %@" = "아직 준비 안 됨: %@";
+"Melatonin needs your OK to use the Wi-Fi passwords macOS already saved for these networks. Until then, they’re skipped when the internet drops." = "이 네트워크들은 macOS에 저장된 Wi-Fi 비밀번호를 Melatonin이 쓸 수 있게 한 번 허락해야 해요. 그전까지는 인터넷이 끊겼을 때 건너뛰어요.";
+"Allow saved passwords" = "저장된 비밀번호 허용하기";
+"In the macOS dialog, enter your Mac account name (%@) and login password." = "macOS 창에 Mac 계정 이름(%@)과 로그인 비밀번호를 입력하세요.";
+
+/* While you were away */
+"While you were away" = "자리 비운 사이";
+"Your Mac went to sleep" = "맥이 잠들었어요";
+"Awake the whole time" = "내내 깨어 있었어요";
+"Kept awake for %@" = "%@ 동안 깨워뒀어요";
+"Turn on auto mode so agents can finish" = "에이전트가 끝까지 일하게 하려면 자동 모드를 켜세요";
+"Still awake" = "아직 깨어 있어요";
+"%@ still working" = "%@ 아직 작업 중";
+"Sleep resumed at %@" = "%@에 다시 잠들었어요";
+"Reconnected %lld×" = "재연결 %lld회";
+"Dismiss" = "닫기";

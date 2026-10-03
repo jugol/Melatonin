@@ -1,0 +1,2 @@
+"NSLocationUsageDescription" = "Melatonin は、近くの Wi-Fi ネットワーク名を読み取って優先するネットワークに切り替えるためだけに位置情報へのアクセスを使います。位置情報を使ったり保存したりすることはありません。";
+"NSLocationWhenInUseUsageDescription" = "Melatonin は、近くの Wi-Fi ネットワーク名を読み取って優先するネットワークに切り替えるためだけに位置情報へのアクセスを使います。位置情報を使ったり保存したりすることはありません。";

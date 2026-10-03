@@ -72,10 +72,6 @@
 "Same as macOS" = "Igual ao macOS";
 
 /* Auto mode */
-"Auto-on while agents work" = "Automático com agentes ativos";
-"Turns on by itself while Claude Code, Codex and others work" = "Liga sozinho enquanto Claude Code, Codex e outros trabalham";
-"Waiting for an agent to start" = "Aguardando um agente começar";
-"%@ working · keeping awake" = "%@ trabalhando · mantendo acordado";
 "Turns on when an agent starts working" = "Liga quando um agente começar a trabalhar";
 "When on" = "Ligado";
 "When off" = "Desligado";
@@ -97,8 +93,6 @@
 
 /* Stay online: reconnecting */
 "Reconnects Wi-Fi if the internet drops" = "Reconecta o Wi-Fi se a internet cair";
-"If the internet drops for 20 seconds while Melatonin keeps your Mac awake, it restarts Wi-Fi so macOS rejoins a saved network in range, such as your phone’s hotspot." = "Se a internet cair por 20 segundos enquanto o Melatonin mantém seu Mac acordado, ele reinicia o Wi-Fi para o macOS voltar a uma rede salva por perto, como o ponto de acesso do seu celular.";
-"Test now" = "Testar agora";
 "Wi-Fi turns off for a few seconds, then your Mac rejoins the best saved network." = "O Wi-Fi desliga por alguns segundos e o Mac volta para a melhor rede salva.";
 "Last reconnected at %@, back online in %lld s" = "Reconectado às %@, online de novo em %lld s";
 "Make sure your Mac picks your phone’s hotspot" = "Faça seu Mac escolher o ponto de acesso do celular";
@@ -106,3 +100,41 @@
 "In System Settings › Wi-Fi, open the hotspot’s Details and turn on “Automatically join this network”." = "Em Ajustes do Sistema › Wi-Fi, abra os Detalhes do ponto de acesso e ative “Conectar automaticamente a esta rede”.";
 "Android: turn off the setting that switches the hotspot off when no devices are connected." = "Android: desative a opção que desliga o ponto de acesso quando nenhum dispositivo está conectado.";
 "Reconnected" = "Reconectado";
+
+/* Stay online: preferred networks */
+"Priority" = "Prioridade";
+"Add network" = "Adicionar rede";
+"No other saved networks" = "Nenhuma outra rede salva";
+"Add the networks you want as backups: home, office, your phone’s hotspot." = "Adicione as redes que você quer usar como reserva: casa, trabalho, o ponto de acesso do seu celular.";
+"Mark as hotspot" = "Marcar como ponto de acesso";
+"Remove" = "Remover";
+"Online via %@" = "Conectado a %@";
+"Joining %@…" = "Conectando a %@…";
+"Connect now" = "Conectar agora";
+"Restart Wi-Fi" = "Reiniciar o Wi-Fi";
+"Choose networks by name" = "Escolher redes pelo nome";
+"Location access is off. Turn on Melatonin in System Settings › Privacy & Security › Location Services." = "O acesso à localização está desativado. Ative o Melatonin em Ajustes do Sistema › Privacidade e Segurança › Serviços de Localização.";
+"macOS only shows Wi-Fi network names to apps with Location access. Allow it and Melatonin can join your networks in the order you set. Your location is never used or stored." = "O macOS só mostra nomes de redes Wi-Fi para apps com acesso à localização. Permita e o Melatonin poderá se conectar às suas redes na ordem que você definir. Sua localização nunca é usada nem guardada.";
+"Open Privacy Settings" = "Abrir ajustes de privacidade";
+"Allow Location Access" = "Permitir acesso à localização";
+"Scan again" = "Buscar de novo";
+"Melatonin joins the first network in range, top to bottom. If none of them works, it restarts Wi-Fi and lets macOS choose." = "O Melatonin conecta à primeira rede ao alcance, de cima para baixo. Se nenhuma funcionar, ele reinicia o Wi-Fi e deixa o macOS escolher.";
+"If the internet drops while Melatonin keeps your Mac awake, it joins the first network on your list that’s in range. If none works, it restarts Wi-Fi so macOS can pick one." = "Se a internet cair enquanto o Melatonin mantém seu Mac acordado, ele conecta à primeira rede da sua lista que estiver ao alcance. Se nenhuma funcionar, reinicia o Wi-Fi para o macOS escolher.";
+"Connected" = "Conectado";
+"In range" = "Ao alcance";
+"Not ready yet: %@" = "Ainda não prontas: %@";
+"Melatonin needs your OK to use the Wi-Fi passwords macOS already saved for these networks. Until then, they’re skipped when the internet drops." = "O Melatonin precisa da sua permissão para usar as senhas de Wi-Fi que o macOS já salvou para essas redes. Até lá, elas são puladas quando a internet cai.";
+"Allow saved passwords" = "Permitir senhas salvas";
+"In the macOS dialog, enter your Mac account name (%@) and login password." = "Na janela do macOS, digite o nome da sua conta do Mac (%@) e a senha de login.";
+
+/* While you were away */
+"While you were away" = "Enquanto você estava fora";
+"Your Mac went to sleep" = "Seu Mac entrou em repouso";
+"Awake the whole time" = "Acordado o tempo todo";
+"Kept awake for %@" = "Mantido acordado por %@";
+"Turn on auto mode so agents can finish" = "Ative o modo automático para os agentes terminarem";
+"Still awake" = "Ainda acordado";
+"%@ still working" = "%@ ainda trabalhando";
+"Sleep resumed at %@" = "Voltou a dormir às %@";
+"Reconnected %lld×" = "Reconectado %lld×";
+"Dismiss" = "Fechar";

@@ -23,6 +23,10 @@ enum Snapshots {
         guard let flag = arguments.firstIndex(of: "--snapshot"), flag + 1 < arguments.count else { return false }
         let directory = URL(fileURLWithPath: arguments[flag + 1])
         ActivityLog.isEnabled = false
+        WiFiPasswords.isEnabled = false
+        let scratch = "io.github.jugol.Melatonin.snapshots"
+        UserDefaults().removePersistentDomain(forName: scratch)
+        Preferences.store = UserDefaults(suiteName: scratch)!
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
         if let screen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) {
@@ -32,6 +36,7 @@ enum Snapshots {
         let model = AppModel.shared
         let working = [AgentActivity(name: "Claude Code", isWorking: true)]
         let later = Date().addingTimeInterval(2 * 3600 - 48)
+        model.choose(.twoHours)
 
         for scheme in [ColorScheme.light, .dark] {
             let suffix = scheme == .dark ? "dark" : "light"
@@ -54,7 +59,14 @@ enum Snapshots {
         render(menu(model), scheme: .light, to: directory.appending(path: "menu-auto-waiting.png"))
 
         let recovery = ConnectionGuard.Recovery(date: Date(), seconds: 5)
-        model.connection.stage(enabled: true, status: .online, lastRecovery: recovery)
+        // Made-up networks: never put the user's own network names in a picture.
+        model.connection.stage(enabled: true, status: .online, lastRecovery: recovery, networks: [
+            FallbackNetwork(ssid: "Office", isHotspot: false),
+            FallbackNetwork(ssid: "Home 5G", isHotspot: false),
+            FallbackNetwork(ssid: "Pixel Hotspot", isHotspot: true),
+        ])
+        model.connection.wifi.stage(nearby: ["Office": -48, "Pixel Hotspot": -61], current: "Office",
+                                    ready: Set(model.connection.networks.map(\.ssid)))
         for scheme in [ColorScheme.light, .dark] {
             let suffix = scheme == .dark ? "dark" : "light"
             render(ConnectionSettings().environment(model).background(.background), scheme: scheme,
@@ -76,10 +88,43 @@ enum Snapshots {
             let state = NotchState()
             state.metrics = notch
             state.isExpanded = expanded
-            render(desktop(notch: notch, overlay: NotchView(state: state).environment(model)), scheme: .dark,
-                   to: directory.appending(path: "\(name).png"))
+            renderPure(desktop(notch: notch, overlay: NotchView(state: state).environment(model)),
+                       to: directory.appending(path: "\(name).png"))
+        }
+
+        let recap = demoRecap()
+        model.stage(awake: false)
+        model.stageRecap(recap, inNotch: true)
+        let state = NotchState()
+        state.metrics = notch
+        renderPure(desktop(notch: notch, overlay: NotchView(state: state).environment(model)),
+                   to: directory.appending(path: "notch-recap.png"))
+        model.stageRecap(recap, inNotch: false)
+        for scheme in [ColorScheme.light, .dark] {
+            render(menu(model), scheme: scheme, to: directory.appending(path: "menu-recap-\(scheme == .dark ? "dark" : "light").png"))
         }
         return true
+    }
+
+    /// Two hours away: Claude Code works, Hermes joins for a while, Wi-Fi drops
+    /// twice, and the Mac goes back to sleep once the agents finish.
+    private static func demoRecap() -> AwayRecap? {
+        let tracker = AwayTracker()
+        let end = Date()
+        let start = end.addingTimeInterval(-(2 * 3600 + 14 * 60))
+        var battery = BatteryStatus(percent: 82, onPower: false, hasBattery: true)
+        tracker.record(isAwake: true, working: ["Claude Code"], battery: battery, at: start)
+        tracker.leave(at: start)
+        var now = start
+        while now < end {
+            now += 10
+            let minute = now.timeIntervalSince(start) / 60
+            let working = minute < 112 ? (minute > 30 && minute < 70 ? ["Claude Code", "Hermes"] : ["Claude Code"]) : []
+            battery.percent = 82 - Int(minute / 6)
+            tracker.record(isAwake: minute < 115, working: working, battery: battery, at: now)
+            if abs(minute - 48) < 0.09 || abs(minute - 91) < 0.09 { tracker.noteReconnect(true, at: now) }
+        }
+        return tracker.comeBack(at: end)
     }
 
     private static func menu(_ model: AppModel) -> some View {
@@ -110,6 +155,16 @@ enum Snapshots {
             overlay
         }
         .frame(width: 760, height: 250)
+    }
+
+    /// For views without AppKit controls. Unlike `render`, keeps the tint of
+    /// SF Symbols drawn over shadows.
+    private static func renderPure(_ view: some View, to url: URL) {
+        let renderer = ImageRenderer(content: view.environment(\.colorScheme, .dark))
+        renderer.scale = 2
+        guard let image = renderer.cgImage else { return }
+        try? NSBitmapImageRep(cgImage: image).representation(using: .png, properties: [:])?.write(to: url)
+        print("wrote", url.lastPathComponent)
     }
 
     private static func render(_ view: some View, scheme: ColorScheme, to url: URL) {

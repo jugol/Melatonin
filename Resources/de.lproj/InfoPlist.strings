@@ -1,0 +1,2 @@
+"NSLocationUsageDescription" = "Melatonin nutzt den Standortzugriff nur, um die Namen von WLANs in der Nähe zu lesen und zu deinem bevorzugten Netzwerk zu wechseln. Dein Standort wird nie genutzt oder gespeichert.";
+"NSLocationWhenInUseUsageDescription" = "Melatonin nutzt den Standortzugriff nur, um die Namen von WLANs in der Nähe zu lesen und zu deinem bevorzugten Netzwerk zu wechseln. Dein Standort wird nie genutzt oder gespeichert.";

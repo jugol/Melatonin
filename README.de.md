@@ -45,8 +45,10 @@ Wachhalte-Apps wie `caffeinate`, KeepingYouAwake und die meisten ihrer Verwandte
 - **Wohnt in deiner Notch.** Ist Melatonin eingeschaltet, leuchtet neben der Kamera eine warme Lampe und zeigt die verbleibende Zeit. Fahr mit dem Zeiger darüber, und alle Bedienelemente klappen auf. Auf Displays ohne Notch hängt die Anzeige stattdessen an der Menüleiste.
 - **Schalter in der Menüleiste.** Nur der Umriss einer Mondsichel heißt: Dein Mac geht in den Ruhezustand. Hält die Sichel eine bernsteinfarbene Lampe, bleibt er wach.
 - **Timer.** 1, 2, 4 oder 8 Stunden – oder bis du es ausschaltest.
+- **Mond, Auto, Lampe.** Ein Schalter unter der Lampe: **Aus** lässt deinen Mac schlafen, **Auto** hält ihn nur wach, solange Agenten arbeiten, **Ein** hält ihn wach, bis der Timer abläuft, und kehrt dann zum vorherigen Modus zurück.
 - **Automatisch für KI-Agenten.** Bleibt nur wach, solange ein Agent wirklich arbeitet: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose oder Crush. Die Erkennung prüft die CPU-Aktivität im gesamten Prozessbaum jedes Agenten. Ein Agent, der untätig am Prompt wartet, zählt also nicht. Von T3 Code gestartete Agenten werden T3 Code zugerechnet.
-- **Online bleiben.** Fällt das Internet aus, während Melatonin deinen Mac wach hält – zum Beispiel wenn du den Deckel zuklappst und dich aus dem Büro-WLAN entfernst –, startet es das WLAN neu, damit macOS sich wieder mit einem gespeicherten Netzwerk in Reichweite verbindet, etwa dem Hotspot deines Handys. macOS lässt Apps kein WLAN-Netzwerk nach Namen auswählen. Achte deshalb darauf, dass der Hotspot gespeichert und **Automatisch mit diesem Netzwerk verbinden** aktiviert ist. Mit der Taste **Jetzt testen** siehst du, dass es funktioniert.
+- **Online bleiben.** Fällt das Internet aus, während Melatonin deinen Mac wach hält, etwa wenn du den Deckel schließt und das Büro-WLAN verlässt, verbindet es sich mit dem ersten erreichbaren Netzwerk aus einer Prioritätsliste, die du aus deinen gespeicherten Netzwerken auswählst, zum Beispiel dem Hotspot deines Handys. Netzwerke nach Namen auszuwählen braucht Zugriff auf den Standort, weil macOS WLAN-Namen nur Apps mit dieser Berechtigung zeigt; dein Standort selbst wird nie verwendet. Klappt keines, startet es das WLAN neu, damit macOS selbst wieder einem gespeicherten Netzwerk beitritt.
+- **Während du weg warst.** Wenn du zurückkommst, zeigt dir die Notch, was passiert ist: wie lange Melatonin den Mac wach gehalten hat, welche Agenten wie lange gearbeitet haben, wie oft das WLAN wiederhergestellt wurde und wie viel Akku verbraucht wurde.
 - **Sicherheit zuerst.**
   - Schaltet sich im Batteriebetrieb bei einem Ladestand ab, den du festlegst (standardmäßig 20 %).
   - Schaltet sich ab, wenn dein Mac heiß wird. Ein laufender Laptop in einer geschlossenen Tasche ist der sicherste Weg, eine Batterie zu grillen.
@@ -61,6 +63,10 @@ Wachhalte-Apps wie `caffeinate`, KeepingYouAwake und die meisten ihrer Verwandte
 
 <p align="center">
   <img src="docs/images/notch-compact.png" width="640" alt="Kompakte Notch-Anzeige mit Countdown">
+</p>
+
+<p align="center">
+  <img src="docs/images/notch-recap.png" width="640" alt="Zusammenfassung in der Notch, während du weg warst">
 </p>
 
 <p align="center">
@@ -79,11 +85,7 @@ Erfordert macOS 14 Sonoma oder neuer.
 brew install --cask jugol/tap/melatonin
 ```
 
-**Erster Start:** Frühe Builds sind noch nicht von Apple notarisiert, deshalb blockiert macOS den ersten Start. Öffne **Systemeinstellungen › Datenschutz & Sicherheit** und klicke auf **Dennoch öffnen** oder führe Folgendes aus:
-
-```bash
-xattr -dr com.apple.quarantine /Applications/Melatonin.app
-```
+Releases sind mit einer Developer ID signiert und von Apple notarisiert, sie öffnen sich also wie jede andere App.
 
 Wenn du Melatonin zum ersten Mal einschaltest, fragt macOS einmalig nach deinem Passwort, um das Hilfsprogramm zu installieren.
 
@@ -120,7 +122,7 @@ sudo bash Support/uninstall-helper.sh
 ## Entwicklung
 
 ```bash
-make app        # build build/Melatonin.app (ad-hoc signed)
+make app        # build build/Melatonin.app (signed with the best identity on this Mac)
 make run        # build and launch
 make package    # universal build, DMG and zip in dist/
 make icon       # regenerate the app icon from Scripts/make-icon.swift
@@ -130,7 +132,7 @@ swift build && .build/debug/Melatonin --agents                 # watch agent det
 
 Wenn du eine Übersetzung hinzufügst oder änderst, führe `python3 Scripts/check-localizations.py` aus, um fehlende Texte und abweichende Platzhalter zu finden.
 
-Um mit einer Developer ID zu signieren, setze `SIGN_IDENTITY` und hinterlege deine Team-ID fest in `HelperConstants.clientRequirement`:
+Builds werden mit der Developer ID dieses Macs signiert, falls vorhanden, sonst mit einer lokalen Identität aus `Scripts/make-signing-identity.sh` (die Standortfreigabe bleibt über Builds hinweg erhalten), sonst ad hoc. `make package` notarisiert zusätzlich, wenn es ein notarytool-Schlüsselbundprofil namens `melatonin` gibt. Um mit deiner eigenen Developer ID zu signieren, setze `SIGN_IDENTITY`:
 
 ```bash
 SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
@@ -138,10 +140,11 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 
 ## Roadmap
 
-- [ ] Signierte, notarisierte Releases, ein Homebrew-Cask und Updates über Sparkle
-- [ ] Online bleiben: auswählen, mit welchem gespeicherten Netzwerk sich der Mac wieder verbindet (erfordert Standortzugriff)
-- [ ] Integration der Claude Code Hooks für exakte Start- und Stoppsignale
-- [ ] Zusammenfassung „Während du weg warst“ beim Aufklappen
+- [x] Signierte, notarisierte Releases und ein Homebrew-Cask
+- [x] Online bleiben: gespeicherten Netzwerken in deiner Reihenfolge beitreten
+- [x] Zusammenfassung „Während du weg warst“ bei deiner Rückkehr
+- [ ] Updates per Sparkle
+- [ ] Claude-Code-Hooks für exakte Start- und Stoppsignale
 
 ## Lizenz
 

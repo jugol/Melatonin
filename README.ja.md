@@ -45,8 +45,10 @@ Claude Codeに長いタスクを任せ、フタを閉じて席を離れる。す
 - **ノッチに住む**：Melatoninがオンの間は、カメラの横に暖かなランプが灯り、残り時間を表示します。ポインタを重ねると、すべての操作ができるパネルに広がります。ノッチのないディスプレイでは、代わりにメニューバーから吊り下がるピル型で表示されます。
 - **メニューバーのスイッチ**：三日月の輪郭だけならMacはスリープします。三日月が琥珀色のランプを抱えていれば、スリープしません。
 - **タイマー**：1、2、4、8時間、またはオフにするまで。
+- **月・自動・ランプ**：ランプの下のスイッチひとつで切り替えます。**オフ**なら Mac は普通にスリープ、**自動**ならエージェントが作業している間だけ起きたまま、**オン**ならタイマーが終わるまで起きていて、その後もとのモードに戻ります。
 - **AIエージェント自動モード**：Claude Code、Codex、Hermes、OpenCode、T3 Code、Gemini CLI、Cursor Agent、Amp、Goose、Crushが実際に作業している間だけ起きています。各エージェントのプロセスツリー全体のCPU使用状況を見て判定するので、プロンプトで待機しているだけのエージェントはカウントされません。T3 Codeから起動されたエージェントはT3 Codeとして扱われます。
-- **オンラインを維持**：たとえばフタを閉じてオフィスのWi-Fiの圏外に出たときなど、MelatoninがMacを起こしている間にインターネットが切れると、Wi-Fiを再起動し、macOSが範囲内の保存済みネットワーク（スマートフォンのテザリングなど）に再接続できるようにします。macOSではアプリが名前を指定してWi-Fiネットワークを選ぶことができないため、テザリングを保存したうえで**このネットワークに自動接続**をオンにしておいてください。**今すぐテスト**ボタンで、実際に動く様子を確認できます。
+- **オンラインを維持**：Melatonin が Mac を起こしている間にインターネットが切れたら（たとえばフタを閉じてオフィスの Wi-Fi 圏外に出たとき）、保存済みネットワークから選んだ優先順位リストの上から、圏内にある最初のネットワーク（スマホのテザリングなど）に接続します。名前でネットワークを選ぶには位置情報の許可が必要です。macOS は位置情報を許可したアプリにしか Wi-Fi 名を見せないためで、位置そのものは使いません。どれもつながらなければ Wi-Fi を再起動し、macOS が保存済みネットワークに自動で再接続できるようにします。
+- **離席中のできごと**：Mac に戻るとノッチがその間のことを教えてくれます。どれだけ起こしておいたか、どのエージェントがどれくらい作業したか、Wi-Fi の切断から何回復旧したか、バッテリーをどれだけ使ったか。
 - **安全第一**：
   - バッテリー駆動中は、設定した残量（デフォルトは20%）を下回るとオフになります。
   - Macが熱くなるとオフになります。閉じたバッグの中でノートパソコンを動かし続けるのは、バッテリーを蒸し焼きにするようなものです。
@@ -61,6 +63,10 @@ Claude Codeに長いタスクを任せ、フタを閉じて席を離れる。す
 
 <p align="center">
   <img src="docs/images/notch-compact.png" width="640" alt="カウントダウン付きのコンパクトなノッチ表示">
+</p>
+
+<p align="center">
+  <img src="docs/images/notch-recap.png" width="640" alt="ノッチに表示された離席中のまとめ">
 </p>
 
 <p align="center">
@@ -79,11 +85,7 @@ macOS 14 Sonoma以降が必要です。
 brew install --cask jugol/tap/melatonin
 ```
 
-**初回起動**：初期のビルドはまだAppleの公証を受けていないため、初回起動時にmacOSがブロックします。**システム設定 › プライバシーとセキュリティ**を開いて**このまま開く**をクリックするか、次のコマンドを実行してください：
-
-```bash
-xattr -dr com.apple.quarantine /Applications/Melatonin.app
-```
+リリース版は Developer ID で署名され Apple の公証を受けているので、ほかのアプリと同じようにそのまま開けます。
 
 初めてMelatoninをオンにするときは、ヘルパーをインストールするためにmacOSがパスワードを一度だけ尋ねます。
 
@@ -120,7 +122,7 @@ sudo bash Support/uninstall-helper.sh
 ## 開発
 
 ```bash
-make app        # build build/Melatonin.app (ad-hoc signed)
+make app        # build build/Melatonin.app (signed with the best identity on this Mac)
 make run        # build and launch
 make package    # universal build, DMG and zip in dist/
 make icon       # regenerate the app icon from Scripts/make-icon.swift
@@ -130,7 +132,7 @@ swift build && .build/debug/Melatonin --agents                 # watch agent det
 
 翻訳を追加・修正したら、`python3 Scripts/check-localizations.py` を実行して、抜けている文字列やプレースホルダの不一致を確認してください。
 
-Developer IDで署名するには、`SIGN_IDENTITY`を設定し、`HelperConstants.clientRequirement`にチームIDを書き込んで固定します：
+この Mac に Developer ID があればそれで、なければ `Scripts/make-signing-identity.sh` で作ったローカル証明書で（再ビルドしても位置情報の許可が保たれます）、それもなければアドホックで署名します。`melatonin` という名前の notarytool キーチェーンプロファイルがあれば、`make package` が公証まで行います。自分の Developer ID で署名するには `SIGN_IDENTITY` を指定します。
 
 ```bash
 SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
@@ -138,10 +140,11 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 
 ## ロードマップ
 
-- [ ] 署名・公証済みのリリース、Homebrew cask、Sparkleによるアップデート
-- [ ] オンラインを維持：再接続する保存済みネットワークを選べるようにする（位置情報へのアクセスが必要）
-- [ ] Claude Code hooksとの連携で、開始と終了を正確に検知
-- [ ] フタを開けたときに「離れていた間」のまとめを表示
+- [x] 署名・公証済みのリリースと Homebrew cask
+- [x] オンラインを維持：保存済みネットワークに自分で決めた順番で接続
+- [x] 戻ったときの「離席中のできごと」まとめ
+- [ ] Sparkle による自動アップデート
+- [ ] Claude Code hooks 連携で開始と終了を正確に検知
 
 ## ライセンス
 

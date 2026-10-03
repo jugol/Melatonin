@@ -11,15 +11,16 @@ struct NotchView: View {
     var body: some View {
         let metrics = state.metrics
         let size = NotchLayout.size(for: phase, metrics: metrics, banner: model.banner)
+        let large = phase == .expanded || phase == .recap
         let shape = NotchShape(
-            topRadius: phase == .expanded ? 12 : 7,
-            bottomRadius: phase == .expanded ? 28 : 13
+            topRadius: large ? 12 : 7,
+            bottomRadius: large ? 28 : 13
         )
 
         ZStack(alignment: .top) {
             shape
                 .fill(.black)
-                .shadow(color: .black.opacity(phase == .expanded ? 0.5 : 0), radius: 20, y: 10)
+                .shadow(color: .black.opacity(large ? 0.5 : 0), radius: 20, y: 10)
             content(metrics: metrics)
                 .frame(width: size.width, height: size.height, alignment: .top)
                 .clipShape(shape)
@@ -49,6 +50,11 @@ struct NotchView: View {
         case .expanded:
             ExpandedNotch(notch: metrics.notchSize)
                 .transition(.reveal)
+        case .recap:
+            if let recap = model.recap {
+                RecapNotchCard(recap: recap, notch: metrics.notchSize)
+                    .transition(.reveal)
+            }
         }
     }
 }
@@ -212,7 +218,7 @@ private struct ExpandedNotch: View {
                 }
                 .buttonStyle(PressableStyle())
 
-                VStack(alignment: .leading, spacing: 9) {
+                VStack(alignment: .leading, spacing: 8) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(model.headline)
                             .font(.system(size: 17, weight: .semibold, design: Theme.rounded))
@@ -222,7 +228,8 @@ private struct ExpandedNotch: View {
                             .foregroundStyle(.white.opacity(0.55))
                             .lineLimit(1)
                     }
-                    DurationPicker(height: 24)
+                    ModeSwitch(height: 26)
+                    DurationPicker(height: 22)
                 }
             }
             .padding(.horizontal, 26)

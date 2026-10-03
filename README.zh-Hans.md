@@ -45,8 +45,10 @@
 - **住在刘海里**：Melatonin 开启时，摄像头旁会亮起一盏暖色小灯，并显示剩余时间。将指针悬停在上面，即可展开完整的控制面板。在没有刘海的显示器上，这枚胶囊会改为挂在菜单栏下方。
 - **菜单栏开关**：只有月牙轮廓时，Mac 会进入睡眠；月牙里亮着一盏琥珀色小灯时，就不会。
 - **定时**：1、2、4 或 8 小时，或者一直保持到你手动关闭。
+- **月亮 · 自动 · 灯**：灯下方只有一个开关。**关**时 Mac 正常睡眠，**自动**时只在智能体工作期间保持唤醒，**开**时保持唤醒直到计时结束，然后回到原来的模式。
 - **AI 智能体自动模式**：只在智能体真正工作时保持唤醒，支持 Claude Code、Codex、Hermes、OpenCode、T3 Code、Gemini CLI、Cursor Agent、Amp、Goose 和 Crush。检测时会查看每个智能体整个进程树的 CPU 活动，所以停在提示符前闲着的智能体不算在内。由 T3 Code 启动的智能体会算在 T3 Code 名下。
-- **保持在线**：如果在 Melatonin 保持 Mac 唤醒期间断网，例如你合上盖子、走出了办公室 Wi-Fi 的覆盖范围，它会重启 Wi-Fi，让 macOS 重新加入范围内已存储的网络，比如你的手机热点。macOS 不允许应用按名称选择 Wi-Fi 网络，所以请确保热点已经存储，并开启了**自动加入此网络**。点一下**立即测试**按钮，就能看到它的实际效果。
+- **保持在线**：在 Melatonin 让 Mac 保持唤醒期间断网时（比如合上盖子走出办公室 Wi-Fi 范围），它会按你从已存储网络中选出的优先级列表，连接范围内的第一个网络，比如手机热点。按名称选择网络需要定位权限，因为 macOS 只向拥有该权限的应用显示 Wi-Fi 名称；你的位置本身从不使用。如果都连不上，它会重启 Wi-Fi，让 macOS 自动重新加入已存储的网络。
+- **你离开期间**：回到 Mac 时，刘海会告诉你发生了什么：保持唤醒了多久、哪些智能体工作了多久、恢复了几次 Wi-Fi 断线、用了多少电量。
 - **安全第一**：
   - 使用电池时，电量降到你设定的下限（默认 20%）就会自动关闭。
   - Mac 过热时会自动关闭。运行中的笔记本闷在合上的包里，电池就是这么被烤坏的。
@@ -61,6 +63,10 @@
 
 <p align="center">
   <img src="docs/images/notch-compact.png" width="640" alt="带倒计时的紧凑刘海胶囊">
+</p>
+
+<p align="center">
+  <img src="docs/images/notch-recap.png" width="640" alt="刘海中的离开期间摘要">
 </p>
 
 <p align="center">
@@ -79,11 +85,7 @@
 brew install --cask jugol/tap/melatonin
 ```
 
-**首次启动**：早期版本尚未经过 Apple 公证，所以 macOS 会拦下首次启动。打开**系统设置 › 隐私与安全性**，点按**仍要打开**；或者运行：
-
-```bash
-xattr -dr com.apple.quarantine /Applications/Melatonin.app
-```
+发布版本使用 Developer ID 签名并经过 Apple 公证，可以像其他应用一样直接打开。
 
 首次开启 Melatonin 时，macOS 会请你输入一次密码，用来安装辅助程序。
 
@@ -120,7 +122,7 @@ sudo bash Support/uninstall-helper.sh
 ## 开发
 
 ```bash
-make app        # build build/Melatonin.app (ad-hoc signed)
+make app        # build build/Melatonin.app (signed with the best identity on this Mac)
 make run        # build and launch
 make package    # universal build, DMG and zip in dist/
 make icon       # regenerate the app icon from Scripts/make-icon.swift
@@ -130,7 +132,7 @@ swift build && .build/debug/Melatonin --agents                 # watch agent det
 
 添加或修改翻译后，运行 `python3 Scripts/check-localizations.py` 检查缺失的字符串和不匹配的占位符。
 
-如需使用 Developer ID 签名，请设置 `SIGN_IDENTITY`，并在 `HelperConstants.clientRequirement` 中固定填入你的团队 ID：
+构建时，如果这台 Mac 有 Developer ID 就用它签名，否则使用 `Scripts/make-signing-identity.sh` 创建的本地证书（重新构建后仍保留定位权限），再否则使用临时签名。存在名为 `melatonin` 的 notarytool 钥匙串配置时，`make package` 还会进行公证。要用你自己的 Developer ID 签名，请设置 `SIGN_IDENTITY`：
 
 ```bash
 SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
@@ -138,10 +140,11 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 
 ## 路线图
 
-- [ ] 经过签名和公证的发行版、Homebrew cask，以及 Sparkle 自动更新
-- [ ] 保持在线：自行选择要重新加入哪个已存储的网络（需要定位权限）
-- [ ] 集成 Claude Code hooks，获取精确的开始和结束信号
-- [ ] 打开盖子时显示“离开期间”摘要
+- [x] 已签名、已公证的发布版本和 Homebrew cask
+- [x] 保持在线：按你设定的顺序连接已存储的网络
+- [x] 回来时显示"你离开期间"摘要
+- [ ] 通过 Sparkle 自动更新
+- [ ] 集成 Claude Code hooks，精确感知开始和结束
 
 ## 许可证
 

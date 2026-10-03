@@ -11,6 +11,18 @@ enum AwakeDuration: Int, CaseIterable, Identifiable {
     var label: String { self == .indefinitely ? "∞" : String(localized: "\(rawValue / 60)h") }
 }
 
+/// The three positions of the main switch: the moon, auto, and the lamp.
+enum KeepAwakeMode: CaseIterable, Identifiable {
+    /// Sleeps when the lid closes.
+    case off
+    /// Awake only while an agent works.
+    case auto
+    /// Awake until the timer ends, then back to off or auto.
+    case on
+
+    var id: Self { self }
+}
+
 enum HelperStatus: Equatable {
     case checking, missing, outdated, unreachable, installing, ready
     case failed(String)
@@ -41,6 +53,13 @@ struct Banner: Equatable, Identifiable {
     let kind: Kind
 }
 
+/// Where settings live. `--snapshot` renders swap in a scratch store, because
+/// a debug build shares the installed app's bundle identifier and would
+/// otherwise overwrite its settings.
+enum Preferences {
+    nonisolated(unsafe) static var store = UserDefaults.standard
+}
+
 @MainActor
 @Observable
 final class AppModel {
@@ -51,14 +70,13 @@ final class AppModel {
     private(set) var duration: AwakeDuration {
         didSet { defaults.set(duration.rawValue, forKey: Keys.duration) }
     }
-    var autoForAgents: Bool {
+    private(set) var autoForAgents: Bool {
         didSet {
+            guard autoForAgents != oldValue else { return }
             defaults.set(autoForAgents, forKey: Keys.autoForAgents)
             autoPaused = false
             ActivityLog.write("Auto-on while agents work: \(autoForAgents ? "on" : "off")")
-            if autoForAgents, workingAgent == nil { show(.autoArmed) }
             updateActivity()
-            reconcile()
         }
     }
     /// Percent at which to give up on battery power; 0 turns the check off.
@@ -95,7 +113,6 @@ final class AppModel {
                 if opensAtLogin { try SMAppService.mainApp.register() } else { try SMAppService.mainApp.unregister() }
             } catch {
                 opensAtLogin = SMAppService.mainApp.status == .enabled
-        language = AppLanguage.override ?? ""
             }
         }
     }
@@ -104,8 +121,8 @@ final class AppModel {
 
     private(set) var manualOn = false
     private(set) var manualUntil: Date?
-    /// Set when the user turns things off while an agent is working, so auto
-    /// mode doesn't immediately flip it back on.
+    /// Set when a safety stop ends keep-awake while an agent is working, so
+    /// auto mode doesn't immediately flip it back on.
     private(set) var autoPaused = false
     private(set) var agents: [AgentActivity] = []
     private(set) var battery = BatteryStatus.unknown
@@ -116,15 +133,20 @@ final class AppModel {
         didSet {
             connection.setWatching(isAwake)
             updateActivity()
+            recordForRecap()
         }
     }
     private(set) var lastStop: StopReason?
     private(set) var lastError: String?
     private(set) var banner: Banner?
+    /// What happened while the user was away, kept until they dismiss it.
+    private(set) var recap: AwayRecap?
+    /// The recap is showing in the notch right now.
+    private(set) var recapInNotch = false
 
     let connection = ConnectionGuard()
 
-    @ObservationIgnored private let defaults = UserDefaults.standard
+    private var defaults: UserDefaults { Preferences.store }
     @ObservationIgnored private let helper = HelperClient()
     @ObservationIgnored private let scanner = AgentScanner()
     @ObservationIgnored private var pollTimer: Timer?
@@ -135,6 +157,10 @@ final class AppModel {
     /// the timers that watch agents and the connection.
     @ObservationIgnored private var activity: NSObjectProtocol?
     @ObservationIgnored private var lastLoggedAgents: String?
+    @ObservationIgnored private let away = AwayTracker()
+    @ObservationIgnored private var recapTimer: Task<Void, Never>?
+    /// Frozen for a `--snapshot` render: never talk to the helper.
+    @ObservationIgnored private var isStaged = false
 
     private enum Keys {
         static let duration = "duration"
@@ -147,6 +173,7 @@ final class AppModel {
     }
 
     private init() {
+        let defaults = Preferences.store
         defaults.register(defaults: [
             Keys.duration: AwakeDuration.indefinitely.rawValue,
             Keys.autoForAgents: false,
@@ -167,7 +194,14 @@ final class AppModel {
             try await self.helper.restartWiFi()
         }
         connection.onRecovery = { [weak self] recovered in
+            self?.away.noteReconnect(recovered)
             self?.show(recovered ? .reconnected : .offline)
+        }
+        away.onLeave = { [weak self] in
+            self?.recapInNotch = false
+        }
+        away.onReturn = { [weak self] recap in
+            self?.present(recap)
         }
     }
 
@@ -180,6 +214,7 @@ final class AppModel {
         return names.isEmpty ? nil : names.formatted(.list(type: .and))
     }
     var autoEngaged: Bool { autoForAgents && workingAgent != nil && !autoPaused }
+    var mode: KeepAwakeMode { manualOn ? .on : (autoForAgents ? .auto : .off) }
     var wantsAwake: Bool { manualOn || autoEngaged }
 
     var headline: String {
@@ -215,6 +250,7 @@ final class AppModel {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
         ActivityLog.write("Melatonin \(version) started")
         updateActivity()
+        away.start()
         poll()
         Task {
             await refreshHelperStatus()
@@ -267,11 +303,32 @@ final class AppModel {
 
     // MARK: Actions
 
+    /// The lamp: lit goes to the moon, unlit lights it.
     func toggle() {
-        wantsAwake ? turnOff() : turnOn()
+        wantsAwake ? setMode(.off) : setMode(.on)
     }
 
-    func turnOn() {
+    /// Choosing on keeps auto in the background, so the Mac goes back to auto
+    /// when the timer ends.
+    func setMode(_ mode: KeepAwakeMode) {
+        switch mode {
+        case .off:
+            autoForAgents = false
+            clearManual()
+            reconcile()
+        case .auto:
+            let wasAuto = autoForAgents && !manualOn
+            autoPaused = false
+            autoForAgents = true
+            clearManual()
+            if !wasAuto, workingAgent == nil { show(.autoArmed) }
+            reconcile()
+        case .on:
+            turnOn()
+        }
+    }
+
+    private func turnOn() {
         lastStop = nil
         lastError = nil
         autoPaused = false
@@ -282,12 +339,6 @@ final class AppModel {
             stop(reason)
             return
         }
-        reconcile()
-    }
-
-    func turnOff() {
-        if autoEngaged { autoPaused = true }
-        clearManual()
         reconcile()
     }
 
@@ -329,6 +380,7 @@ final class AppModel {
             lastLoggedAgents = working
         }
         if workingAgent == nil { autoPaused = false }
+        recordForRecap()
         checkSafety()
         reconcile()
     }
@@ -351,6 +403,7 @@ final class AppModel {
 
     private func stop(_ reason: StopReason) {
         ActivityLog.write("Safety stop: \(reason)")
+        away.noteStop(reason)
         lastStop = reason
         if autoEngaged { autoPaused = true }
         clearManual()
@@ -376,6 +429,7 @@ final class AppModel {
         let timer = Timer(fire: until, interval: 0, repeats: false) { [weak self] _ in
             MainActor.assumeIsolated {
                 guard let self, self.manualOn else { return }
+                self.away.noteStop(.timerEnded)
                 self.lastStop = .timerEnded
                 self.clearManual()
                 self.show(.stopped(.timerEnded))
@@ -390,6 +444,7 @@ final class AppModel {
 
     /// Brings the helper in line with `wantsAwake`, one request at a time.
     private func reconcile() {
+        guard !isStaged else { return }
         let target = wantsAwake
         guard target != requested else { return }
         requested = target
@@ -480,6 +535,40 @@ final class AppModel {
         }
     }
 
+    // MARK: Recap
+
+    func dismissRecap() {
+        recapTimer?.cancel()
+        recap = nil
+        recapInNotch = false
+    }
+
+    private func recordForRecap() {
+        away.record(isAwake: isAwake, working: agents.filter(\.isWorking).map(\.name), battery: battery)
+    }
+
+    private func present(_ recap: AwayRecap) {
+        self.recap = recap
+        guard showInNotch else { return }
+        recapInNotch = true
+        hideRecapFromNotch(after: 15)
+    }
+
+    /// Leaves the notch after a while, but not while the pointer is on it.
+    /// The menu keeps it until it's dismissed.
+    private func hideRecapFromNotch(after seconds: Double) {
+        recapTimer?.cancel()
+        recapTimer = Task {
+            try? await Task.sleep(for: .seconds(seconds))
+            guard !Task.isCancelled else { return }
+            if NotchController.shared.state.isExpanded {
+                hideRecapFromNotch(after: 4)
+            } else {
+                recapInNotch = false
+            }
+        }
+    }
+
     // MARK: Banners
 
     private func show(_ kind: Banner.Kind) {
@@ -504,6 +593,7 @@ extension AppModel {
         auto: Bool = false,
         battery: BatteryStatus = BatteryStatus(percent: 78, onPower: false, hasBattery: true)
     ) {
+        isStaged = true
         pollTimer?.invalidate()
         isAwake = awake
         manualOn = awake && !auto
@@ -516,6 +606,13 @@ extension AppModel {
         self.battery = battery
         lastStop = nil
         lastError = nil
+        recap = nil
+        recapInNotch = false
+    }
+
+    func stageRecap(_ recap: AwayRecap?, inNotch: Bool) {
+        self.recap = recap
+        recapInNotch = inNotch
     }
 }
 #endif
