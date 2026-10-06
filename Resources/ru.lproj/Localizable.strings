@@ -138,3 +138,8 @@
 "Sleep resumed at %@" = "Снова уснул в %@";
 "Reconnected %lld×" = "Переподключений: %lld";
 "Dismiss" = "Закрыть";
+
+/* Updates */
+"Check for Updates…" = "Проверить обновления…";
+"Check for updates automatically" = "Проверять обновления автоматически";
+"Update to %@" = "Обновить до %@";

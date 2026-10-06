@@ -138,3 +138,8 @@
 "Sleep resumed at %@" = "Ruhezustand ab %@";
 "Reconnected %lld×" = "%lld× neu verbunden";
 "Dismiss" = "Schließen";
+
+/* Updates */
+"Check for Updates…" = "Nach Updates suchen …";
+"Check for updates automatically" = "Automatisch nach Updates suchen";
+"Update to %@" = "Auf %@ aktualisieren";

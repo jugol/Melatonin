@@ -73,18 +73,139 @@ enum AgentCatalog {
     }
 }
 
-/// Some agents spend most of a task waiting on the model and barely use CPU,
-/// but they write to their own logs whenever a turn makes progress.
+/// Some agents spend most of a task waiting on the model or on a quiet tool and
+/// barely use CPU, but they write down every step of a turn, and whether the
+/// turn is over.
 enum AgentLogs {
     private static let home = FileManager.default.homeDirectoryForCurrentUser
 
-    /// When each agent last logged real work.
-    static func lastActivity() -> [String: Date] {
+    /// How long an open turn counts as work after its last write: a slow model
+    /// reply, or a command that runs quietly (Claude Code allows 10 minutes).
+    /// Past that, the agent is probably waiting on a permission prompt.
+    static let openTurnLimit: TimeInterval = 10 * 60
+
+    /// When each agent last logged real work; now, while a turn is still open.
+    static func lastActivity(now: Date = .now) -> [String: Date] {
+        seen.removeAll()
         var result: [String: Date] = [:]
         result["Hermes"] = hermes()
-        result["Codex"] = codex()
+        result["Codex"] = latestWork(in: codexSessions(now: now), now: now, turn: codexTurn)
+        result["Claude Code"] = latestWork(in: claudeTranscripts(now: now), now: now, turn: claudeTurn)
+        turns = turns.filter { seen.contains($0.key) }
         return result.compactMapValues { $0 }
     }
+
+    // MARK: Turns
+
+    private enum Turn: Equatable {
+        case open
+        case finished(Date)
+    }
+
+    /// Classified turns by file, kept until the file changes.
+    private static var turns: [URL: (modified: Date, turn: Turn?)] = [:]
+    private static var seen: Set<URL> = []
+
+    private static func latestWork(in files: [(url: URL, modified: Date)], now: Date, turn classify: (URL) -> Turn?) -> Date? {
+        var latest: Date?
+        for file in files where now.timeIntervalSince(file.modified) < openTurnLimit {
+            seen.insert(file.url)
+            let turn: Turn?
+            if let cached = turns[file.url], cached.modified == file.modified {
+                turn = cached.turn
+            } else {
+                turn = classify(file.url)
+                turns[file.url] = (file.modified, turn)
+            }
+            let date: Date
+            switch turn {
+            case .open: date = now
+            case .finished(let end): date = end
+            case nil: date = file.modified
+            }
+            latest = max(latest ?? date, date)
+        }
+        return latest
+    }
+
+    // MARK: Claude Code
+
+    /// Claude Code appends every message to ~/.claude/projects/<project>/<session>.jsonl,
+    /// and a subagent's to <session>/subagents/, which may be the only file
+    /// written during a long subagent run.
+    private static func claudeTranscripts(now: Date) -> [(url: URL, modified: Date)] {
+        var result: [(url: URL, modified: Date)] = []
+        for project in folders(in: home.appending(path: ".claude/projects")) {
+            for session in transcripts(in: project) {
+                result.append(session)
+                guard now.timeIntervalSince(session.modified) < 6 * 3600 else { continue }
+                let subagents = project
+                    .appending(path: session.url.deletingPathExtension().lastPathComponent)
+                    .appending(path: "subagents")
+                result += transcripts(in: subagents)
+            }
+        }
+        return result
+    }
+
+    /// Tools that wait on the user, not on work.
+    private static let questions: Set<String> = ["AskUserQuestion", "ExitPlanMode"]
+
+    private static func claudeTurn(_ url: URL) -> Turn? {
+        for line in lastLines(of: url) {
+            guard let entry = object(line), let type = entry["type"] as? String,
+                  type == "user" || type == "assistant", entry["isMeta"] as? Bool != true else { continue }
+            let end = date(entry["timestamp"]) ?? .distantPast
+            let message = entry["message"] as? [String: Any]
+            let blocks = message?["content"] as? [[String: Any]] ?? []
+            if type == "assistant" {
+                if entry["isApiErrorMessage"] as? Bool == true { return .finished(end) }
+                switch message?["stop_reason"] as? String {
+                case nil:
+                    return .open // still streaming
+                case "tool_use":
+                    let tools = blocks.compactMap { $0["name"] as? String }
+                    return tools.contains(where: questions.contains) ? .finished(end) : .open
+                default:
+                    return .finished(end)
+                }
+            }
+            let text = message?["content"] as? String
+                ?? blocks.compactMap { $0["text"] as? String }.joined(separator: " ")
+            if text.hasPrefix("[Request interrupted by user") || text.contains("<local-command-stdout>") {
+                return .finished(end)
+            }
+            return .open // a prompt or a tool result, waiting on the model
+        }
+        return nil
+    }
+
+    // MARK: Codex
+
+    /// Codex appends to a session file under ~/.codex/sessions/YYYY/MM/DD for
+    /// every event in a turn.
+    private static func codexSessions(now: Date) -> [(url: URL, modified: Date)] {
+        let base = home.appending(path: ".codex/sessions")
+        return [now, now.addingTimeInterval(-86_400)].flatMap { day in
+            let parts = Calendar.current.dateComponents([.year, .month, .day], from: day)
+            return transcripts(in: base.appending(path: String(format: "%04d/%02d/%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0)))
+        }
+    }
+
+    private static func codexTurn(_ url: URL) -> Turn? {
+        for line in lastLines(of: url) {
+            guard let entry = object(line), entry["type"] as? String == "event_msg",
+                  let event = (entry["payload"] as? [String: Any])?["type"] as? String else { continue }
+            switch event {
+            case "task_started": return .open
+            case "task_complete", "turn_aborted": return .finished(date(entry["timestamp"]) ?? .distantPast)
+            default: continue
+            }
+        }
+        return nil
+    }
+
+    // MARK: Hermes
 
     private static let hermesTimestamp: DateFormatter = {
         let formatter = DateFormatter()
@@ -97,40 +218,62 @@ enum AgentLogs {
     /// (model calls, tool runs); when idle it only logs MCP polling.
     private static func hermes() -> Date? {
         let url = home.appending(path: ".hermes/logs/agent.log")
-        guard let modified = modificationDate(of: url), Date().timeIntervalSince(modified) < 600,
-              let handle = try? FileHandle(forReadingFrom: url) else { return nil }
-        defer { try? handle.close() }
-        guard let size = try? handle.seekToEnd() else { return nil }
-        try? handle.seek(toOffset: size > 32_768 ? size - 32_768 : 0)
-        let tail = String(decoding: handle.readDataToEndOfFile(), as: UTF8.self)
+        guard let modified = modificationDate(of: url), Date().timeIntervalSince(modified) < 600 else { return nil }
         // "2026-09-29 15:45:00,453 INFO [20260924_165417_6716c5] agent.tool_executor: …"
         let pattern = #"^\d{4}-\d\d-\d\d \d\d:\d\d:\d\d,\d+ [A-Z]+ (\[[^\]]+\] )?agent\."#
-        for line in tail.split(separator: "\n").reversed()
+        for line in lastLines(of: url, limit: 32_768)
         where line.range(of: pattern, options: .regularExpression) != nil {
             return hermesTimestamp.date(from: String(line.prefix(19)))
         }
         return nil
     }
 
-    /// Codex appends to a session file under ~/.codex/sessions/YYYY/MM/DD for
-    /// every event in a turn.
-    private static func codex() -> Date? {
-        let base = home.appending(path: ".codex/sessions")
-        var newest: Date?
-        for day in [Date(), Date().addingTimeInterval(-86_400)] {
-            let parts = Calendar.current.dateComponents([.year, .month, .day], from: day)
-            let folder = base.appending(path: String(format: "%04d/%02d/%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0))
-            let files = (try? FileManager.default.contentsOfDirectory(
-                at: folder, includingPropertiesForKeys: [.contentModificationDateKey])) ?? []
-            for file in files {
-                if let date = modificationDate(of: file), date > (newest ?? .distantPast) { newest = date }
-            }
+    // MARK: Files
+
+    private static func folders(in url: URL) -> [URL] {
+        let entries = (try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: [.isDirectoryKey])) ?? []
+        return entries.filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true }
+    }
+
+    private static func transcripts(in folder: URL) -> [(url: URL, modified: Date)] {
+        let files = (try? FileManager.default.contentsOfDirectory(
+            at: folder, includingPropertiesForKeys: [.contentModificationDateKey])) ?? []
+        return files.compactMap { file in
+            guard file.pathExtension == "jsonl", let modified = modificationDate(of: file) else { return nil }
+            return (file, modified)
         }
-        return newest
     }
 
     private static func modificationDate(of url: URL) -> Date? {
         try? url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate
+    }
+
+    /// The file's last complete lines, newest first. Transcript lines can be
+    /// large (a whole tool result), so up to `limit` bytes are read.
+    private static func lastLines(of url: URL, limit: UInt64 = 512 * 1024) -> [Substring] {
+        guard let handle = try? FileHandle(forReadingFrom: url) else { return [] }
+        defer { try? handle.close() }
+        guard let size = try? handle.seekToEnd() else { return [] }
+        let start = size > limit ? size - limit : 0
+        try? handle.seek(toOffset: start)
+        let tail = String(decoding: handle.readDataToEndOfFile(), as: UTF8.self)
+        var lines = tail.split(separator: "\n")
+        if start > 0, !lines.isEmpty { lines.removeFirst() } // cut off mid-line
+        return lines.reversed()
+    }
+
+    private static func object(_ line: Substring) -> [String: Any]? {
+        (try? JSONSerialization.jsonObject(with: Data(line.utf8))) as? [String: Any]
+    }
+
+    private static let isoTimestamp: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
+
+    private static func date(_ value: Any?) -> Date? {
+        (value as? String).flatMap(isoTimestamp.date(from:))
     }
 }
 

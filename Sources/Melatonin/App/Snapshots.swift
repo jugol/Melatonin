@@ -103,6 +103,12 @@ enum Snapshots {
         for scheme in [ColorScheme.light, .dark] {
             render(menu(model), scheme: scheme, to: directory.appending(path: "menu-recap-\(scheme == .dark ? "dark" : "light").png"))
         }
+
+        model.stageRecap(nil, inNotch: false)
+        Updater.shared.stage(available: "0.1.6")
+        for scheme in [ColorScheme.light, .dark] {
+            render(menu(model), scheme: scheme, to: directory.appending(path: "menu-update-\(scheme == .dark ? "dark" : "light").png"))
+        }
         return true
     }
 

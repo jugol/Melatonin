@@ -138,3 +138,8 @@
 "Sleep resumed at %@" = "Volvió a dormir a las %@";
 "Reconnected %lld×" = "Reconectado %lld×";
 "Dismiss" = "Cerrar";
+
+/* Updates */
+"Check for Updates…" = "Buscar actualizaciones…";
+"Check for updates automatically" = "Buscar actualizaciones automáticamente";
+"Update to %@" = "Actualizar a %@";

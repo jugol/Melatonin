@@ -46,7 +46,7 @@ Apps para manter o Mac acordado, como `caffeinate`, KeepingYouAwake e a maioria 
 - **Interruptor na barra de menus.** Só o contorno de uma lua crescente: seu Mac vai dormir. Lua crescente com uma lâmpada âmbar: ele fica acordado.
 - **Timers.** 1, 2, 4 ou 8 horas, ou até você desativar.
 - **Lua, auto, lâmpada.** Um único seletor abaixo da lâmpada: **Desativado** deixa o Mac dormir, **Auto** o mantém acordado só enquanto os agentes trabalham e **Ativado** o mantém acordado até o timer acabar; depois volta ao modo anterior.
-- **Automático com agentes de IA.** Fica acordado só enquanto um agente está realmente trabalhando: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose ou Crush. A detecção observa a atividade de CPU em toda a árvore de processos de cada agente, então um agente parado no prompt não conta. Agentes iniciados pelo T3 Code contam como T3 Code.
+- **Automático com agentes de IA.** Fica acordado só enquanto um agente está realmente trabalhando: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose ou Crush. A detecção observa a atividade de CPU em toda a árvore de processos de cada agente, então um agente parado no prompt não conta. Ele também lê os registros de sessão do Claude Code e do Codex, então uma resposta longa do modelo, um comando silencioso ou um subagente em segundo plano também contam como trabalho. Agentes iniciados pelo T3 Code contam como T3 Code.
 - **Manter conexão.** Se a internet cair enquanto o Melatonin mantém seu Mac acordado, por exemplo quando você fecha a tampa e sai do Wi-Fi do escritório, ele entra na primeira rede ao alcance de uma lista de prioridade que você escolhe entre suas redes salvas, como o hotspot do seu celular. Escolher redes pelo nome exige acesso à localização, porque o macOS só mostra nomes de Wi-Fi para apps com esse acesso; sua localização nunca é usada. Se nenhuma funcionar, ele reinicia o Wi-Fi para o macOS voltar sozinho a uma rede salva.
 - **Enquanto você estava fora.** Ao voltar para o Mac, o notch conta o que aconteceu: quanto tempo o Melatonin o manteve acordado, quais agentes trabalharam e por quanto tempo, de quantas quedas de Wi-Fi ele se recuperou e quanta bateria foi usada.
 - **Segurança em primeiro lugar.**
@@ -86,6 +86,8 @@ brew install --cask jugol/tap/melatonin
 ```
 
 As versões publicadas são assinadas com um Developer ID e notarizadas pela Apple, então abrem como qualquer outro app.
+
+O Melatonin se atualiza sozinho. Quando sai uma versão nova, aparece um pequeno selo no topo do menu; você também pode escolher **⋯ › Verificar Atualizações…**.
 
 Na primeira vez que você ativar o Melatonin, o macOS vai pedir sua senha uma única vez para instalar a ferramenta auxiliar.
 
@@ -143,8 +145,8 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 - [x] Versões assinadas e notarizadas e um cask do Homebrew
 - [x] Manter conexão: entrar nas suas redes salvas na ordem que você escolher
 - [x] Resumo "Enquanto você estava fora" quando você volta
-- [ ] Atualizações com Sparkle
-- [ ] Integração com hooks do Claude Code para detectar início e fim com precisão
+- [x] Atualizações automáticas com Sparkle
+- [x] Lê os registros de sessão do Claude Code e do Codex para saber quando cada turno começa e termina
 
 ## Licença
 

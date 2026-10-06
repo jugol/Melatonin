@@ -3,6 +3,7 @@ import SwiftUI
 /// The window that drops down from the menu bar icon.
 struct MenuPanel: View {
     @Environment(AppModel.self) private var model
+    private let updater = Updater.shared
     @State private var explainsAuto = false
 
     var body: some View {
@@ -42,6 +43,7 @@ struct MenuPanel: View {
         .animation(.spring(response: 0.45, dampingFraction: 0.85), value: model.isAwake)
         .animation(.spring(response: 0.45, dampingFraction: 0.85), value: model.helperStatus)
         .animation(.spring(response: 0.45, dampingFraction: 0.85), value: model.recap)
+        .animation(.spring(response: 0.45, dampingFraction: 0.85), value: updater.available)
     }
 
     private var header: some View {
@@ -52,6 +54,18 @@ struct MenuPanel: View {
             Text(verbatim: "Melatonin")
                 .font(.system(size: 13, weight: .semibold, design: Theme.rounded))
             Spacer()
+            if let version = updater.available {
+                Button { updater.checkForUpdates() } label: {
+                    Label("Update to \(version)", systemImage: "arrow.down.circle.fill")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(Theme.ink)
+                        .padding(.horizontal, 9)
+                        .padding(.vertical, 3)
+                        .background(Capsule().fill(Theme.amber))
+                }
+                .buttonStyle(PressableStyle())
+                .transition(.scale(scale: 0.8).combined(with: .opacity))
+            }
             Menu {
                 Picker("Language", selection: Binding(get: { model.language }, set: { model.language = $0 })) {
                     Text("Same as macOS").tag("")
@@ -65,6 +79,11 @@ struct MenuPanel: View {
                 Button("About Melatonin") {
                     NSWorkspace.shared.open(URL(string: "https://github.com/jugol/Melatonin")!)
                 }
+                Button("Check for Updates…") { updater.checkForUpdates() }
+                Toggle("Check for updates automatically", isOn: Binding(
+                    get: { updater.checksAutomatically },
+                    set: { updater.checksAutomatically = $0 }
+                ))
                 if model.helperStatus != .missing {
                     Button("Uninstall helper…") { model.uninstallHelper() }
                 }

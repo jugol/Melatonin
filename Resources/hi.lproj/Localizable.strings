@@ -138,3 +138,8 @@
 "Sleep resumed at %@" = "%@ पर फिर से स्लीप";
 "Reconnected %lld×" = "%lld बार फिर से जुड़ा";
 "Dismiss" = "बंद करें";
+
+/* Updates */
+"Check for Updates…" = "अपडेट देखें…";
+"Check for updates automatically" = "अपडेट अपने आप देखें";
+"Update to %@" = "%@ पर अपडेट करें";

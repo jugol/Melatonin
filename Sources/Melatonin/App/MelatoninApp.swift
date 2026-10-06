@@ -22,6 +22,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         #endif
         AppModel.shared.start()
         NotchController.shared.start(model: AppModel.shared)
+        Updater.shared.start()
     }
 
     /// Opening Melatonin again (Spotlight, Finder, Dock) shows its panel in a

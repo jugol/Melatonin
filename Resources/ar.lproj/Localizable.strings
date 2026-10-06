@@ -138,3 +138,8 @@
 "Sleep resumed at %@" = "عاد إلى السكون عند %@";
 "Reconnected %lld×" = "أُعيد الاتصال %lld مرة";
 "Dismiss" = "إغلاق";
+
+/* Updates */
+"Check for Updates…" = "التحقق من وجود تحديثات…";
+"Check for updates automatically" = "التحقق من وجود تحديثات تلقائيًا";
+"Update to %@" = "التحديث إلى %@";

@@ -138,3 +138,8 @@
 "Sleep resumed at %@" = "%@ にスリープに戻りました";
 "Reconnected %lld×" = "%lld 回再接続";
 "Dismiss" = "閉じる";
+
+/* Updates */
+"Check for Updates…" = "アップデートを確認…";
+"Check for updates automatically" = "アップデートを自動的に確認";
+"Update to %@" = "%@ にアップデート";

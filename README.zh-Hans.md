@@ -46,7 +46,7 @@
 - **菜单栏开关**：只有月牙轮廓时，Mac 会进入睡眠；月牙里亮着一盏琥珀色小灯时，就不会。
 - **定时**：1、2、4 或 8 小时，或者一直保持到你手动关闭。
 - **月亮 · 自动 · 灯**：灯下方只有一个开关。**关**时 Mac 正常睡眠，**自动**时只在智能体工作期间保持唤醒，**开**时保持唤醒直到计时结束，然后回到原来的模式。
-- **AI 智能体自动模式**：只在智能体真正工作时保持唤醒，支持 Claude Code、Codex、Hermes、OpenCode、T3 Code、Gemini CLI、Cursor Agent、Amp、Goose 和 Crush。检测时会查看每个智能体整个进程树的 CPU 活动，所以停在提示符前闲着的智能体不算在内。由 T3 Code 启动的智能体会算在 T3 Code 名下。
+- **AI 智能体自动模式**：只在智能体真正工作时保持唤醒，支持 Claude Code、Codex、Hermes、OpenCode、T3 Code、Gemini CLI、Cursor Agent、Amp、Goose 和 Crush。检测时会查看每个智能体整个进程树的 CPU 活动，所以停在提示符前闲着的智能体不算在内。对 Claude Code 和 Codex 还会读取会话日志，所以模型长时间思考、安静运行的命令或后台子智能体也都算作在工作。由 T3 Code 启动的智能体会算在 T3 Code 名下。
 - **保持在线**：在 Melatonin 让 Mac 保持唤醒期间断网时（比如合上盖子走出办公室 Wi-Fi 范围），它会按你从已存储网络中选出的优先级列表，连接范围内的第一个网络，比如手机热点。按名称选择网络需要定位权限，因为 macOS 只向拥有该权限的应用显示 Wi-Fi 名称；你的位置本身从不使用。如果都连不上，它会重启 Wi-Fi，让 macOS 自动重新加入已存储的网络。
 - **你离开期间**：回到 Mac 时，刘海会告诉你发生了什么：保持唤醒了多久、哪些智能体工作了多久、恢复了几次 Wi-Fi 断线、用了多少电量。
 - **安全第一**：
@@ -86,6 +86,8 @@ brew install --cask jugol/tap/melatonin
 ```
 
 发布版本使用 Developer ID 签名并经过 Apple 公证，可以像其他应用一样直接打开。
+
+Melatonin 会自动更新。有新版本时，菜单顶部会出现一个小标记；也可以选择 **⋯ › 检查更新…** 手动检查。
 
 首次开启 Melatonin 时，macOS 会请你输入一次密码，用来安装辅助程序。
 
@@ -143,8 +145,8 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 - [x] 已签名、已公证的发布版本和 Homebrew cask
 - [x] 保持在线：按你设定的顺序连接已存储的网络
 - [x] 回来时显示"你离开期间"摘要
-- [ ] 通过 Sparkle 自动更新
-- [ ] 集成 Claude Code hooks，精确感知开始和结束
+- [x] 通过 Sparkle 自动更新
+- [x] 读取 Claude Code 和 Codex 的会话日志，感知每轮的开始和结束
 
 ## 许可证
 

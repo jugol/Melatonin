@@ -20,7 +20,7 @@ LABEL="io.github.jugol.melatonin.helper"
 APP="build/Melatonin.app"
 
 rm -rf "$APP"
-mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Library/LaunchServices"
+mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Library/LaunchServices" "$APP/Contents/Frameworks"
 
 if [[ "${UNIVERSAL:-0}" == 1 ]]; then
     for arch in arm64 x86_64; do
@@ -30,12 +30,18 @@ if [[ "${UNIVERSAL:-0}" == 1 ]]; then
     X86="$(swift build -c "$CONFIG" --triple x86_64-apple-macosx14.0 --show-bin-path)"
     lipo -create "$ARM/Melatonin" "$X86/Melatonin" -output "$APP/Contents/MacOS/Melatonin"
     lipo -create "$ARM/MelatoninHelper" "$X86/MelatoninHelper" -output "$APP/Contents/Library/LaunchServices/$LABEL"
+    BIN="$ARM" # Sparkle's framework is already universal
 else
     swift build -c "$CONFIG"
     BIN="$(swift build -c "$CONFIG" --show-bin-path)"
     cp "$BIN/Melatonin" "$APP/Contents/MacOS/Melatonin"
     cp "$BIN/MelatoninHelper" "$APP/Contents/Library/LaunchServices/$LABEL"
 fi
+# Sparkle, for updates. Its XPC services are only for sandboxed apps.
+SPARKLE="$APP/Contents/Frameworks/Sparkle.framework"
+ditto "$BIN/Sparkle.framework" "$SPARKLE"
+rm -rf "$SPARKLE/XPCServices" "$SPARKLE/Versions/B/XPCServices"
+install_name_tool -add_rpath @executable_path/../Frameworks "$APP/Contents/MacOS/Melatonin"
 cp Support/Info.plist "$APP/Contents/Info.plist"
 cp "Support/$LABEL.plist" Support/install-helper.sh Support/uninstall-helper.sh "$APP/Contents/Resources/"
 cp -R Resources/*.lproj "$APP/Contents/Resources/"
@@ -45,6 +51,9 @@ SIGN_FLAGS=(--force --options runtime --sign "$IDENTITY")
 # Notarization needs a secure timestamp; skip the network round trip for debug builds.
 [[ "$IDENTITY" == Developer\ ID* && "$CONFIG" == release ]] && SIGN_FLAGS+=(--timestamp)
 
+codesign "${SIGN_FLAGS[@]}" "$SPARKLE/Versions/B/Autoupdate"
+codesign "${SIGN_FLAGS[@]}" "$SPARKLE/Versions/B/Updater.app"
+codesign "${SIGN_FLAGS[@]}" "$SPARKLE"
 codesign "${SIGN_FLAGS[@]}" --identifier "$LABEL" "$APP/Contents/Library/LaunchServices/$LABEL"
 codesign "${SIGN_FLAGS[@]}" --entitlements Support/Melatonin.entitlements "$APP"
 

@@ -138,3 +138,8 @@
 "Sleep resumed at %@" = "%@ 恢复睡眠";
 "Reconnected %lld×" = "重新连接 %lld 次";
 "Dismiss" = "关闭";
+
+/* Updates */
+"Check for Updates…" = "检查更新…";
+"Check for updates automatically" = "自动检查更新";
+"Update to %@" = "更新到 %@";

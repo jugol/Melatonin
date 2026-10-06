@@ -46,7 +46,7 @@ Las apps para mantener el Mac despierto, como `caffeinate`, KeepingYouAwake y ca
 - **Interruptor en la barra de menús.** Si ves solo el contorno de una media luna, tu Mac se dormirá; si la media luna sostiene una lámpara ámbar, no.
 - **Temporizadores.** 1, 2, 4 u 8 horas, o hasta que lo desactives.
 - **Luna, auto, lámpara.** Un solo interruptor bajo la lámpara: **Desactivado** deja dormir a tu Mac, **Auto** lo mantiene despierto solo mientras trabajan los agentes y **Activado** lo mantiene despierto hasta que termina el temporizador; después vuelve al modo anterior.
-- **Automático con agentes de IA.** Se mantiene despierto solo mientras un agente está trabajando de verdad: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose o Crush. La detección mira la actividad de CPU de todo el árbol de procesos de cada agente, así que un agente esperando en su prompt no cuenta. Los agentes que lanza T3 Code se atribuyen a T3 Code.
+- **Automático con agentes de IA.** Se mantiene despierto solo mientras un agente está trabajando de verdad: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose o Crush. La detección mira la actividad de CPU de todo el árbol de procesos de cada agente, así que un agente esperando en su prompt no cuenta. Además lee los registros de sesión de Claude Code y Codex, así que una respuesta larga del modelo, un comando silencioso o un subagente en segundo plano también cuentan como trabajo. Los agentes que lanza T3 Code se atribuyen a T3 Code.
 - **Seguir conectado.** Si se cae internet mientras Melatonin mantiene tu Mac despierto, por ejemplo al cerrar la tapa y salir del Wi-Fi de la oficina, se conecta a la primera red al alcance de una lista de prioridad que eliges entre tus redes guardadas, como el punto de acceso de tu teléfono. Elegir redes por nombre requiere acceso a la ubicación, porque macOS solo muestra los nombres de Wi-Fi a las apps que lo tienen; tu ubicación nunca se usa. Si ninguna funciona, reinicia el Wi-Fi para que macOS vuelva a unirse a una red guardada por su cuenta.
 - **Mientras no estabas.** Al volver a tu Mac, el notch te cuenta qué pasó: cuánto tiempo lo mantuvo despierto Melatonin, qué agentes trabajaron y durante cuánto, de cuántas caídas de Wi-Fi se recuperó y cuánta batería usó.
 - **La seguridad, lo primero.**
@@ -86,6 +86,8 @@ brew install --cask jugol/tap/melatonin
 ```
 
 Las versiones publicadas están firmadas con un Developer ID y notarizadas por Apple, así que se abren como cualquier otra app.
+
+Melatonin se actualiza solo. Cuando sale una versión nueva, aparece una pequeña insignia en la parte superior del menú; también puedes elegir **⋯ › Buscar actualizaciones…**.
 
 La primera vez que actives Melatonin, macOS te pedirá la contraseña una sola vez para instalar la herramienta auxiliar.
 
@@ -143,8 +145,8 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 - [x] Versiones firmadas y notarizadas, y un cask de Homebrew
 - [x] Seguir conectado: unirse a tus redes guardadas en el orden que elijas
 - [x] Resumen "Mientras no estabas" al volver
-- [ ] Actualizaciones con Sparkle
-- [ ] Integración con los hooks de Claude Code para detectar con exactitud el inicio y el fin
+- [x] Actualizaciones automáticas con Sparkle
+- [x] Lee los registros de sesión de Claude Code y Codex para saber cuándo empieza y termina cada turno
 
 ## Licencia
 

@@ -46,7 +46,7 @@ Aplikasi anti-tidur seperti `caffeinate`, KeepingYouAwake, dan sebagian besar ap
 - **Sakelar di bar menu.** Garis bulan sabit berarti Mac Anda akan tidur; bulan sabit yang memeluk lampu amber berarti Mac tetap terjaga.
 - **Timer.** 1, 2, 4, atau 8 jam, atau sampai Anda mematikannya.
 - **Bulan, otomatis, lampu.** Satu sakelar di bawah lampu: **Mati** membiarkan Mac tidur, **Otomatis** membuatnya terjaga hanya selama agen bekerja, dan **Nyala** membuatnya terjaga sampai timer selesai, lalu kembali ke mode sebelumnya.
-- **Otomatis untuk agen AI.** Tetap terjaga hanya selama ada agen yang benar-benar bekerja: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose, atau Crush. Deteksinya melihat aktivitas CPU di seluruh pohon proses tiap agen, jadi agen yang cuma diam menunggu di prompt tidak dihitung. Agen yang dijalankan oleh T3 Code dihitung sebagai T3 Code.
+- **Otomatis untuk agen AI.** Tetap terjaga hanya selama ada agen yang benar-benar bekerja: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose, atau Crush. Deteksinya melihat aktivitas CPU di seluruh pohon proses tiap agen, jadi agen yang cuma diam menunggu di prompt tidak dihitung. Untuk Claude Code dan Codex, Melatonin juga membaca log sesinya, jadi balasan model yang lama, perintah yang berjalan diam-diam, atau subagen di latar belakang tetap dihitung sebagai kerja. Agen yang dijalankan oleh T3 Code dihitung sebagai T3 Code.
 - **Tetap online.** Jika internet terputus saat Melatonin membuat Mac tetap terjaga, misalnya saat kamu menutup layar dan keluar dari jangkauan Wi-Fi kantor, Melatonin tersambung ke jaringan pertama dalam jangkauan dari daftar prioritas yang kamu pilih dari jaringan tersimpan, seperti hotspot ponselmu. Memilih jaringan berdasarkan nama butuh izin lokasi, karena macOS hanya menampilkan nama Wi-Fi ke app yang punya izin itu; lokasimu sendiri tidak pernah dipakai. Jika semuanya gagal, Melatonin memulai ulang Wi-Fi agar macOS tersambung sendiri ke jaringan tersimpan.
 - **Selama kamu pergi.** Saat kembali ke Mac, notch memberi tahu apa yang terjadi: berapa lama Melatonin membuatnya terjaga, agen mana yang bekerja dan berapa lama, berapa kali Wi-Fi pulih dari putus, dan berapa banyak baterai terpakai.
 - **Keamanan nomor satu.**
@@ -86,6 +86,8 @@ brew install --cask jugol/tap/melatonin
 ```
 
 Rilis ditandatangani dengan Developer ID dan dinotarisasi Apple, jadi bisa langsung dibuka seperti app lain.
+
+Melatonin memperbarui dirinya sendiri. Saat versi baru keluar, lencana kecil muncul di bagian atas menu; kamu juga bisa memilih **⋯ › Periksa Pembaruan…**.
 
 Saat pertama kali Anda menyalakan Melatonin, macOS akan meminta kata sandi Anda sekali untuk menginstal alat bantu.
 
@@ -143,8 +145,8 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 - [x] Rilis bertanda tangan dan ternotarisasi, serta cask Homebrew
 - [x] Tetap online: tersambung ke jaringan tersimpan sesuai urutan pilihanmu
 - [x] Ringkasan "Selama kamu pergi" saat kamu kembali
-- [ ] Pembaruan lewat Sparkle
-- [ ] Integrasi hooks Claude Code untuk sinyal mulai dan selesai yang tepat
+- [x] Pembaruan otomatis lewat Sparkle
+- [x] Membaca log sesi Claude Code dan Codex untuk tahu kapan tiap giliran dimulai dan selesai
 
 ## Lisensi
 

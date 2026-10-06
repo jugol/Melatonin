@@ -46,7 +46,7 @@ Keep-awake apps like `caffeinate`, KeepingYouAwake and most of their cousins use
 - **Menu bar switch.** A crescent outline means your Mac will sleep; a crescent holding an amber lamp means it won't.
 - **Timers.** 1, 2, 4 or 8 hours, or until you turn it off.
 - **Moon, auto, lamp.** One switch under the lamp: **Off** lets your Mac sleep, **Auto** keeps it awake only while agents work, and **On** keeps it awake until the timer ends, then goes back to where you were.
-- **Auto for AI agents.** Stays awake only while an agent is actually working: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose or Crush. Detection looks at CPU activity across each agent's process tree, so an agent sitting idle at its prompt doesn't count. Agents launched by T3 Code are credited to T3 Code.
+- **Auto for AI agents.** Stays awake only while an agent is actually working: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose or Crush. Detection looks at CPU activity across each agent's process tree, so an agent sitting idle at its prompt doesn't count. It also reads Claude Code and Codex session logs, so a long model reply, a quiet command or a background subagent still counts as work. Agents launched by T3 Code are credited to T3 Code.
 - **Stay online.** If the internet drops while Melatonin is keeping your Mac awake, for example when you close the lid and walk out of the office Wi-Fi, it joins the first network in range from a priority list you pick from your saved networks, such as your phone's hotspot. Choosing networks by name needs Location access, because macOS only shows Wi-Fi names to apps that have it; your location itself is never used. If none of them works, it restarts Wi-Fi so macOS can rejoin a saved network on its own.
 - **While you were away.** Come back to your Mac and the notch tells you what happened: how long Melatonin kept it awake, which agents worked and for how long, how many Wi-Fi drops it recovered from, and how much battery it used.
 - **Safety first.**
@@ -86,6 +86,8 @@ brew install --cask jugol/tap/melatonin
 ```
 
 Releases are signed with a Developer ID and notarized by Apple, so they open like any other app.
+
+Melatonin updates itself. When a new version is out, a small badge appears at the top of the menu; you can also choose **⋯ › Check for Updates…**.
 
 The first time you turn Melatonin on, macOS asks for your password once to install the helper.
 
@@ -143,8 +145,8 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 - [x] Signed, notarized releases and a Homebrew cask
 - [x] Stay online: join your saved networks in the order you choose
 - [x] "While you were away" summary when you come back
-- [ ] Sparkle updates
-- [ ] Claude Code hooks integration for exact start and stop signals
+- [x] Updates itself (Sparkle)
+- [x] Reads Claude Code and Codex session logs to know when a turn starts and ends
 
 ## License
 

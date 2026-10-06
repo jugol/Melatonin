@@ -138,3 +138,8 @@
 "Sleep resumed at %@" = "Tidur lagi pukul %@";
 "Reconnected %lld×" = "Tersambung ulang %lld×";
 "Dismiss" = "Tutup";
+
+/* Updates */
+"Check for Updates…" = "Periksa Pembaruan…";
+"Check for updates automatically" = "Periksa pembaruan secara otomatis";
+"Update to %@" = "Perbarui ke %@";

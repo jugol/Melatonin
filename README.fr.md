@@ -46,7 +46,7 @@ Les apps anti-veille comme `caffeinate`, KeepingYouAwake et la plupart de leurs 
 - **Interrupteur dans la barre des menus.** Un simple contour de croissant de lune : votre Mac se mettra en veille. Un croissant qui tient une lampe ambrée : il restera éveillé.
 - **Minuteurs.** 1, 2, 4 ou 8 heures, ou jusqu’à ce que vous le désactiviez.
 - **Lune, auto, lampe.** Un seul interrupteur sous la lampe : **Désactivé** laisse votre Mac se mettre en veille, **Auto** le garde éveillé seulement pendant que les agents travaillent, **Activé** le garde éveillé jusqu’à la fin du minuteur, puis revient au mode précédent.
-- **Auto pour les agents IA.** Reste éveillé uniquement quand un agent travaille vraiment : Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose ou Crush. La détection surveille l’activité CPU de toute l’arborescence de processus de chaque agent : un agent qui attend sagement à son invite ne compte donc pas. Les agents lancés par T3 Code sont attribués à T3 Code.
+- **Auto pour les agents IA.** Reste éveillé uniquement quand un agent travaille vraiment : Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose ou Crush. La détection surveille l’activité CPU de toute l’arborescence de processus de chaque agent : un agent qui attend sagement à son invite ne compte donc pas. Melatonin lit aussi les journaux de session de Claude Code et Codex : une longue réponse du modèle, une commande silencieuse ou un sous-agent en arrière-plan comptent donc bien comme du travail. Les agents lancés par T3 Code sont attribués à T3 Code.
 - **Rester en ligne.** Si Internet est coupé pendant que Melatonin garde votre Mac éveillé, par exemple quand vous fermez l’écran et quittez le Wi-Fi du bureau, il rejoint le premier réseau à portée d’une liste de priorité que vous choisissez parmi vos réseaux enregistrés, comme le partage de connexion de votre téléphone. Choisir un réseau par son nom demande l’accès à la position, car macOS ne montre les noms Wi-Fi qu’aux apps qui l’ont ; votre position n’est jamais utilisée. Si aucun ne fonctionne, il redémarre le Wi-Fi pour que macOS rejoigne seul un réseau enregistré.
 - **Pendant votre absence.** À votre retour, l’encoche résume ce qui s’est passé : combien de temps Melatonin a gardé le Mac éveillé, quels agents ont travaillé et combien de temps, combien de coupures Wi-Fi ont été rattrapées et combien de batterie a été utilisée.
 - **La sécurité avant tout.**
@@ -86,6 +86,8 @@ brew install --cask jugol/tap/melatonin
 ```
 
 Les versions publiées sont signées avec un Developer ID et notarisées par Apple : elles s’ouvrent comme n’importe quelle app.
+
+Melatonin se met à jour tout seul. Quand une nouvelle version sort, un petit badge apparaît en haut du menu ; vous pouvez aussi choisir **⋯ › Rechercher les mises à jour…**.
 
 La première fois que vous activez Melatonin, macOS vous demande votre mot de passe, une seule fois, pour installer l’utilitaire.
 
@@ -143,8 +145,8 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 - [x] Versions signées et notarisées, et un cask Homebrew
 - [x] Rester en ligne : rejoindre vos réseaux enregistrés dans l’ordre choisi
 - [x] Résumé « Pendant votre absence » à votre retour
-- [ ] Mises à jour avec Sparkle
-- [ ] Intégration des hooks Claude Code pour détecter précisément le début et la fin
+- [x] Mises à jour automatiques avec Sparkle
+- [x] Lecture des journaux de session de Claude Code et Codex pour savoir quand chaque tour commence et se termine
 
 ## Licence
 

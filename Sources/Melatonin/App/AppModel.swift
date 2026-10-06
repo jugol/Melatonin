@@ -281,14 +281,19 @@ final class AppModel {
     /// Restarts the app, e.g. to apply a new language. Keep-awake resumes on
     /// the other side.
     func relaunch() {
-        if manualOn {
-            defaults.set(manualUntil?.timeIntervalSince1970 ?? 0, forKey: Keys.resumeUntil)
-        }
+        prepareForRelaunch()
         let reopen = Process()
         reopen.executableURL = URL(fileURLWithPath: "/bin/sh")
         reopen.arguments = ["-c", "sleep 1; /usr/bin/open \"$0\"", Bundle.main.bundlePath]
         try? reopen.run()
         NSApp.terminate(nil)
+    }
+
+    /// Leaves a note so a manual keep-awake survives the restart, whether for
+    /// a language change or an update.
+    func prepareForRelaunch() {
+        guard manualOn else { return }
+        defaults.set(manualUntil?.timeIntervalSince1970 ?? 0, forKey: Keys.resumeUntil)
     }
 
     private func resumeAfterRelaunch() {

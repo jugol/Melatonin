@@ -46,7 +46,7 @@ Wachhalte-Apps wie `caffeinate`, KeepingYouAwake und die meisten ihrer Verwandte
 - **Schalter in der Menüleiste.** Nur der Umriss einer Mondsichel heißt: Dein Mac geht in den Ruhezustand. Hält die Sichel eine bernsteinfarbene Lampe, bleibt er wach.
 - **Timer.** 1, 2, 4 oder 8 Stunden – oder bis du es ausschaltest.
 - **Mond, Auto, Lampe.** Ein Schalter unter der Lampe: **Aus** lässt deinen Mac schlafen, **Auto** hält ihn nur wach, solange Agenten arbeiten, **Ein** hält ihn wach, bis der Timer abläuft, und kehrt dann zum vorherigen Modus zurück.
-- **Automatisch für KI-Agenten.** Bleibt nur wach, solange ein Agent wirklich arbeitet: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose oder Crush. Die Erkennung prüft die CPU-Aktivität im gesamten Prozessbaum jedes Agenten. Ein Agent, der untätig am Prompt wartet, zählt also nicht. Von T3 Code gestartete Agenten werden T3 Code zugerechnet.
+- **Automatisch für KI-Agenten.** Bleibt nur wach, solange ein Agent wirklich arbeitet: Claude Code, Codex, Hermes, OpenCode, T3 Code, Gemini CLI, Cursor Agent, Amp, Goose oder Crush. Die Erkennung prüft die CPU-Aktivität im gesamten Prozessbaum jedes Agenten. Ein Agent, der untätig am Prompt wartet, zählt also nicht. Bei Claude Code und Codex liest Melatonin außerdem die Sitzungsprotokolle, sodass eine lange Modellantwort, ein leiser Befehl oder ein Subagent im Hintergrund trotzdem als Arbeit zählt. Von T3 Code gestartete Agenten werden T3 Code zugerechnet.
 - **Online bleiben.** Fällt das Internet aus, während Melatonin deinen Mac wach hält, etwa wenn du den Deckel schließt und das Büro-WLAN verlässt, verbindet es sich mit dem ersten erreichbaren Netzwerk aus einer Prioritätsliste, die du aus deinen gespeicherten Netzwerken auswählst, zum Beispiel dem Hotspot deines Handys. Netzwerke nach Namen auszuwählen braucht Zugriff auf den Standort, weil macOS WLAN-Namen nur Apps mit dieser Berechtigung zeigt; dein Standort selbst wird nie verwendet. Klappt keines, startet es das WLAN neu, damit macOS selbst wieder einem gespeicherten Netzwerk beitritt.
 - **Während du weg warst.** Wenn du zurückkommst, zeigt dir die Notch, was passiert ist: wie lange Melatonin den Mac wach gehalten hat, welche Agenten wie lange gearbeitet haben, wie oft das WLAN wiederhergestellt wurde und wie viel Akku verbraucht wurde.
 - **Sicherheit zuerst.**
@@ -86,6 +86,8 @@ brew install --cask jugol/tap/melatonin
 ```
 
 Releases sind mit einer Developer ID signiert und von Apple notarisiert, sie öffnen sich also wie jede andere App.
+
+Melatonin aktualisiert sich selbst. Wenn eine neue Version erscheint, zeigt das Menü oben ein kleines Badge; du kannst auch **⋯ › Nach Updates suchen …** wählen.
 
 Wenn du Melatonin zum ersten Mal einschaltest, fragt macOS einmalig nach deinem Passwort, um das Hilfsprogramm zu installieren.
 
@@ -143,8 +145,8 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" make app
 - [x] Signierte, notarisierte Releases und ein Homebrew-Cask
 - [x] Online bleiben: gespeicherten Netzwerken in deiner Reihenfolge beitreten
 - [x] Zusammenfassung „Während du weg warst“ bei deiner Rückkehr
-- [ ] Updates per Sparkle
-- [ ] Claude-Code-Hooks für exakte Start- und Stoppsignale
+- [x] Automatische Updates per Sparkle
+- [x] Liest die Sitzungsprotokolle von Claude Code und Codex, um Beginn und Ende jedes Durchgangs zu erkennen
 
 ## Lizenz
 
