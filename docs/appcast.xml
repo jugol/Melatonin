@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Melatonin</title>
+    <link>https://jugol.github.io/Melatonin/</link>
+    <item>
+      <title>Melatonin 0.1.5</title>
+      <pubDate>Tue, 06 Oct 2026 06:48:37 +0000</pubDate>
+      <sparkle:version>6</sparkle:version>
+      <sparkle:shortVersionString>0.1.5</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:fullReleaseNotesLink>https://github.com/jugol/Melatonin/releases/tag/v0.1.5</sparkle:fullReleaseNotesLink>
+      <description><![CDATA[
+<h3>Melatonin 0.1.5</h3>
+<ul>
+  <li><b>Updates itself.</b> New versions now arrive right in the app, so this is the last DMG you'll need to download.</li>
+  <li><b>Sharper agent detection.</b> Melatonin reads Claude Code and Codex session logs, so long model replies, quiet commands and background subagents count as work, and it knows when a turn is really over.</li>
+</ul>
+      ]]></description>
+      <enclosure url="https://github.com/jugol/Melatonin/releases/download/v0.1.5/Melatonin.zip" type="application/octet-stream" sparkle:edSignature="LZ0k+xdq904tEcGE5x5n1FXPmr+qbpWCdHhxgxfc7qT9j5+O1q08oDhMEPlqUnG8DlDrcgmFsMqYfoZGpQwlDg==" length="3703745"/>
+    </item>
+  </channel>
+</rss>
