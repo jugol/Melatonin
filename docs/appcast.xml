@@ -4,20 +4,20 @@
     <title>Melatonin</title>
     <link>https://jugol.github.io/Melatonin/</link>
     <item>
-      <title>Melatonin 0.1.5</title>
-      <pubDate>Tue, 06 Oct 2026 06:48:37 +0000</pubDate>
-      <sparkle:version>6</sparkle:version>
-      <sparkle:shortVersionString>0.1.5</sparkle:shortVersionString>
+      <title>Melatonin 0.1.6</title>
+      <pubDate>Thu, 08 Oct 2026 07:59:43 +0000</pubDate>
+      <sparkle:version>7</sparkle:version>
+      <sparkle:shortVersionString>0.1.6</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <sparkle:fullReleaseNotesLink>https://github.com/jugol/Melatonin/releases/tag/v0.1.5</sparkle:fullReleaseNotesLink>
+      <sparkle:fullReleaseNotesLink>https://github.com/jugol/Melatonin/releases/tag/v0.1.6</sparkle:fullReleaseNotesLink>
       <description><![CDATA[
-<h3>Melatonin 0.1.5</h3>
+<h3>Melatonin 0.1.6</h3>
 <ul>
-  <li><b>Updates itself.</b> New versions now arrive right in the app, so this is the last DMG you'll need to download.</li>
-  <li><b>Sharper agent detection.</b> Melatonin reads Claude Code and Codex session logs, so long model replies, quiet commands and background subagents count as work, and it knows when a turn is really over.</li>
+  <li><b>Auto mode picks up again after a safety stop.</b> If low battery or heat paused it while an agent was working, it now comes back on by itself once you plug in, lower the battery limit or your Mac cools down. Before, it stayed off until the agent finished.</li>
+  <li>The menu says what it's waiting for: “resumes when you plug in” or “resumes once it cools down”.</li>
 </ul>
       ]]></description>
-      <enclosure url="https://github.com/jugol/Melatonin/releases/download/v0.1.5/Melatonin.zip" type="application/octet-stream" sparkle:edSignature="LZ0k+xdq904tEcGE5x5n1FXPmr+qbpWCdHhxgxfc7qT9j5+O1q08oDhMEPlqUnG8DlDrcgmFsMqYfoZGpQwlDg==" length="3703745"/>
+      <enclosure url="https://github.com/jugol/Melatonin/releases/download/v0.1.6/Melatonin.zip" type="application/octet-stream" sparkle:edSignature="j7EBUTZJA9Ox3CofKwBuO1jvEO6ffGruxA6IlByEcAMXAKgI5ZlNncwpoQ0cvCKVgmbsc8cxa/sJ5fuyeuFkBQ==" length="3707101"/>
     </item>
   </channel>
 </rss>
