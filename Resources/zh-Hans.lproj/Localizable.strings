@@ -8,7 +8,6 @@
 "Stopped at %@ battery" = "电量 %@ 时已停止";
 "Stopped because your Mac got hot" = "Mac 温度过高，已停止";
 "Timer ended" = "计时已结束";
-"Auto paused until agents finish" = "智能体完成前，自动模式暂停";
 "Tap the moon to stay awake" = "点按月亮即可保持唤醒";
 "%lldh" = "%lld小时";
 "Stay awake for" = "保持唤醒时长";
@@ -143,3 +142,7 @@
 "Check for Updates…" = "检查更新…";
 "Check for updates automatically" = "自动检查更新";
 "Update to %@" = "更新到 %@";
+
+/* Safety pause */
+"Paused at %@ battery · resumes when you plug in" = "电量 %@ 时已暂停 · 接上电源后恢复";
+"Paused because your Mac got hot · resumes once it cools down" = "Mac 过热已暂停 · 降温后恢复";

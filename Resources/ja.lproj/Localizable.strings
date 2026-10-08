@@ -8,7 +8,6 @@
 "Stopped at %@ battery" = "バッテリー残量%@で停止しました";
 "Stopped because your Mac got hot" = "Macが熱くなったため停止しました";
 "Timer ended" = "タイマーが終了しました";
-"Auto paused until agents finish" = "エージェントの作業が終わるまで自動モードを一時停止中";
 "Tap the moon to stay awake" = "月をクリックすると起きたままになります";
 "%lldh" = "%lld時間";
 "Stay awake for" = "起きている時間";
@@ -143,3 +142,7 @@
 "Check for Updates…" = "アップデートを確認…";
 "Check for updates automatically" = "アップデートを自動的に確認";
 "Update to %@" = "%@ にアップデート";
+
+/* Safety pause */
+"Paused at %@ battery · resumes when you plug in" = "バッテリー %@ で一時停止中 · 電源につなぐと再開します";
+"Paused because your Mac got hot · resumes once it cools down" = "Mac が熱くなったため一時停止中 · 冷えると再開します";

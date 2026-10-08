@@ -9,7 +9,6 @@
 "Stopped at %@ battery" = "Stopped at %@ battery";
 "Stopped because your Mac got hot" = "Stopped because your Mac got hot";
 "Timer ended" = "Timer ended";
-"Auto paused until agents finish" = "Auto paused until agents finish";
 "Tap the moon to stay awake" = "Tap the moon to stay awake";
 "%lldh" = "%lldh";
 "Stay awake for" = "Stay awake for";
@@ -144,3 +143,7 @@
 "Check for Updates…" = "Check for Updates…";
 "Check for updates automatically" = "Check for updates automatically";
 "Update to %@" = "Update to %@";
+
+/* Safety pause */
+"Paused at %@ battery · resumes when you plug in" = "Paused at %@ battery · resumes when you plug in";
+"Paused because your Mac got hot · resumes once it cools down" = "Paused because your Mac got hot · resumes once it cools down";

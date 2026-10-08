@@ -8,7 +8,6 @@
 "Stopped at %@ battery" = "Berhenti saat baterai %@";
 "Stopped because your Mac got hot" = "Berhenti karena Mac terlalu panas";
 "Timer ended" = "Timer selesai";
-"Auto paused until agents finish" = "Otomatis dijeda sampai agen selesai";
 "Tap the moon to stay awake" = "Klik bulan agar tetap terjaga";
 "%lldh" = "%lld jam";
 "Stay awake for" = "Tetap terjaga selama";
@@ -143,3 +142,7 @@
 "Check for Updates…" = "Periksa Pembaruan…";
 "Check for updates automatically" = "Periksa pembaruan secara otomatis";
 "Update to %@" = "Perbarui ke %@";
+
+/* Safety pause */
+"Paused at %@ battery · resumes when you plug in" = "Dijeda di baterai %@ · lanjut lagi saat dicolokkan";
+"Paused because your Mac got hot · resumes once it cools down" = "Dijeda karena Mac-mu panas · lanjut lagi setelah dingin";

@@ -8,7 +8,6 @@
 "Stopped at %@ battery" = "배터리 %@에서 멈췄어요";
 "Stopped because your Mac got hot" = "맥이 뜨거워져서 멈췄어요";
 "Timer ended" = "타이머가 끝났어요";
-"Auto paused until agents finish" = "에이전트 작업이 끝날 때까지 자동 모드를 쉬어요";
 "Tap the moon to stay awake" = "달을 누르면 깨어 있어요";
 "%lldh" = "%lld시간";
 "Stay awake for" = "깨어 있을 시간";
@@ -143,3 +142,7 @@
 "Check for Updates…" = "업데이트 확인…";
 "Check for updates automatically" = "자동으로 업데이트 확인";
 "Update to %@" = "%@로 업데이트";
+
+/* Safety pause */
+"Paused at %@ battery · resumes when you plug in" = "배터리 %@에서 멈췄어요 · 충전기를 꽂으면 다시 켜져요";
+"Paused because your Mac got hot · resumes once it cools down" = "Mac이 뜨거워져서 멈췄어요 · 식으면 다시 켜져요";

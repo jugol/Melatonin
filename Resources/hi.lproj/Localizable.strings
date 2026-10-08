@@ -8,7 +8,6 @@
 "Stopped at %@ battery" = "बैटरी %@ पर रुक गया";
 "Stopped because your Mac got hot" = "आपका Mac गर्म हो गया, इसलिए रुक गया";
 "Timer ended" = "टाइमर ख़त्म हो गया";
-"Auto paused until agents finish" = "एजेंट का काम पूरा होने तक ऑटो रुका है";
 "Tap the moon to stay awake" = "जागते रहने के लिए चाँद पर क्लिक करें";
 "%lldh" = "%lld घं.";
 "Stay awake for" = "जागते रहने का समय";
@@ -143,3 +142,7 @@
 "Check for Updates…" = "अपडेट देखें…";
 "Check for updates automatically" = "अपडेट अपने आप देखें";
 "Update to %@" = "%@ पर अपडेट करें";
+
+/* Safety pause */
+"Paused at %@ battery · resumes when you plug in" = "%@ बैटरी पर रुका · चार्जर लगाते ही फिर चालू होगा";
+"Paused because your Mac got hot · resumes once it cools down" = "Mac गर्म होने से रुका · ठंडा होते ही फिर चालू होगा";

@@ -8,7 +8,6 @@
 "Stopped at %@ battery" = "Остановлено при заряде %@";
 "Stopped because your Mac got hot" = "Остановлено: Mac перегрелся";
 "Timer ended" = "Таймер завершен";
-"Auto paused until agents finish" = "Авторежим на паузе, пока агенты не закончат";
 "Tap the moon to stay awake" = "Нажмите на луну, чтобы Mac не засыпал";
 "%lldh" = "%lld ч";
 "Stay awake for" = "Не спать в течение";
@@ -143,3 +142,7 @@
 "Check for Updates…" = "Проверить обновления…";
 "Check for updates automatically" = "Проверять обновления автоматически";
 "Update to %@" = "Обновить до %@";
+
+/* Safety pause */
+"Paused at %@ battery · resumes when you plug in" = "Пауза при заряде %@ · продолжится, когда подключите зарядку";
+"Paused because your Mac got hot · resumes once it cools down" = "Пауза: Mac перегрелся · продолжится, когда остынет";

@@ -8,7 +8,6 @@
 "Stopped at %@ battery" = "Se detuvo con la batería al %@";
 "Stopped because your Mac got hot" = "Se detuvo porque tu Mac se calentó";
 "Timer ended" = "Temporizador finalizado";
-"Auto paused until agents finish" = "Automático en pausa hasta que acaben los agentes";
 "Tap the moon to stay awake" = "Toca la luna para mantenerlo despierto";
 "%lldh" = "%lld h";
 "Stay awake for" = "Mantener despierto durante";
@@ -143,3 +142,7 @@
 "Check for Updates…" = "Buscar actualizaciones…";
 "Check for updates automatically" = "Buscar actualizaciones automáticamente";
 "Update to %@" = "Actualizar a %@";
+
+/* Safety pause */
+"Paused at %@ battery · resumes when you plug in" = "En pausa al %@ de batería · se reanuda al enchufarlo";
+"Paused because your Mac got hot · resumes once it cools down" = "En pausa porque tu Mac se calentó · se reanuda cuando se enfríe";

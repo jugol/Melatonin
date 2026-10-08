@@ -74,7 +74,7 @@ final class AppModel {
         didSet {
             guard autoForAgents != oldValue else { return }
             defaults.set(autoForAgents, forKey: Keys.autoForAgents)
-            autoPaused = false
+            pausedFor = nil
             ActivityLog.write("Auto-on while agents work: \(autoForAgents ? "on" : "off")")
             updateActivity()
         }
@@ -84,12 +84,14 @@ final class AppModel {
         didSet {
             defaults.set(batteryFloor, forKey: Keys.batteryFloor)
             checkSafety()
+            reconcile()
         }
     }
     var stopWhenHot: Bool {
         didSet {
             defaults.set(stopWhenHot, forKey: Keys.stopWhenHot)
             checkSafety()
+            reconcile()
         }
     }
     var showInNotch: Bool {
@@ -121,9 +123,10 @@ final class AppModel {
 
     private(set) var manualOn = false
     private(set) var manualUntil: Date?
-    /// Set when a safety stop ends keep-awake while an agent is working, so
-    /// auto mode doesn't immediately flip it back on.
-    private(set) var autoPaused = false
+    /// Set when a safety stop ends keep-awake while an agent is working. Auto
+    /// mode stays off until the reason goes away (the charger is plugged in,
+    /// the Mac cools down, the limit changes) or the agents finish.
+    private(set) var pausedFor: StopReason?
     private(set) var agents: [AgentActivity] = []
     private(set) var battery = BatteryStatus.unknown
     private(set) var thermal = ProcessInfo.processInfo.thermalState
@@ -213,7 +216,7 @@ final class AppModel {
         let names = agents.filter(\.isWorking).map(\.name)
         return names.isEmpty ? nil : names.formatted(.list(type: .and))
     }
-    var autoEngaged: Bool { autoForAgents && workingAgent != nil && !autoPaused }
+    var autoEngaged: Bool { autoForAgents && workingAgent != nil && pausedFor == nil }
     var mode: KeepAwakeMode { manualOn ? .on : (autoForAgents ? .auto : .off) }
     var wantsAwake: Bool { manualOn || autoEngaged }
 
@@ -231,6 +234,14 @@ final class AppModel {
             if let agents = workingAgentList { return String(localized: "While \(agents) works · lid can close") }
         }
         if helperStatus == .installing { return String(localized: "Setting up…") }
+        switch pausedFor {
+        case .lowBattery(let percent):
+            let level = "\(percent)%"
+            return String(localized: "Paused at \(level) battery · resumes when you plug in")
+        case .overheating:
+            return String(localized: "Paused because your Mac got hot · resumes once it cools down")
+        case .timerEnded, nil: break
+        }
         switch lastStop {
         case .lowBattery(let percent):
             let level = "\(percent)%"
@@ -239,7 +250,6 @@ final class AppModel {
         case .timerEnded: return String(localized: "Timer ended")
         case nil: break
         }
-        if autoPaused { return String(localized: "Auto paused until agents finish") }
         if autoForAgents { return String(localized: "Turns on when an agent starts working") }
         return String(localized: "Tap the moon to stay awake")
     }
@@ -323,7 +333,7 @@ final class AppModel {
             reconcile()
         case .auto:
             let wasAuto = autoForAgents && !manualOn
-            autoPaused = false
+            pausedFor = nil
             autoForAgents = true
             clearManual()
             if !wasAuto, workingAgent == nil { show(.autoArmed) }
@@ -336,7 +346,7 @@ final class AppModel {
     private func turnOn() {
         lastStop = nil
         lastError = nil
-        autoPaused = false
+        pausedFor = nil
         manualOn = true
         scheduleExpiry()
         battery = PowerMonitor.battery()
@@ -384,7 +394,7 @@ final class AppModel {
             ActivityLog.write("Agents working: \(working)")
             lastLoggedAgents = working
         }
-        if workingAgent == nil { autoPaused = false }
+        if workingAgent == nil { pausedFor = nil }
         recordForRecap()
         checkSafety()
         reconcile()
@@ -402,15 +412,44 @@ final class AppModel {
     }
 
     private func checkSafety() {
+        resumeIfSafe()
         guard wantsAwake, let reason = safetyViolation() else { return }
         stop(reason)
+    }
+
+    /// Lets auto mode pick up again once a safety stop's reason is gone, with
+    /// some slack so it doesn't flap: 2% of battery above the floor, or a Mac
+    /// that has cooled all the way down.
+    private func resumeIfSafe() {
+        guard let reason = pausedFor else { return }
+        let cleared: String?
+        switch reason {
+        case .lowBattery:
+            if batteryFloor == 0 {
+                cleared = "battery limit off"
+            } else if battery.onPower {
+                cleared = "plugged in"
+            } else if let percent = battery.percent, percent >= batteryFloor + 2 {
+                cleared = "battery above the limit"
+            } else {
+                cleared = nil
+            }
+        case .overheating:
+            cleared = !stopWhenHot ? "heat guard off" : (thermal == .nominal ? "cooled down" : nil)
+        case .timerEnded:
+            cleared = "timer"
+        }
+        guard let cleared else { return }
+        ActivityLog.write("Auto resumed: \(cleared)")
+        pausedFor = nil
+        if lastStop == reason { lastStop = nil }
     }
 
     private func stop(_ reason: StopReason) {
         ActivityLog.write("Safety stop: \(reason)")
         away.noteStop(reason)
         lastStop = reason
-        if autoEngaged { autoPaused = true }
+        if autoEngaged { pausedFor = reason }
         clearManual()
         show(.stopped(reason))
         reconcile()
@@ -603,7 +642,7 @@ extension AppModel {
         isAwake = awake
         manualOn = awake && !auto
         autoForAgents = auto
-        autoPaused = false
+        pausedFor = nil
         manualUntil = until
         self.banner = banner.map { Banner(kind: $0) }
         self.agents = agents
