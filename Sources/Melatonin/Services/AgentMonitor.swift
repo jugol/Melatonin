@@ -37,6 +37,13 @@ enum AgentCatalog {
         ("@sourcegraph/amp", "Amp"),
     ]
 
+    /// Agents shipped inside an app under a generic executable name, recognized
+    /// by the app their executable lives in. Antigravity's agent is its
+    /// `language_server`; Windsurf has one by the same name.
+    static let bundled: [(prefix: String, app: String, name: String)] = [
+        ("language_server", "/Antigravity.app/", "Antigravity"),
+    ]
+
     /// Apps that drive other agents. Work by an agent they launched is credited
     /// to the app, so Codex running inside T3 Code shows up as T3 Code.
     static let hosts: [(prefix: String, name: String)] = [
@@ -53,6 +60,9 @@ enum AgentCatalog {
 
     static func match(_ process: ProcessRecord) -> String? {
         if let name = executables[process.name] { return name }
+        if let agent = bundled.first(where: { process.name.hasPrefix($0.prefix) }) {
+            return ProcessTable.path(of: process.pid)?.contains(agent.app) == true ? agent.name : nil
+        }
         guard isInterpreter(process.name),
               let arguments = ProcessTable.arguments(of: process.pid) else { return nil }
         return scripts.first { arguments.contains($0.fragment) }?.name
@@ -384,6 +394,12 @@ enum ProcessTable {
             table[pid] = ProcessRecord(pid: pid, ppid: pid_t(bsd.pbi_ppid), name: name, cpu: cpu)
         }
         return table
+    }
+
+    static func path(of pid: pid_t) -> String? {
+        var buffer = [CChar](repeating: 0, count: 4 * Int(MAXPATHLEN)) // PROC_PIDPATHINFO_MAXSIZE
+        guard proc_pidpath(pid, &buffer, UInt32(buffer.count)) > 0 else { return nil }
+        return String(cString: buffer)
     }
 
     /// Reused across calls; the kernel wants room for the largest possible
