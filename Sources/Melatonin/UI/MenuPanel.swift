@@ -300,8 +300,15 @@ private struct SettingsList: View {
             SettingRow(symbol: "thermometer.medium", tint: .orange, title: "Stop if it gets hot") {
                 Toggle("", isOn: $model.stopWhenHot)
             }
-            SettingRow(symbol: "capsule.fill", tint: .indigo, title: "Show in notch") {
-                Toggle("", isOn: $model.showInNotch)
+            SettingRow(symbol: "menubar.rectangle", tint: .indigo, title: "Show in") {
+                Picker("", selection: $model.display) {
+                    Text("Menu bar & notch").tag(DisplayMode.both)
+                    Text("Menu bar only").tag(DisplayMode.menuBar)
+                    Text("Notch only").tag(DisplayMode.notch)
+                }
+                .pickerStyle(.menu)
+                .labelsHidden()
+                .fixedSize()
             }
             SettingRow(symbol: "power", tint: .gray, title: "Open at login") {
                 Toggle("", isOn: $model.opensAtLogin)

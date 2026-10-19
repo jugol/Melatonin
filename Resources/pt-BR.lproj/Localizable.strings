@@ -34,7 +34,10 @@
 "%@ idle" = "%@ em espera";
 "Stop at low battery" = "Parar com bateria baixa";
 "Stop if it gets hot" = "Parar se esquentar";
-"Show in notch" = "Mostrar no notch";
+"Show in" = "Mostrar em";
+"Menu bar & notch" = "Barra de menus e notch";
+"Menu bar only" = "Só barra de menus";
+"Notch only" = "Só notch";
 "Open at login" = "Abrir no início da sessão";
 
 /* Menu */

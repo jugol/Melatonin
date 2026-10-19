@@ -23,6 +23,15 @@ enum KeepAwakeMode: CaseIterable, Identifiable {
     var id: Self { self }
 }
 
+/// Where Melatonin shows itself: the menu bar icon, the notch, or both.
+enum DisplayMode: String, CaseIterable, Identifiable {
+    case both, menuBar, notch
+
+    var id: Self { self }
+    var showsMenuBarIcon: Bool { self != .notch }
+    var showsNotch: Bool { self != .menuBar }
+}
+
 enum HelperStatus: Equatable {
     case checking, missing, outdated, unreachable, installing, ready
     case failed(String)
@@ -94,10 +103,11 @@ final class AppModel {
             reconcile()
         }
     }
-    var showInNotch: Bool {
+    var display: DisplayMode {
         didSet {
-            defaults.set(showInNotch, forKey: Keys.showInNotch)
-            NotchController.shared.setVisible(showInNotch)
+            guard display != oldValue else { return }
+            defaults.set(display.rawValue, forKey: Keys.display)
+            NotchController.shared.setVisible(display.showsNotch)
         }
     }
     /// A language code from `AppLanguage.supported`, or "" to follow macOS.
@@ -170,6 +180,8 @@ final class AppModel {
         static let autoForAgents = "autoForAgents"
         static let batteryFloor = "batteryFloor"
         static let stopWhenHot = "stopWhenHot"
+        static let display = "display"
+        /// Before `display`: false meant menu bar only.
         static let showInNotch = "showInNotch"
         /// Set just before a relaunch so keep-awake picks up where it left off.
         static let resumeUntil = "resumeUntil"
@@ -182,13 +194,13 @@ final class AppModel {
             Keys.autoForAgents: false,
             Keys.batteryFloor: 20,
             Keys.stopWhenHot: true,
-            Keys.showInNotch: true,
         ])
         duration = AwakeDuration(rawValue: defaults.integer(forKey: Keys.duration)) ?? .indefinitely
         autoForAgents = defaults.bool(forKey: Keys.autoForAgents)
         batteryFloor = defaults.integer(forKey: Keys.batteryFloor)
         stopWhenHot = defaults.bool(forKey: Keys.stopWhenHot)
-        showInNotch = defaults.bool(forKey: Keys.showInNotch)
+        display = defaults.string(forKey: Keys.display).flatMap(DisplayMode.init(rawValue:))
+            ?? (defaults.object(forKey: Keys.showInNotch) as? Bool == false ? .menuBar : .both)
         opensAtLogin = SMAppService.mainApp.status == .enabled
         language = AppLanguage.override ?? ""
 
@@ -593,7 +605,7 @@ final class AppModel {
 
     private func present(_ recap: AwayRecap) {
         self.recap = recap
-        guard showInNotch else { return }
+        guard display.showsNotch else { return }
         recapInNotch = true
         hideRecapFromNotch(after: 15)
     }

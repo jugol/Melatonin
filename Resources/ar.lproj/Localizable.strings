@@ -34,7 +34,10 @@
 "%@ idle" = "%@ خامل";
 "Stop at low battery" = "الإيقاف عند انخفاض البطارية";
 "Stop if it gets hot" = "الإيقاف عند ارتفاع الحرارة";
-"Show in notch" = "العرض في النتوء";
+"Show in" = "العرض في";
+"Menu bar & notch" = "شريط القوائم والنتوء";
+"Menu bar only" = "شريط القوائم فقط";
+"Notch only" = "النتوء فقط";
 "Open at login" = "فتح عند الدخول";
 
 /* Menu */

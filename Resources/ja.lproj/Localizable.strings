@@ -34,7 +34,10 @@
 "%@ idle" = "%@は待機中";
 "Stop at low battery" = "バッテリー残量が少ないと停止";
 "Stop if it gets hot" = "熱くなったら停止";
-"Show in notch" = "ノッチに表示";
+"Show in" = "表示場所";
+"Menu bar & notch" = "メニューバーとノッチ";
+"Menu bar only" = "メニューバーのみ";
+"Notch only" = "ノッチのみ";
 "Open at login" = "ログイン時に開く";
 
 /* Menu */

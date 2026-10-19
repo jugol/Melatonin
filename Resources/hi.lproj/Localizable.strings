@@ -34,7 +34,10 @@
 "%@ idle" = "%@ निष्क्रिय";
 "Stop at low battery" = "कम बैटरी पर रोकें";
 "Stop if it gets hot" = "गर्म होने पर रोकें";
-"Show in notch" = "नॉच में दिखाएँ";
+"Show in" = "यहाँ दिखाएँ";
+"Menu bar & notch" = "मेनू बार और नॉच";
+"Menu bar only" = "सिर्फ़ मेनू बार";
+"Notch only" = "सिर्फ़ नॉच";
 "Open at login" = "लॉगइन पर खोलें";
 
 /* Menu */

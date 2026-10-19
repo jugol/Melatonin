@@ -3,12 +3,17 @@ import SwiftUI
 @main
 struct MelatoninApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @State private var model = AppModel.shared
 
     var body: some Scene {
-        MenuBarExtra {
-            MenuPanel().environment(AppModel.shared)
+        MenuBarExtra(isInserted: Binding(
+            get: { model.display.showsMenuBarIcon },
+            // ⌘-dragging the icon out of the menu bar leaves the notch.
+            set: { if !$0 { model.display = .notch } }
+        )) {
+            MenuPanel().environment(model)
         } label: {
-            MenuBarLabel(model: AppModel.shared)
+            MenuBarLabel(model: model)
         }
         .menuBarExtraStyle(.window)
     }

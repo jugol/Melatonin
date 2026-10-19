@@ -34,7 +34,10 @@
 "%@ idle" = "%@ 空闲";
 "Stop at low battery" = "电量低时停止";
 "Stop if it gets hot" = "过热时停止";
-"Show in notch" = "在刘海中显示";
+"Show in" = "显示位置";
+"Menu bar & notch" = "菜单栏和刘海";
+"Menu bar only" = "仅菜单栏";
+"Notch only" = "仅刘海";
 "Open at login" = "登录时打开";
 
 /* Menu */

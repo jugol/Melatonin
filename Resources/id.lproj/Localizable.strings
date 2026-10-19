@@ -34,7 +34,10 @@
 "%@ idle" = "%@ siaga";
 "Stop at low battery" = "Berhenti saat baterai lemah";
 "Stop if it gets hot" = "Berhenti jika terlalu panas";
-"Show in notch" = "Tampilkan di notch";
+"Show in" = "Tampilkan di";
+"Menu bar & notch" = "Bar menu & notch";
+"Menu bar only" = "Hanya bar menu";
+"Notch only" = "Hanya notch";
 "Open at login" = "Buka saat masuk";
 
 /* Menu */

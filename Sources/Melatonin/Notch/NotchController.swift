@@ -89,7 +89,7 @@ final class NotchController {
         ) { [weak self] _ in
             MainActor.assumeIsolated { self?.place() }
         }
-        setVisible(model.showInNotch)
+        setVisible(model.display.showsNotch)
     }
 
     func setVisible(_ visible: Bool) {

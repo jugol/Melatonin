@@ -35,7 +35,10 @@
 "%@ idle" = "%@ idle";
 "Stop at low battery" = "Stop at low battery";
 "Stop if it gets hot" = "Stop if it gets hot";
-"Show in notch" = "Show in notch";
+"Show in" = "Show in";
+"Menu bar & notch" = "Menu bar & notch";
+"Menu bar only" = "Menu bar only";
+"Notch only" = "Notch only";
 "Open at login" = "Open at login";
 
 /* Menu */

@@ -34,7 +34,10 @@
 "%@ idle" = "%@ 대기 중";
 "Stop at low battery" = "배터리 부족 시 멈춤";
 "Stop if it gets hot" = "뜨거워지면 멈춤";
-"Show in notch" = "노치에 표시";
+"Show in" = "표시 위치";
+"Menu bar & notch" = "메뉴바와 노치";
+"Menu bar only" = "메뉴바만";
+"Notch only" = "노치만";
 "Open at login" = "로그인 시 열기";
 
 /* Menu */
