@@ -18,22 +18,26 @@ LOCAL_IDENTITY="$(security find-identity -p codesigning 2>/dev/null | awk '/"Mel
 IDENTITY="${SIGN_IDENTITY:-${DEVELOPER_ID:-${LOCAL_IDENTITY:--}}}"
 LABEL="io.github.jugol.melatonin.helper"
 APP="build/Melatonin.app"
+# Swift 6.4's default build system writes every --triple to the same folder and
+# stamps binaries with macOS 14 as their SDK, which gets the app the pre-macOS 26
+# look. The native one keeps per-architecture folders and records the real SDK.
+SWIFT_BUILD=(swift build --build-system native -c "$CONFIG")
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Library/LaunchServices" "$APP/Contents/Frameworks"
 
 if [[ "${UNIVERSAL:-0}" == 1 ]]; then
     for arch in arm64 x86_64; do
-        swift build -c "$CONFIG" --triple "$arch-apple-macosx14.0"
+        "${SWIFT_BUILD[@]}" --triple "$arch-apple-macosx14.0"
     done
-    ARM="$(swift build -c "$CONFIG" --triple arm64-apple-macosx14.0 --show-bin-path)"
-    X86="$(swift build -c "$CONFIG" --triple x86_64-apple-macosx14.0 --show-bin-path)"
+    ARM="$("${SWIFT_BUILD[@]}" --triple arm64-apple-macosx14.0 --show-bin-path)"
+    X86="$("${SWIFT_BUILD[@]}" --triple x86_64-apple-macosx14.0 --show-bin-path)"
     lipo -create "$ARM/Melatonin" "$X86/Melatonin" -output "$APP/Contents/MacOS/Melatonin"
     lipo -create "$ARM/MelatoninHelper" "$X86/MelatoninHelper" -output "$APP/Contents/Library/LaunchServices/$LABEL"
     BIN="$ARM" # Sparkle's framework is already universal
 else
-    swift build -c "$CONFIG"
-    BIN="$(swift build -c "$CONFIG" --show-bin-path)"
+    "${SWIFT_BUILD[@]}"
+    BIN="$("${SWIFT_BUILD[@]}" --show-bin-path)"
     cp "$BIN/Melatonin" "$APP/Contents/MacOS/Melatonin"
     cp "$BIN/MelatoninHelper" "$APP/Contents/Library/LaunchServices/$LABEL"
 fi
