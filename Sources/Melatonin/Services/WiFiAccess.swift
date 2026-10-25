@@ -66,6 +66,15 @@ final class WiFiAccess {
         if let error = result.error { ActivityLog.write("Wi-Fi scan failed: \(error)") }
     }
 
+    /// The network Wi-Fi is on right now, without a scan, so it's cheap enough
+    /// to read on every check.
+    func readCurrent() async -> String? {
+        guard access == .granted, !isStaged else { return current }
+        let ssid = await Task.detached { CWWiFiClient.shared().interface()?.ssid() }.value
+        if ssid != current { current = ssid }
+        return ssid
+    }
+
     /// Copies the password macOS saved for `ssid`. macOS asks the user to allow
     /// this once per network, so only call it while they're at the Mac.
     func checkReady(_ ssids: [String]) {

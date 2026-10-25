@@ -1,4 +1,5 @@
 import Foundation
+import Network
 import Observation
 
 /// A saved Wi-Fi network in the user's preferred order.
@@ -20,6 +21,11 @@ struct FallbackNetwork: Codable, Hashable, Identifiable {
 /// Keeps the Mac online while it's awake. If the internet stops answering, it
 /// joins the first network on the user's list that's in range, and if none of
 /// them works, restarts Wi-Fi so macOS rejoins whatever saved network it can.
+///
+/// It stays out of macOS's way: it leaves a network that was just joined alone
+/// for a while, never rejoins the network the Mac is already on, never restarts
+/// Wi-Fi under a phone hotspot (that only drops it), and stops restarting once
+/// restarts aren't helping.
 ///
 /// Joining by name needs Location access (see `WiFiAccess`); restarting Wi-Fi
 /// works without it.
@@ -63,6 +69,19 @@ final class ConnectionGuard {
     private var defaults: UserDefaults { Preferences.store }
     @ObservationIgnored private var watching = false
     @ObservationIgnored private var watchTask: Task<Void, Never>?
+    /// Wi-Fi restarts in a row that didn't bring the internet back.
+    @ObservationIgnored private var fruitlessRestarts = 0
+    /// Networks from the list seen in the last scan, to notice a new one.
+    @ObservationIgnored private var lastInRange: Set<String> = []
+    /// macOS marks Personal and Instant Hotspot as expensive.
+    @ObservationIgnored private var wifiIsExpensive = false
+    @ObservationIgnored private let wifiPath = NWPathMonitor(requiredInterfaceType: .wifi)
+
+    /// A network joined this recently is still settling (DHCP, a hotspot's
+    /// cellular link), or macOS is still joining it.
+    private static let settleTime: TimeInterval = 90
+    /// Restarts that didn't help before leaving Wi-Fi to macOS.
+    private static let maxFruitlessRestarts = 2
 
     private enum Keys {
         static let enabled = "connection.enabled"
@@ -74,6 +93,10 @@ final class ConnectionGuard {
         isEnabled = defaults.bool(forKey: Keys.enabled)
         networks = defaults.data(forKey: Keys.networks)
             .flatMap { try? JSONDecoder().decode([FallbackNetwork].self, from: $0) } ?? []
+        wifiPath.pathUpdateHandler = { [weak self] path in
+            MainActor.assumeIsolated { self?.wifiIsExpensive = path.isExpensive }
+        }
+        wifiPath.start(queue: .main)
         refresh()
     }
 
@@ -202,12 +225,25 @@ final class ConnectionGuard {
     private func watch() async {
         var failures = 0
         var failedRecoveries = 0
+        var network = await wifi.readCurrent()
+        var joined: Date?
+        var saidSettling = false
         while !Task.isCancelled {
             if isRecovering {
                 failures = 0
                 try? await Task.sleep(for: .seconds(5))
                 continue
             }
+            // macOS's auto-join, Instant Hotspot and the user all change the
+            // network without us; give whatever was just joined time to settle.
+            let current = await wifi.readCurrent()
+            if current != network {
+                network = current
+                joined = current == nil ? nil : .now
+                saidSettling = false
+                fruitlessRestarts = 0
+            }
+            let settling = joined.map { Date().timeIntervalSince($0) < Self.settleTime } ?? false
             let online = await Reachability.isOnline()
             guard !Task.isCancelled else { return }
             if isRecovering { continue }
@@ -215,13 +251,18 @@ final class ConnectionGuard {
                 if status != .online { ActivityLog.write("Stay online: internet is reachable") }
                 failures = 0
                 failedRecoveries = 0
+                fruitlessRestarts = 0
                 status = .online
             } else {
                 failures += 1
                 if status != .offline, status != .exhausted { ActivityLog.write("Stay online: internet check failed") }
                 if status != .exhausted { status = .offline }
+                if settling, let current, !saidSettling {
+                    ActivityLog.write("Stay online: just joined \(current); giving it time")
+                    saidSettling = true
+                }
                 // Two misses in a row (~20 s) before touching Wi-Fi.
-                if failures >= 2 {
+                if failures >= 2, !settling {
                     if await recover() {
                         failedRecoveries = 0
                     } else {
@@ -241,11 +282,18 @@ final class ConnectionGuard {
     /// Tries the user's networks in order, then falls back to restarting Wi-Fi.
     /// Returns whether the internet came back.
     private func recover() async -> Bool {
+        let current = await wifi.readCurrent()
+        let onHotspot = wifiIsExpensive || networks.contains { $0.ssid == current && $0.isHotspot }
         if wifi.access == .granted, !networks.isEmpty {
             await wifi.refresh()
             let inRange = networks.filter { wifi.nearby[$0.ssid] != nil }
             ActivityLog.write("Stay online: in range from your list: \(inRange.map(\.ssid).joined(separator: ", ").ifEmpty("none"))")
-            for network in inRange {
+            let seen = Set(inRange.map(\.ssid))
+            if !seen.subtracting(lastInRange).isEmpty { fruitlessRestarts = 0 }
+            lastInRange = seen
+            // On a hotspot the phone's own connection is down; waiting on it
+            // again won't help, another network might.
+            for network in inRange where !(onHotspot && network.ssid == current) {
                 guard !Task.isCancelled else { return false }
                 if await tryJoin(network.ssid) {
                     onRecovery?(true)
@@ -256,13 +304,49 @@ final class ConnectionGuard {
             ActivityLog.write("Stay online: Location access is off, so your list can't be used; restarting Wi-Fi instead")
         }
         guard !Task.isCancelled else { return false }
-        return await restart()
+        if onHotspot {
+            ActivityLog.write("Stay online: on a phone hotspot that has no internet; restarting Wi-Fi would only drop it, so waiting for the phone")
+            status = .offline
+            return false
+        }
+        guard fruitlessRestarts < Self.maxFruitlessRestarts else {
+            status = .exhausted
+            return false
+        }
+        if await restart() {
+            fruitlessRestarts = 0
+            return true
+        }
+        fruitlessRestarts += 1
+        if fruitlessRestarts == Self.maxFruitlessRestarts {
+            ActivityLog.write("Stay online: restarting Wi-Fi isn't helping; leaving it to macOS until the network changes")
+        }
+        return false
     }
 
     /// Joins `ssid`, then waits for real internet.
     private func tryJoin(_ ssid: String, mayAsk: Bool = false) async -> Bool {
         status = .switching(ssid)
         let started = Date()
+        // Associating again while macOS is still joining it, or is already on
+        // it, fails with "busy" and can drop the link.
+        if await wifi.readCurrent() == ssid {
+            ActivityLog.write("Stay online: already on \(ssid); waiting for its internet instead of rejoining")
+        } else {
+            guard await join(ssid, mayAsk: mayAsk) else { return false }
+        }
+        guard await waitUntilOnline(seconds: 20) else {
+            ActivityLog.write("Stay online: joined \(ssid) but the internet isn’t reachable")
+            return false
+        }
+        let seconds = Int(Date().timeIntervalSince(started))
+        ActivityLog.write("Stay online: online via \(ssid) after \(seconds) s")
+        lastRecovery = Recovery(date: .now, seconds: seconds)
+        status = .online
+        return true
+    }
+
+    private func join(_ ssid: String, mayAsk: Bool) async -> Bool {
         do {
             try await wifi.join(ssid, userPresent: mayAsk)
         } catch let error as WiFiAccess.WiFiError where error.needsPassword && mayAsk {
@@ -278,14 +362,6 @@ final class ConnectionGuard {
             ActivityLog.write("Stay online: couldn’t join \(ssid): \(error.localizedDescription)")
             return false
         }
-        guard await waitUntilOnline(seconds: 20) else {
-            ActivityLog.write("Stay online: joined \(ssid) but the internet isn’t reachable")
-            return false
-        }
-        let seconds = Int(Date().timeIntervalSince(started))
-        ActivityLog.write("Stay online: online via \(ssid) after \(seconds) s")
-        lastRecovery = Recovery(date: .now, seconds: seconds)
-        status = .online
         return true
     }
 
