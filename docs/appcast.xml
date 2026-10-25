@@ -4,20 +4,21 @@
     <title>Melatonin</title>
     <link>https://jugol.github.io/Melatonin/</link>
     <item>
-      <title>Melatonin 0.1.7</title>
-      <pubDate>Tue, 20 Oct 2026 04:35:34 +0000</pubDate>
-      <sparkle:version>8</sparkle:version>
-      <sparkle:shortVersionString>0.1.7</sparkle:shortVersionString>
+      <title>Melatonin 0.1.8</title>
+      <pubDate>Sun, 25 Oct 2026 06:20:26 +0000</pubDate>
+      <sparkle:version>9</sparkle:version>
+      <sparkle:shortVersionString>0.1.8</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <sparkle:fullReleaseNotesLink>https://github.com/jugol/Melatonin/releases/tag/v0.1.7</sparkle:fullReleaseNotesLink>
+      <sparkle:fullReleaseNotesLink>https://github.com/jugol/Melatonin/releases/tag/v0.1.8</sparkle:fullReleaseNotesLink>
       <description><![CDATA[
-<h3>Melatonin 0.1.7</h3>
+<h3>Melatonin 0.1.8</h3>
 <ul>
-  <li><b>Choose where Melatonin shows.</b> The new <b>Show in</b> setting keeps it in the menu bar, the notch, or both. With the notch only, the gear in the notch opens the full panel.</li>
-  <li><b>Antigravity's agent counts as work.</b> Auto mode now keeps your Mac awake while Antigravity's agent is working.</li>
+  <li><b>Stay online no longer fights your phone's hotspot.</b> When your Mac is on a hotspot whose cellular connection drops for a moment, Melatonin now waits for the phone instead of restarting Wi-Fi, which only knocked the hotspot off.</li>
+  <li><b>It gives a network time to settle.</b> A network macOS or you just joined is left alone for a minute and a half, and Melatonin never tries to rejoin the network your Mac is already on.</li>
+  <li><b>No more endless Wi-Fi restarts.</b> If two restarts in a row don't bring the internet back, it stops and leaves Wi-Fi to macOS until something changes, so a long trip with the lid closed shows “Couldn’t reconnect” a couple of times, not every few minutes.</li>
 </ul>
       ]]></description>
-      <enclosure url="https://github.com/jugol/Melatonin/releases/download/v0.1.7/Melatonin.zip" type="application/octet-stream" sparkle:edSignature="JIfQhefuNGihGPBt6itzhc6Q7F8B0/ummgxEgCIRk06V0l4OQwzHSzZebb7LTr97CSJpZIvPJuxoqn0Uq4yVDQ==" length="3676815"/>
+      <enclosure url="https://github.com/jugol/Melatonin/releases/download/v0.1.8/Melatonin.zip" type="application/octet-stream" sparkle:edSignature="4fnP6Jy8NwpAml+3C+PvMSmcDW0o57MwS6Okm6vj/tQmBwze/bHGdaiQF6N0xhKQvXAUJK/wHl4BnxZKoVxbDA==" length="3694731"/>
     </item>
   </channel>
 </rss>
