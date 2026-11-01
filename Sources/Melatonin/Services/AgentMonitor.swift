@@ -44,8 +44,9 @@ enum AgentCatalog {
         ("language_server", "/Antigravity.app/", "Antigravity"),
     ]
 
-    /// Apps that drive other agents. Work by an agent they launched is credited
-    /// to the app, so Codex running inside T3 Code shows up as T3 Code.
+    /// Apps that drive other agents. Work by an agent they launched, including
+    /// what a Claude Code session writes to its transcript, is credited to the
+    /// app, so Codex running inside T3 Code shows up as T3 Code.
     static let hosts: [(prefix: String, name: String)] = [
         ("T3 Code", "T3 Code"),
     ]
@@ -95,12 +96,21 @@ enum AgentLogs {
     static let openTurnLimit: TimeInterval = 10 * 60
 
     /// When each agent last logged real work; now, while a turn is still open.
-    static func lastActivity(now: Date = .now) -> [String: Date] {
+    /// `hosted` maps Claude Code transcripts of sessions an app launched to
+    /// that app, which gets credit for them instead.
+    static func lastActivity(now: Date = .now, hosted: [URL: String] = [:]) -> [String: Date] {
         seen.removeAll()
         var result: [String: Date] = [:]
         result["Hermes"] = hermes()
         result["Codex"] = latestWork(in: codexSessions(now: now), now: now, turn: codexTurn)
-        result["Claude Code"] = latestWork(in: claudeTranscripts(now: now), now: now, turn: claudeTurn)
+        let hosts = Dictionary(hosted.map { ($0.key.path, $0.value) }, uniquingKeysWith: { first, _ in first })
+        var claude: [String: [(url: URL, modified: Date)]] = [:]
+        for transcript in claudeTranscripts(now: now, hosted: Array(hosted.keys)) {
+            claude[hosts[transcript.session.path] ?? "Claude Code", default: []] += transcript.files
+        }
+        for (name, files) in claude {
+            result[name] = latestWork(in: files, now: now, turn: claudeTurn)
+        }
         turns = turns.filter { seen.contains($0.key) }
         return result.compactMapValues { $0 }
     }
@@ -142,20 +152,39 @@ enum AgentLogs {
 
     /// Claude Code appends every message to ~/.claude/projects/<project>/<session>.jsonl,
     /// and a subagent's to <session>/subagents/, which may be the only file
-    /// written during a long subagent run.
-    private static func claudeTranscripts(now: Date) -> [(url: URL, modified: Date)] {
-        var result: [(url: URL, modified: Date)] = []
-        for project in folders(in: home.appending(path: ".claude/projects")) {
-            for session in transcripts(in: project) {
-                result.append(session)
-                guard now.timeIntervalSince(session.modified) < 6 * 3600 else { continue }
-                let subagents = project
-                    .appending(path: session.url.deletingPathExtension().lastPathComponent)
-                    .appending(path: "subagents")
-                result += transcripts(in: subagents)
-            }
+    /// written during a long subagent run. Hosted sessions can run under
+    /// another config directory, so their transcripts are read where they are.
+    private static func claudeTranscripts(now: Date, hosted: [URL]) -> [(session: URL, files: [(url: URL, modified: Date)])] {
+        var sessions = folders(in: home.appending(path: ".claude/projects")).flatMap(transcripts(in:))
+        let listed = Set(sessions.map(\.url.path))
+        for url in hosted where !listed.contains(url.path) {
+            if let modified = modificationDate(of: url) { sessions.append((url, modified)) }
         }
-        return result
+        return sessions.map { session in
+            var files = [session]
+            if now.timeIntervalSince(session.modified) < 6 * 3600 {
+                files += transcripts(in: session.url.deletingPathExtension().appending(path: "subagents"))
+            }
+            return (session.url, files)
+        }
+    }
+
+    /// The transcript a running Claude Code process writes to. Each process
+    /// records its session in <config>/sessions/<pid>.json, read every time
+    /// because the session changes on /clear.
+    static func claudeTranscript(of pid: pid_t) -> URL? {
+        let config = ProcessTable.environment("CLAUDE_CONFIG_DIR", of: pid).flatMap { $0.isEmpty ? nil : $0 }
+            .map { URL(filePath: NSString(string: $0).expandingTildeInPath) } ?? home.appending(path: ".claude")
+        guard let data = try? Data(contentsOf: config.appending(path: "sessions/\(pid).json")),
+              let session = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any],
+              let id = session["sessionId"] as? String, let cwd = session["cwd"] as? String else { return nil }
+        // The project folder is the directory with every character that isn't
+        // an ASCII letter or digit replaced by "-", per UTF-16 unit as in JavaScript.
+        let project = String(decoding: cwd.utf16.map { unit in
+            (48...57).contains(unit) || (65...90).contains(unit) || (97...122).contains(unit) ? unit : 45
+        }, as: UTF16.self)
+        let url = config.appending(path: "projects").appending(path: project).appending(path: "\(id).jsonl")
+        return FileManager.default.fileExists(atPath: url.path) ? url : nil
     }
 
     /// Tools that wait on the user, not on work.
@@ -312,15 +341,19 @@ final class AgentScanner {
 
         var children: [pid_t: [pid_t]] = [:]
         var roots: [String: [pid_t]] = [:]
+        var hosted: [URL: String] = [:]
         for process in table.values {
             children[process.ppid, default: []].append(process.pid)
             if let name = AgentCatalog.match(process) {
-                let credited = AgentCatalog.host(of: process.pid, in: table) ?? name
-                roots[credited, default: []].append(process.pid)
+                let host = AgentCatalog.host(of: process.pid, in: table)
+                if let host, name == "Claude Code", let transcript = AgentLogs.claudeTranscript(of: process.pid) {
+                    hosted[transcript] = host
+                }
+                roots[host ?? name, default: []].append(process.pid)
             }
         }
 
-        let logged = AgentLogs.lastActivity()
+        let logged = AgentLogs.lastActivity(hosted: hosted)
         for (name, date) in logged where date > (lastActive[name] ?? .distantPast) {
             lastActive[name] = date
         }
@@ -415,6 +448,19 @@ enum ProcessTable {
     /// The process's arguments joined by spaces. The environment, which follows
     /// them in the same block, is left out so PATH entries can't cause matches.
     static func arguments(of pid: pid_t) -> String? {
+        argumentBlock(of: pid, environment: false)?.strings.joined(separator: " ")
+    }
+
+    /// One variable from the process's environment, readable for the user's
+    /// own processes.
+    static func environment(_ key: String, of pid: pid_t) -> String? {
+        guard let block = argumentBlock(of: pid, environment: true) else { return nil }
+        let prefix = key + "="
+        return block.strings.dropFirst(block.argc).first { $0.hasPrefix(prefix) }.map { String($0.dropFirst(prefix.count)) }
+    }
+
+    /// The process's argv, followed by its environment if asked for.
+    private static func argumentBlock(of pid: pid_t, environment: Bool) -> (argc: Int, strings: [String])? {
         var mib: [Int32] = [CTL_KERN, KERN_PROCARGS2, pid]
         var size = argumentBuffer.count
         guard sysctl(&mib, 3, &argumentBuffer, &size, nil, 0) == 0, size > 4 else { return nil }
@@ -424,16 +470,17 @@ enum ProcessTable {
             var index = 4
             while index < size, buffer[index] != 0 { index += 1 }
             while index < size, buffer[index] == 0 { index += 1 }
-            var arguments: [String] = []
+            var strings: [String] = []
             var start = index
-            while index < size, arguments.count < argc {
+            while index < size, environment || strings.count < argc {
                 if buffer[index] == 0 {
-                    arguments.append(String(decoding: buffer[start..<index], as: UTF8.self))
+                    if index == start, strings.count >= argc { break } // an empty string ends the environment
+                    strings.append(String(decoding: buffer[start..<index], as: UTF8.self))
                     start = index + 1
                 }
                 index += 1
             }
-            return arguments.joined(separator: " ")
+            return (argc, strings)
         }
     }
 }
