@@ -44,6 +44,13 @@ enum AgentCatalog {
         ("language_server", "/Antigravity.app/", "Antigravity"),
     ]
 
+    /// Agents whose native installer names the executable after its version,
+    /// recognized by the folder it lives in. Claude Code's lives at
+    /// `~/.local/share/claude/versions/2.1.312`.
+    static let versioned: [(folder: String, name: String)] = [
+        ("/claude/versions/", "Claude Code"),
+    ]
+
     /// Apps that drive other agents. Work by an agent they launched, including
     /// what a Claude Code session writes to its transcript, is credited to the
     /// app, so Codex running inside T3 Code shows up as T3 Code.
@@ -63,6 +70,10 @@ enum AgentCatalog {
         if let name = executables[process.name] { return name }
         if let agent = bundled.first(where: { process.name.hasPrefix($0.prefix) }) {
             return ProcessTable.path(of: process.pid)?.contains(agent.app) == true ? agent.name : nil
+        }
+        if process.name.first?.isNumber == true {
+            guard let path = ProcessTable.path(of: process.pid) else { return nil }
+            return versioned.first { path.contains($0.folder) }?.name
         }
         guard isInterpreter(process.name),
               let arguments = ProcessTable.arguments(of: process.pid) else { return nil }
