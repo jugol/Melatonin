@@ -4,20 +4,20 @@
     <title>Melatonin</title>
     <link>https://jugol.github.io/Melatonin/</link>
     <item>
-      <title>Melatonin 0.1.9</title>
-      <pubDate>Sun, 01 Nov 2026 08:45:17 +0000</pubDate>
-      <sparkle:version>10</sparkle:version>
-      <sparkle:shortVersionString>0.1.9</sparkle:shortVersionString>
+      <title>Melatonin 0.1.10</title>
+      <pubDate>Sun, 01 Nov 2026 09:14:23 +0000</pubDate>
+      <sparkle:version>11</sparkle:version>
+      <sparkle:shortVersionString>0.1.10</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <sparkle:fullReleaseNotesLink>https://github.com/jugol/Melatonin/releases/tag/v0.1.9</sparkle:fullReleaseNotesLink>
+      <sparkle:fullReleaseNotesLink>https://github.com/jugol/Melatonin/releases/tag/v0.1.10</sparkle:fullReleaseNotesLink>
       <description><![CDATA[
-<h3>Melatonin 0.1.9</h3>
+<h3>Melatonin 0.1.10</h3>
 <ul>
-  <li><b>T3 Code counts as working while it waits on the model.</b> When T3 Code runs Claude Code, the work Claude writes down now counts for T3 Code, so auto mode keeps your Mac awake through slow model replies, and the menu shows T3 Code instead of Claude Code.</li>
-  <li><b>Claude Code on another account is seen too.</b> Sessions T3 Code starts with a different Claude config folder are now read where they are.</li>
+  <li><b>T3 Code now shows up.</b> 0.1.9 couldn't see the Claude Code that T3 Code starts, so T3 Code never counted as working. It now does, including while it waits on the model.</li>
+  <li><b>Claude Code from the native installer is recognized.</b> Claude Code installed with its own installer runs under its version number, so Melatonin only noticed it through its transcripts. Its activity now counts right away.</li>
 </ul>
       ]]></description>
-      <enclosure url="https://github.com/jugol/Melatonin/releases/download/v0.1.9/Melatonin.zip" type="application/octet-stream" sparkle:edSignature="kbH9rzX7rIh+nUm/9ZTF9/r/EF6oVCFs5Nirx1MfvJXI8cbATLzq9xx4j5FsfeAlPnKfZk81gNksy68vWkVSAA==" length="3713852"/>
+      <enclosure url="https://github.com/jugol/Melatonin/releases/download/v0.1.10/Melatonin.zip" type="application/octet-stream" sparkle:edSignature="VAIMJAzbEYs68v/xN4oHQnP2u1lwehYs6rzjZUgB4XOQLlrRlosXkEtLXfpphaZLIQ9d7N3r4m5WAfACDhA3Dg==" length="3714321"/>
     </item>
   </channel>
 </rss>
